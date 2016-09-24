@@ -1,0 +1,204 @@
+@import 'https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&subset=cyrillic';
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+body {
+    display: -webkit-flex;
+    -webkit-align-items: center;
+    justify-content: center;
+
+    width: 100vw;
+    height: 100vh;
+
+    overflow-x: hidden;
+
+    background: #ededed;
+}
+
+body.modal:before {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    content: '';
+
+    background: rgba(0, 0, 0, .8);
+}
+
+body.crop {
+    cursor: crosshair;
+}
+
+body.move {
+    cursor: move;
+}
+
+body > div#frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 5px;
+
+    display: none;
+
+    outline: 1000vw solid rgba(0,0,0,.8);
+}
+
+body > div#frame.show {
+    display: block;
+}
+
+aside.hint {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    display: none;
+    width: 500px;
+    max-height: 400px;
+    padding: 20px;
+    margin: auto;
+    font-family: 'Roboto', sans-serif;
+    background: #F4F3F2;
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.08), 0 3px 12px 0 rgba(0, 0, 0, 0.12);
+}
+
+aside.hint > h1 {
+    padding: 0;
+    margin: 30px 0 0 10px;
+
+    font-size: 24px;
+    font-weight: 600;
+}
+
+aside.hint > h2 {
+    padding: 0;
+    margin: 30px 0 0 10px;
+
+    font-weight: 600;
+}
+
+aside.hint > ul {
+    margin: 0;
+    padding: 10px 0 0 20px;
+}
+
+aside.hint > ul > li {
+    margin-bottom: 10px;
+    padding: 0;
+    font-size: 14px;
+    line-height: 1.4rem;
+}
+
+aside.hint > button {
+    display: inline-block;
+    font-size: 0.9em;
+    color: #4285f4;
+    cursor: pointer;
+    background: none;
+    border: none;
+    text-transform: uppercase;
+}
+
+aside.hint > button:focus {
+    outline: none;
+}
+
+aside.hint > button.js-close-agree {
+    width: 100%;
+    margin-top: 20px;
+    padding-right: 20px;
+    text-align: right;
+}
+
+aside.hint > button.js-close-hint {
+    position: absolute;
+    top: 10px;
+    right: 5px;
+    display: block;
+    overflow: hidden;
+    width: 40px;
+    height: 32px;
+    opacity: .3;
+    cursor: pointer;
+    text-indent: 40px;
+}
+
+aside.hint > button.js-close-hint:before, aside.hint > button.js-close-hint:after {
+    position: absolute;
+    top: 0;
+    left: 18px;
+    content: '';
+    height: 33px;
+    width: 2px;
+    background-color: #8C8888;
+}
+
+aside.hint > button.js-close-hint:before {
+    transform: rotate(45deg);
+}
+
+aside.hint > button.js-close-hint:after {
+    transform: rotate(-45deg);
+}
+
+aside.hint > button.js-close-hint:hover {
+    opacity: 1;
+}
+
+aside.hint.open {
+    display: block;
+}

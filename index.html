@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport"
+		content="width=device-width,user-scalable=yes,initial-scale=1,maximum-scale=2,minimum-scale=1">
+	<title>--shots</title>
+	<link rel="stylesheet" href="./common.css">
+</head>
+<body>
+<canvas id="stage" width="0" height="0"></canvas>
+<div id="frame">
+
+</div>
+
+<aside class="hint">
+	<button type="button" class="js-close-hint">
+		Close
+	</button>
+	<h1>Hi! It's a free app for creating screenshots.</h1>
+	<h2>
+		How to use:
+	</h2>
+	<ul>
+		<li>
+			Click the right mouse button for calling a context menu.
+		</li><li>
+			Clicking on "New" is for creating a new screenshot.
+		</li><li>
+			Choose "Crop" for cropping your screenshot.
+		</li><li>
+			Choose "Crop" for cropping an area.
+		</li><li>
+			"Ctrl+Z" allows you to cancel(undo), and "Ctrl+Shift+Z" to return(redo).
+		</li><li>
+			For focusing on a particular area use "Rect".
+		</li><li>
+			Take "Arrow" for focusing on details.
+		</li>
+	</ul>
+	<button type="button" class="js-close-agree">
+		I understand
+	</button>
+</aside>
+
+</body>
+<script src="./scripts/libs/createjs-2015.11.26.min.js"></script>
+<script>
+	require( './scripts/renderer.js' )
+</script>
+</html>
