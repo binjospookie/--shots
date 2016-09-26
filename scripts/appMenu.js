@@ -14,9 +14,7 @@ module.exports = function appMenu(app, appWindow) {
                     {
                         label: 'Save',
                         accelerator: 'CmdOrCtrl+S',
-                        click () {
-                            console.log(1);
-                        }
+                        click () {appWindow.webContents.send('save');}
                     },
                     {
                         label: 'Restart',
@@ -78,16 +76,13 @@ module.exports = function appMenu(app, appWindow) {
                     },
                     {
                         label: 'Arrow',
-                        click () { console.log(1); }
+                        accelerator: 'A',
+                        click () { appWindow.webContents.send('arrow'); }
                     },
                     {
                         label: 'Rect',
                         accelerator: 'R',
                         click () { appWindow.webContents.send('rect'); }
-                    },
-                    {
-                        label: 'Text',
-                        click () { console.log(1); }
                     },
                     {
                         label: 'Pen',

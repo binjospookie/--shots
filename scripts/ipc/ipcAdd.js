@@ -2,7 +2,7 @@ const renderIpc = require('./ipcRendered');
 
 module.exports =
 	function ipcAdd(
-		undoCrop,redoCrop,setDefaultSceneState,createScreenshot,callCrop,callRect,callPen,body,modalWindow,getDrawStatus,callZoomIn, callZoomOut, setDefaultZoom ) {
+		undoCrop,redoCrop,setDefaultSceneState,createScreenshot,callCrop,callRect,callPen,body,modalWindow,getDrawStatus,callZoomIn, callZoomOut, setDefaultZoom, callArrow, callSave ) {
 	renderIpc.undo(undoCrop);
 	renderIpc.redo(redoCrop);
 	renderIpc.stop(body, modalWindow,setDefaultSceneState);
@@ -14,4 +14,6 @@ module.exports =
 	renderIpc.zoomIn(callZoomIn);
 	renderIpc.zoomOut(callZoomOut);
 	renderIpc.defaultZoom(setDefaultZoom);
+	renderIpc.callArrow(callArrow);
+	renderIpc.callSave(callSave);
 };

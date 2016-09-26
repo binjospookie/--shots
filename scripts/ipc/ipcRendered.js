@@ -62,6 +62,16 @@ function defaultZoom(setDefaultZoom) {
 		setDefaultZoom();
 	});
 }
+function callArrow(callArrow) {
+	ipcRenderer.on('arrow', () => {
+		callArrow();
+	});
+}
+function callSave(callSave) {
+	ipcRenderer.on('save', () => {
+		callSave();
+	});
+}
 
 module.exports = {
 	undo: undo,
@@ -74,5 +84,7 @@ module.exports = {
 	help: help,
 	zoomIn: zoomIn,
 	zoomOut: zoomOut,
-	defaultZoom: defaultZoom
+	defaultZoom: defaultZoom,
+	callArrow: callArrow,
+	callSave: callSave
 };

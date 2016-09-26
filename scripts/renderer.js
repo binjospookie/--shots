@@ -14,6 +14,7 @@ const {
 const ipc = require('electron').ipcRenderer;
 const ipcAdd = require('./ipc/ipcAdd');
 const determineScreenShotSize = require('./functions/determineScreenShotSize');
+const {clipboard} = require('electron')
 //Позиция по X, куда пришлось нажатие кнопки мыши
 let mouseDownX;
 // Позиция по Y, куда пришлось нажатие кнопки мыши
@@ -38,7 +39,7 @@ const body = document.body;
 // обработчик нажатия на кнопки закрытия в модальном окне
 const closeModalButtonClickHandler = require('./functions/closeModal');
 // цвет карандаша
-const penColor = "#FF0000";
+const penColor = "#D50000";
 // толщина карандаша
 const penSize = 4;
 const addModalButtonListeners = require('./functions/addModalButtonListeners');
@@ -49,11 +50,12 @@ const showControls = require('./functions/showControls');
 const cropListeners = require('./functions/cropListeners');
 const penListeners = require('./functions/penListeners');
 const rectListeners = require('./functions/rectListeners');
+const arrowListeners = require('./functions/arrowListeners');
 const setDefaultScene = require('./functions/setDefaultScene');
 const getCookie = require('./functions/getCookieByName');
 const modalOnStart = require('./functions/modalOnStart');
-const calcDistance = require('./functions/calcDistance');
-
+const setTransformRectDistance = require('./functions/setTransformRectDistance');
+const getDegree = require('./functions/getDegree');
 var fillObj;
 // Массив объектов, содержащих данные о каждом кропе.
 let croppingHistory = [];
@@ -71,21 +73,24 @@ let penOldX;
 let penOldY;
 // флаг, указывающий на процесс работы с инструментом
 let onCreate = false;
-// зум приложения
 let areaZoom = 1;
-// скэйл прямоугольника
 let scale;
 
+
 stage.enableDOMEvents(true);
-addModalButtonListeners(closeModalButtons, closeModalButtonClickHandler, body, modalWindow);
+addModalButtonListeners(closeModalButtons, closeModalButtonClickHandler, body,
+  modalWindow);
 // обработчик клика по сцене
 stage.addEventListener('mousedown', stageMouseDownHandler)
     // Создаём меню приложения
 Menu(
-    stage, stageMouseDownHandlerCrop, stageMouseUpHandlerCrop, stageMouseMoveHandlerCrop,
-    openNewScreenshotDialog, callCrop, callRect, callPen
-);
-ipcAdd(undoCrop, redoCrop, setDefaultSceneState, createScreenshot, callCrop, callRect, callPen, body, modalWindow, getDrawStatus,callZoomIn,callZoomOut, setDefaultZoom);
+    stage, stageMouseDownHandlerCrop, stageMouseUpHandlerCrop,
+    stageMouseMoveHandlerCrop, openNewScreenshotDialog, callCrop,
+    callRect, callPen);
+
+ipcAdd(undoCrop, redoCrop, setDefaultSceneState, createScreenshot, callCrop,
+  callRect, callPen, body, modalWindow, getDrawStatus, callZoomIn, callZoomOut,
+  setDefaultZoom, callArrow,callSave);
 // Метод вызова диалога о создании нового скриншота
 function openNewScreenshotDialog() {
     ipc.send('open-information-dialog');
@@ -99,38 +104,38 @@ createScreenshot();
 function stageMouseDownHandler(event) {
     let target = event.target;
     let name = target.parent.name;
-      if (onCreate === false) {
-          if (name) {
+    if (onCreate === false) {
+        if (name) {
 
-              if (name.indexOf('shapeContainer') !== -1) {
-                  if (activeShape !== target.parent) {
-                      hideControls(activeShape, stage);
-                      activeShape = target.parent;
-                      showControls(activeShape, stage);
+            if (name.indexOf('shapeContainer') !== -1) {
+                if (activeShape !== target.parent) {
+                    hideControls(activeShape, stage);
+                    activeShape = target.parent;
+                    showControls(activeShape, stage);
 
-                  } else {
-                      let demensionX = activeShape.x - event.stageX;
-                      let demensionY = activeShape.y - event.stageY;
+                } else {
+                    let demensionX = activeShape.x - event.stageX;
+                    let demensionY = activeShape.y - event.stageY;
 
-                      if (name.indexOf('Pen') === -1 && onCreate === false) {
-                          activeShape.on("pressmove", function(event) {
-                              body.classList.add('move');
-                              console.log('error');
-                              activeShape.x = event.stageX + demensionX;
-                              activeShape.y = event.stageY + demensionY;
-                              stage.update();
-                          });
+                    if (name.indexOf('Pen') === -1 && onCreate === false) {
+                        activeShape.on("pressmove", function(event) {
+                            body.classList.add('move');
 
-                          activeShape.on("pressup", function(event) {
-                              body.classList.remove('move');
-                          })
-                      }
-                  }
-              }
-          } else {
-            // TODO: reset frame
-          }
-      }
+                            activeShape.x = event.stageX + demensionX;
+                            activeShape.y = event.stageY + demensionY;
+                            stage.update();
+                        });
+
+                        activeShape.on("pressup", function(event) {
+                            body.classList.remove('move');
+                        })
+                    }
+                }
+            }
+        } else {
+            // hide controls
+        }
+    }
 
     stage.update();
 }
@@ -154,7 +159,7 @@ function deleteShape(event) {
 /**
  * Обработчик отпускания клавиши мыши при работе с фигурами
  */
-function stageMouseUpShapes() {
+function stageMouseUpShapes(event) {
     let deleteButton = createDeleteButton();
 
     onCreate = false;
@@ -167,8 +172,14 @@ function stageMouseUpShapes() {
     } else {
         var transformButton = createTransformButton();
         let shape = activeShape.getChildByName('rect');
-        // for arrow
-        let shapeBounds = activeShape.getChildByName('rect').getBounds();
+        let shapeBounds;
+
+        if(shape === null) {
+          shape = activeShape.getChildByName('arrow');
+          shapeBounds = activeShape.getChildByName('arrow').getBounds();
+        } else {
+          shapeBounds = activeShape.getChildByName('rect').getBounds();
+        }
 
         deleteButton.x = -10;
         deleteButton.y = -10;
@@ -179,8 +190,16 @@ function stageMouseUpShapes() {
         transformButton.addEventListener('pressup', transformUpHandler);
     }
 
+    let arrow = activeShape.getChildByName('arrow');
+
+    if(arrow !== null) {
+      transformButton.x = arrow.length + 25;
+      transformButton.y = 10;
+    }
+
     activeShape.addChild(deleteButton);
     activeShape.addChild(transformButton);
+
     hideControls(activeShape, stage);
 
     activeShape = undefined;
@@ -191,10 +210,10 @@ function stageMouseUpShapes() {
  * Обработчик нажатия при использовании трансформации
  */
 function transformPressHandler(event) {
-  mouseDownX = event.stageX ;
-  mouseDownY = event.stageY;
-  scale = activeShape.scaleX;
-  activeShape.removeAllEventListeners();
+    mouseDownX = event.stageX;
+    mouseDownY = event.stageY;
+    scale = activeShape.scaleX;
+    activeShape.removeAllEventListeners();
 }
 /**
  * Обработчик перемещения при использовании трансформации
@@ -203,42 +222,64 @@ function transformMoveHandler(event) {
     let i;
     let n;
     let child = activeShape.children;
-
-    // Smth here
-    let distance1 = calcDistance(
-      activeShape.x, activeShape.y,
-      mouseDownX, mouseDownY
-    );
-
-   let distance2 = calcDistance(
-      activeShape.x, activeShape.y,
-      event.stageX, event.stageY
-    );
+    let distance1;
+    let distance2;
+    let result;
+    let arrow = activeShape.getChildByName('arrow');
+    result =
+        setTransformRectDistance(event.stageX, event.stageY, croppingHistory,
+            historyIndex, activeShape, mouseDownX, mouseDownY);
+    distance1 = result.distance1;
+    distance2 = result.distance2;
 
     activeShape.scaleX = activeShape.scaleY =
-      distance2 / distance1 * scale;
+        distance2 / distance1 * scale;
 
-      for ( i = 0, n = activeShape.children.length; i < n; i++ )
-      {
-        if ( ( child[i].name === 'transform' ) )
-        {
-          child[i].scaleX = child[i].scaleY = 1 / activeShape.scaleX;
+
+    for (i = 0, n = activeShape.children.length; i < n; i++) {
+        if ((child[i].name === 'transform')) {
+            child[i].scaleX = child[i].scaleY = 1 / activeShape.scaleX;
+            if(arrow !== null) {
+              child[i].x = arrow.length + 25 / activeShape.scaleX;
+              child[i].y = 10 / activeShape.scaleX;
+            } else {
+              child[i].x = activeShape.getBounds().width + 10 / activeShape.scaleX;
+              child[i].y = activeShape.getBounds().height + 10 / activeShape.scaleX;
+            }
         }
 
-        if ( ( child[i].name === 'close' ) )
-        {
-          child[i].scaleX = child[i].scaleY = 1 / activeShape.scaleX;
+        if ((child[i].name === 'close')) {
+            let rect = activeShape.getChildByName('rect');
+            if(rect === null) {
+              rect = activeShape.getChildByName('arrow');
+            }
+            child[i].scaleX = child[i].scaleY = 1 / activeShape.scaleX;
+            child[i].x = rect.x - 10 / activeShape.scaleX;
+            child[i].y = rect.y - 10 / activeShape.scaleX;
         }
-      }
+
+        if ((child[i].name === 'rect')) {
+          let width = child[i].getBounds().width;
+          let height = child[i].getBounds().height;
+          let top = child[i].y;
+          let left = child[i].x;
+
+          child[i].graphics.clear().setStrokeStyle(4 / activeShape.scaleX).beginStroke("#D50000").drawRoundRect(left, top, width, height, 2 / activeShape.scaleX);
+        }
+        if ((child[i].name === 'arrow')) {
+          drawArrow(child[i], child[i].length)
+        }
+    }
 
     stage.update();
 }
+
 /**
  * Обработчик отпускания при использовании трансформации
  */
 function transformUpHandler() {
-  mouseDownX = 0;
-  mouseDownY = 0;
+    mouseDownX = 0;
+    mouseDownY = 0;
 }
 
 /**
@@ -283,6 +324,59 @@ function stageMouseDownHandlerRect(event) {
 }
 
 /**
+ * Обработчик нажатия кнопки мыши при работе со стрелкой
+ */
+function stageMouseDownHandlerArrow(event) {
+    let container = new createjs.Container();
+
+    container.name = 'shapeContainer';
+    container.x = event.stageX - stage.x;
+    container.y = event.stageY - stage.y;
+
+    hideControls(activeShape, stage);
+
+    stage.addChild(container);
+
+    stage.update();
+
+    activeShape = container;
+
+    stage.on("stagemousemove", stageMouseMoveHandlerArrow);
+}
+
+/**
+ * Метод создания стрелки
+ */
+function drawArrow(arrow, length) {
+  let arrowSize = Math.sqrt(length)/1.5;
+  arrow.graphics.clear().ss(4 / activeShape.scaleX).s("#D50000").mt(0,0).lineTo(length,0).f("#D50000")
+  .dp(length-arrowSize, 0, arrowSize, 3);
+  arrow.set({length:length});
+}
+
+/**
+ * Обработчик перемещения курсора мыши при работе со стрелкой
+ */
+function stageMouseMoveHandlerArrow(event) {
+    let arrow = new createjs.Shape();
+    let shapeX = event.stageX - stage.x - activeShape.x;
+    let shapeY = event.stageY - stage.y - activeShape.y;
+
+    let length = Math.sqrt(shapeX*shapeX+shapeY*shapeY);
+
+    activeShape.removeChildAt(0);
+
+    arrow.name = 'arrow';
+    drawArrow(arrow, length);
+    arrow.setBounds(0, 0, shapeX, shapeY);
+
+    activeShape.addChild(arrow);
+    activeShape.rotation = Math.atan2(shapeY,shapeX) * 180/Math.PI;
+
+    stage.update();
+}
+
+/**
  * Обработчик перемещения курсора мыши при работе с прямоугольником
  */
 function stageMouseMoveHandlerRect(event) {
@@ -302,7 +396,7 @@ function stageMouseMoveHandlerRect(event) {
         shapeY = event.stageY - stage.y - activeShape.y;
     }
 
-    shape.graphics.setStrokeStyle(4 / areaZoom).beginStroke("#ff0000").drawRoundRect(shapeX, shapeY, width, height, 2 / areaZoom);
+    shape.graphics.setStrokeStyle(4 / areaZoom).beginStroke("#D50000").drawRoundRect(shapeX, shapeY, width, height, 2 / areaZoom);
     shape.setBounds(shapeX, shapeY, width, height);
     activeShape.addChild(shape);
 
@@ -348,7 +442,25 @@ function callRect() {
         }
 
         onCreate = true;
-        rectListeners(stageMouseDownHandlerRect,stageMouseUpShapes,stage);
+        rectListeners(stageMouseDownHandlerRect, stageMouseUpShapes, stage);
+    }
+}
+
+/**
+ * Вешаем обработчики для стрелки
+ */
+function callArrow() {
+  const answer = ipcRenderer.sendSync('synchronous-message', 'pen');
+  if (answer === 'ok') {
+      setDefaultSceneState();
+      hideControls(activeShape, stage);
+
+      if (activeShape) {
+          activeShape.removeAllEventListeners();
+      }
+
+      onCreate = true;
+      arrowListeners(stageMouseDownHandlerArrow, stageMouseUpShapes, stage);
     }
 }
 
@@ -437,8 +549,8 @@ function stageMouseDownHandlerCrop(event) {
 
     frame.classList.add('show');
 
-    frame.style.top = (workArea.offsetTop + mouseDownY ) + 'px';
-    frame.style.left = (workArea.offsetLeft + mouseDownX)  + 'px';
+    frame.style.top = (workArea.offsetTop + mouseDownY) + 'px';
+    frame.style.left = (workArea.offsetLeft + mouseDownX) + 'px';
 }
 
 /**
@@ -450,15 +562,15 @@ function stageMouseMoveHandlerCrop(event) {
     const stageY = event.stageY;
     const bound = workArea.getBoundingClientRect();
 
-    if (event.stageX  < mouseDownX) {
+    if (event.stageX < mouseDownX) {
         frame.style.left = workArea.offsetLeft + stageX + 'px';
     }
     if (event.stageY < mouseDownY) {
         frame.style.top = workArea.offsetTop + stageY + 'px';
     }
 
-    frame.style.width = Math.abs(stageX - mouseDownX)  + 'px';
-    frame.style.height = Math.abs(stageY - mouseDownY)+ 'px';
+    frame.style.width = Math.abs(stageX - mouseDownX) + 'px';
+    frame.style.height = Math.abs(stageY - mouseDownY) + 'px';
 }
 
 /**
@@ -582,23 +694,74 @@ function getDrawStatus() {
  * Zoom in handler
  */
 function callZoomIn() {
-  if (areaZoom < MAX_ZOOM) {
-    areaZoom += .1;
-    body.style.transform = `scale(${areaZoom})`;
-  }
+    if (areaZoom < MAX_ZOOM) {
+        areaZoom += .1;
+        body.style.transform = `scale(${areaZoom})`;
+    }
 }
 
 /**
  * Zoom out handler
  */
 function callZoomOut() {
-  if (areaZoom > MIN_ZOOM) {
-    areaZoom -= .1;
-    body.style.transform = `scale(${areaZoom})`;
-  }
+    if (areaZoom > MIN_ZOOM) {
+        areaZoom -= .1;
+        body.style.transform = `scale(${areaZoom})`;
+    }
 }
 
 function setDefaultZoom() {
-  areaZoom = 1;
-  body.style.transform = `scale(${areaZoom})`;
+    areaZoom = 1;
+    body.style.transform = `scale(${areaZoom})`;
+}
+
+function callSave() {
+  let img = new Image();
+  let data;
+
+  hideControls(activeShape, stage);
+  activeShape = undefined;
+
+  data = workArea.toDataURL( '', 'image/jpeg' );
+
+  sendDoServer(data);
+}
+
+function sendDoServer(code) {
+  let data = new FormData();
+  let xhr = new XMLHttpRequest()
+  data.append('shot', code);
+  xhr.open("POST", "http://shots.binjo.ru/savephoto.php");
+  xhr.send(data);
+  xhr.onload = () => {
+    var data;
+
+  	switch ( xhr.status )
+  	{
+  		case 500:
+  			alert( 'Ошибка сервера' );
+  			break;
+
+  		case 400:
+  			alert( 'Невыполнимый запрос' );
+  			break;
+
+  		case 401:
+  			alert( 'Ошибка авторизации' );
+  			break;
+
+  		case 200:
+  			if ( xhr )
+  			{
+  				data = JSON.parse( xhr.responseText );
+          clipboard.writeText(data)
+  			}
+
+  			break;
+
+  		default:
+  			alert( 'Неизвестная ошибка' );
+  			break;
+  	}
+  }
 }

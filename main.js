@@ -72,7 +72,9 @@ ipcMain.on( 'synchronous-message', ( event, arg ) => {
 		event.returnValue = 'ok';
 	} else if (arg === 'pen'){
 		event.returnValue = 'ok';
-	} else {
+	} else if (arg === 'arrow'){
+		event.returnValue = 'ok';
+	}  else {
 		appWindow.show();
 		appWindow.setSize( arg.width, arg.height );
 	}
@@ -98,7 +100,7 @@ ipc.on( 'open-information-dialog', function() {
 function createWindow() {
 	appWindow = new BrowserWindow( { width: 0, height: 0, icon: __dirname + '/icon.png' });
 	appWindow.loadURL( `file://${__dirname}/index.html` );
-	appWindow.webContents.openDevTools();
+//	appWindow.webContents.openDevTools();
 	appWindow.on( 'closed', function() {
 		appWindow = null
 	} );
