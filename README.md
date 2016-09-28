@@ -1,11 +1,11 @@
 <p align="center"> <img src="http://shots.binjo.ru/src/icongh.png" alt="logotype" /> </p>
 
-
 # --shots 
 An application for creating screenshots. It's simple and free!<br />
 Just download the package for your OS and start working!<br />
 You can save the screenshot locally, the file is base64 or send it to the server and get the link.<br />
-To access the tools use the global menu, context menu(by pressing the right mouse button) or shortcuts.
+To access the tools use the global menu, context menu(by pressing the right mouse button) or shortcuts.<br />
+[Project's site with video](http://shots.binjo.ru)
 
 ## Available tools
 * Arrow
