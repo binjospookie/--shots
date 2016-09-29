@@ -27,8 +27,9 @@ To access the tools use the global menu, context menu(by pressing the right mous
 ## How can I save screenshots on my own server?
 * Download the source code
 * Put `functions.php` and `savePhoto.php` on your server
-* Open `scripts -> functions -> sendToServer.js`
-* Replace `http://shots.binjo.ru/savephoto.php` by `pathToYourSavephoto.php`
-* Open terminal and go to --shots directory
-* Run `npm install`
-* Run `npm run && nnpm start` or build project for your OS (see [here](http://electron.atom.io/docs/development/))
+* Launch app
+* Open 'Settings' and click on 'Change server path'
+* Type path and click on 'Save'.
+* That's all! 
+
+> If you want send shots to default server just erase your path san click on 'Save'.
