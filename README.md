@@ -30,6 +30,5 @@ To access the tools use the global menu, context menu(by pressing the right mous
 * Launch app
 * Open 'Settings' and click on 'Change server path'
 * Type path and click on 'Save'.
-* That's all! 
 
 > If you want send shots to default server just erase your path san click on 'Save'.
