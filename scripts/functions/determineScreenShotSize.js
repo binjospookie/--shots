@@ -6,8 +6,21 @@ const electronScreen = electron.screen;
  */
 module.exports = function determineScreenShotSize() {
     const screenSize = electronScreen.getPrimaryDisplay().workAreaSize;
+
+    let i;
+    let displaysArray = electronScreen.getAllDisplays();
+    let width = 0;
+    let height = 0;
+    for (i=0;i<displaysArray.length;i++) {
+
+      if (displaysArray[i].workArea.height > height) {
+        height = displaysArray[i].workArea.height;
+      }
+       width = width +  displaysArray[i].workArea.width;
+    }
+
     return {
-        width: screenSize.width * window.devicePixelRatio,
-        height: screenSize.height * window.devicePixelRatio
+        width: width,
+        height: height
     }
 };

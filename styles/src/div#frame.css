@@ -1,0 +1,16 @@
+div#frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    display: none;
+
+    width: 5px;
+    height: 5px;
+
+    outline: 1000vw solid rgba(0, 0, 0, .8);
+
+    &.show {
+        display: block;
+    }
+}

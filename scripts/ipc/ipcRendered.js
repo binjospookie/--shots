@@ -1,75 +1,204 @@
 const {ipcRenderer} = require('electron');
 
-function undo(undoCrop) {
+function undo(undoCrop, body) {
 	ipcRenderer.on('undo', () => {
+		if(body.classList.contains('modal')) {
+			return;
+		}
 		undoCrop();
 	});
 }
-function redo(redoCrop) {
+function redo(redoCrop, body) {
 	ipcRenderer.on('redo', () => {
+		if(body.classList.contains('modal')) {
+			return;
+		}
 		redoCrop();
 	});
 }
-function stop(body, modalWindow,setDefaultSceneState) {
+function stop(body, modalWindow,setDefaultSceneState, shortcutWindow, settingsWindow) {
 	ipcRenderer.on('stop', () => {
 		setDefaultSceneState();
+		shortcutWindow.classList.remove('open');
 		modalWindow.classList.remove('open');
+		settingsWindow.classList.remove('open');
 		body.classList.remove('modal');
 	});
 }
-function newShot(createScreenshot) {
+function newShot(createScreenshot, body) {
 	ipcRenderer.on('new', () => {
+		if(body.classList.contains('modal')) {
+			return;
+		}
 		createScreenshot();
 	});
 }
-function crop(callCrop) {
+function crop(callCrop, body) {
 	ipcRenderer.on('crop', () => {
+		if(body.classList.contains('modal')) {
+			return;
+		}
 		callCrop();
 	});
 }
-function rect(callRect) {
+function rect(callRect, body) {
 	ipcRenderer.on('rect', () => {
+		if(body.classList.contains('modal')) {
+			return;
+		}
 		callRect();
 	});
 }
-function pen(callPen) {
+function pen(callPen, body) {
 	ipcRenderer.on('pen', () => {
+		if(body.classList.contains('modal')) {
+			return;
+		}
 		callPen();
 	});
 }
-function help(body, modalWindow, getDrawStatus) {
+function help(body, modalWindow, getDrawStatus,shortcutWindow,settingsWindow) {
 	ipcRenderer.on('help', () => {
+		let areaZoom = body.style.transform;
 		if(getDrawStatus() === false) {
+			if(shortcutWindow.classList.contains('open') ||settingsWindow.classList.contains('open')) {
+				 shortcutWindow.classList.remove('open');
+				 settingsWindow.classList.remove('open');
+			} else {
+				body.classList.toggle('modal');
+			}
+			areaZoom = scaleToNumber(areaZoom);
+			if (areaZoom !== 0) {
+				modalWindow.style.transform = `scale(${1/areaZoom})`;
+			}
 			modalWindow.classList.toggle('open');
-			body.classList.toggle('modal');
+		}
+	});
+}
+function shortcut(body, shortcutWindow, getDrawStatus,modalWindow,settingsWindow) {
+	ipcRenderer.on('shortcut', () => {
+		let areaZoom = body.style.transform;
+		if(getDrawStatus() === false) {
+			if(modalWindow.classList.contains('open') ||settingsWindow.classList.contains('open')) {
+				 modalWindow.classList.remove('open');
+				 settingsWindow.classList.remove('open');
+			} else {
+				body.classList.toggle('modal');
+			}
+			areaZoom = scaleToNumber(areaZoom);
+			if (areaZoom !== 0) {
+				shortcutWindow.style.transform = `scale(${1/areaZoom})`;
+			}
+			shortcutWindow.classList.toggle('open');
 		}
 	});
 }
 
-function zoomIn(callZoomIn) {
+function settings(body, shortcutWindow, getDrawStatus,modalWindow,settingsWindow) {
+	ipcRenderer.on('settings', () => {
+		if (settingsWindow.classList.contains('open')) {
+			return;
+		}
+		let areaZoom = body.style.transform;
+		if(getDrawStatus() === false) {
+			if(modalWindow.classList.contains('open') || shortcutWindow.classList.contains('open') ) {
+				 modalWindow.classList.remove('open');
+				 shortcutWindow.classList.remove('open');
+			} else {
+				body.classList.toggle('modal');
+			}
+			areaZoom = scaleToNumber(areaZoom);
+			if (areaZoom !== 0) {
+				settingsWindow.style.transform = `scale(${1/areaZoom})`;
+			}
+			settingsWindow.classList.toggle('open');
+		}
+	});
+}
+
+function scaleToNumber(areaZoom, body) {
+	areaZoom = areaZoom.replace('scale(', '');
+	areaZoom = areaZoom.replace(')', '');
+	areaZoom = Number(areaZoom);
+
+	return areaZoom;
+}
+
+function zoomIn(callZoomIn, body) {
 	ipcRenderer.on('zoomIn', () => {
+		if(body.classList.contains('modal')) {
+			return;
+		}
 		callZoomIn();
 	});
 }
 
-function zoomOut(callZoomOut) {
+function zoomOut(callZoomOut, body) {
 	ipcRenderer.on('zoomOut', () => {
+		if(body.classList.contains('modal')) {
+			return;
+		}
 		callZoomOut();
 	});
 }
-function defaultZoom(setDefaultZoom) {
+function defaultZoom(setDefaultZoom, body) {
 	ipcRenderer.on('defaultZoom', () => {
+		if(body.classList.contains('modal')) {
+			return;
+		}
 		setDefaultZoom();
 	});
 }
-function callArrow(callArrow) {
+function callArrow(callArrow, body) {
 	ipcRenderer.on('arrow', () => {
+		if(body.classList.contains('modal')) {
+			return;
+		}
 		callArrow();
 	});
 }
-function callSave(callSave) {
+function callSave(callSave, body) {
 	ipcRenderer.on('save', () => {
+		if(body.classList.contains('modal')) {
+			return;
+		}
 		callSave();
+	});
+}
+function updates(body) {
+	ipcRenderer.on('updates', () => {
+		if(body.classList.contains('modal')) {
+			return;
+		}
+		let xhr = new XMLHttpRequest();
+		xhr.open("GET", "http://shots.binjo.ru/checkUpdates.php");
+		xhr.send();
+    xhr.onload = () => {
+        switch (xhr.status) {
+            case 500:
+                alert('Server error 😱');
+                break;
+
+            case 400:
+                alert('An impossible request 😱');
+                break;
+
+            case 401:
+                alert('Auth error 😱');
+                break;
+
+            case 200:
+                if (xhr) {
+                    alert(`Actual version is "${xhr.responseText}". Your version is "0.1.0".`);
+                }
+
+                break;
+
+            default:
+                alert('Unknown error 😱');
+                break;
+        }
+    }
 	});
 }
 
@@ -86,5 +215,8 @@ module.exports = {
 	zoomOut: zoomOut,
 	defaultZoom: defaultZoom,
 	callArrow: callArrow,
-	callSave: callSave
+	callSave: callSave,
+	shortcut: shortcut,
+	settings: settings,
+	updates: updates
 };

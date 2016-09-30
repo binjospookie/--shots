@@ -1,0 +1,171 @@
+aside.settings {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    display: none;
+    width: 570px;
+    height: 280px;
+    padding: 20px;
+    margin: auto;
+    font-family: 'Roboto', sans-serif;
+    background: #F4F3F2;
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.08), 0 3px 12px 0 rgba(0, 0, 0, 0.12);
+
+    > h2 {
+        padding: 0;
+        margin: 20px 0 0 10px;
+
+        font-weight: 600;
+    }
+
+    &.open {
+        display: block;
+    }
+
+    > form {
+      margin: 40px 0 0 10px;
+
+      > fieldset {
+
+        display: inline-block;
+
+        width: 270px;
+
+        > legend {
+          padding: 0;
+          margin-bottom: 10px;
+
+          font-size: 16px;
+          font-weight: 600;
+        }
+        > ul {
+          margin-top: 10px;
+          margin-bottom: 35px;
+
+          > li {
+            display: block;
+
+            margin-bottom: 10px;
+
+            > label {
+              display: inline-block;
+            }
+
+            > input {
+              margin-right: 10px;
+            }
+          }
+        }
+
+        &:disabled {
+          opacity: .5;
+
+          input,
+          label {
+            cursor: not-allowed;
+          }
+        }
+      }
+
+      label {
+        -webkit-user-select: none;
+      }
+
+        > input#serverinput,
+        > button#serverPath {
+          position: absolute;
+          left: 305px;
+        }
+
+      > input#serverinput {
+        top: 135px;
+
+        display: none;
+
+        &.visible {
+          display: block;
+        }
+      }
+
+      > button#serverPath {
+        top: 95px;
+
+        padding: 0;
+
+        cursor: pointer;
+
+        font-size: 16px;
+        font-weight: 600;
+
+        color: black;
+        background: none;
+
+        border: none;
+        outline: none;
+
+        &:hover {
+          color: #4285f4;
+        }
+      }
+    }
+
+    > button {
+        display: inline-block;
+        font-size: 0.9em;
+        color: #4285f4;
+        cursor: pointer;
+        background: none;
+        border: none;
+        text-transform: uppercase;
+
+        &.js-close-agree {
+            width: 100%;
+            margin-top: 20px;
+            padding-right: 20px;
+            text-align: right;
+        }
+
+        &.js-close-hint {
+            position: absolute;
+            top: 10px;
+            right: 5px;
+            display: block;
+            overflow: hidden;
+            width: 40px;
+            height: 32px;
+            opacity: .3;
+            cursor: pointer;
+            text-indent: 40px;
+
+            &:before,
+            &:after {
+                position: absolute;
+                top: 0;
+                left: 18px;
+                content: '';
+                height: 33px;
+                width: 2px;
+                background-color: #8C8888;
+            }
+
+            &:before {
+                transform: rotate(45deg);
+            }
+
+            &:after {
+                transform: rotate(-45deg);
+            }
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
+}

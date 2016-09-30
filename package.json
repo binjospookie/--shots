@@ -1,28 +1,41 @@
 {
-  "name": "electron-quick-start",
-  "version": "1.0.0",
-  "description": "A minimal Electron application",
-  "main": "main.js",
-  "scripts": {
-    "start": "electron ."
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/electron/electron-quick-start.git"
-  },
-  "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial"
-  ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
-  "bugs": {
-    "url": "https://github.com/electron/electron-quick-start/issues"
-  },
-  "homepage": "https://github.com/electron/electron-quick-start#readme",
-  "devDependencies": {
-    "electron": "^1.3.4"
-  }
+    "name": "shots",
+    "version": "0.1.0",
+    "description": "An application for creating screenshots",
+    "main": "main.js",
+    "license": "NPOSL",
+    "author": "Victor Pasynok <binjospookie@gmail.com>",
+    "email": "binjospookie@gmail.com",
+    "scripts": {
+        "start": "electron .",
+        "compile": "rimraf build/out",
+        "pack": "npm run compile && build --dir",
+        "dist": "npm run compile && build",
+        "release": "npm run compile && build"
+    },
+    "build": {
+        "appId": "org.binjo.shots",
+        "category": "graphics",
+        "app-category-type": "shots.graphics",
+        "maintainer": "Victor Pasynok",
+        "copyright": "Copyright © 2016 Victor Pasynok",
+        "linux": {
+            "target": ["AppImage"]
+        }
+    },
+    "bugs": {
+        "url": "https://github.com/binjospookie/--shots/issues"
+    },
+    "homepage": "http://shots.binjo.ru/",
+    "devDependencies": {
+        "electron": "^1.3.4",
+        "electron-builder": "^7.9.0",
+        "gulp-postcss": "^6.2.0",
+        "postcss": "^5.2.2",
+        "rimraf": "^2.5.4",
+        "is-online": "^5.1.2"
+    },
+    "dependencies": {
+        "is-online": "^5.1.2"
+    }
 }

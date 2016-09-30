@@ -100,8 +100,18 @@ module.exports = function appMenu(app, appWindow) {
                         click () { appWindow.webContents.send('help'); }
                     },
                     {
+                        label: 'Shortcut',
+                        accelerator: 'F2',
+                        click () { appWindow.webContents.send('shortcut'); }
+                    },
+                    {
+                        label: 'Settings',
+                        accelerator: 'S',
+                        click () { appWindow.webContents.send('settings'); }
+                    },
+                    {
                         label: 'Check for updates',
-                        click () { console.info('Checking for updates...') }
+                        click () { appWindow.webContents.send('updates'); }
                     },
                     {
                         label: 'About',

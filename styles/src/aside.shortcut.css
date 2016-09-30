@@ -1,0 +1,34 @@
+aside.hint.shortcut {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    width: 570px;
+    height: 350px;
+    padding: 20px;
+    margin: auto;
+    font-family: 'Roboto', sans-serif;
+    background: #F4F3F2;
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.08), 0 3px 12px 0 rgba(0, 0, 0, 0.12);
+}
+
+aside.hint.shortcut > ul {
+  margin: 30px 0 0 0;
+  width: 550px;
+  height: 250px;
+  list-style-type: none;
+  -webkit-column-count: 2;
+}
+
+aside.hint.shortcut > ul > li {
+  width: 250px;
+  margin-bottom: 10px;
+}
+aside.hint.shortcut > ul > li:nth-child(8n){
+  margin-bottom: 0;
+}
+aside.hint.shortcut > ul > li > span {
+  font-weight: bold;
+}

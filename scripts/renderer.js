@@ -1,26 +1,37 @@
 const CLOSE = 'close';
 const MAX_ZOOM = 2;
 const MIN_ZOOM = .5;
+const MINIMUM_TIMER = 2000;
 // работа с меню
 const Menu = require('./menu');
 // создание скриншота
 const addScreenshot = require('./functions/addScreenshot');
 const electron = require('electron');
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
+const isOnline = require('is-online');
 const {
     ipcRenderer
 } = require('electron');
 const ipc = require('electron').ipcRenderer;
 const ipcAdd = require('./ipc/ipcAdd');
 const determineScreenShotSize = require('./functions/determineScreenShotSize');
-const {clipboard} = require('electron')
+const {
+    clipboard
+} = require('electron');
 //Позиция по X, куда пришлось нажатие кнопки мыши
 let mouseDownX;
 // Позиция по Y, куда пришлось нажатие кнопки мыши
 let mouseDownY;
 // Рамка, которая указывает на область кропа
 let frame = document.getElementById('frame');
+let loader = document.getElementById('loader');
+let loaderText = loader.querySelector('span');
+let shortcutWindow = document.querySelector('.shortcut');
+let settings = document.querySelector('aside.settings');
+let applyCustomSettingsButton = settings.querySelector('#applyCustom');
+let settingFieldsets = settings.querySelectorAll('fieldset');
 const setDefaultFrame = require('./functions/setDefaultFrame');
 // сам canvas
 const workArea = document.querySelector('canvas');
@@ -56,6 +67,14 @@ const getCookie = require('./functions/getCookieByName');
 const modalOnStart = require('./functions/modalOnStart');
 const setTransformRectDistance = require('./functions/setTransformRectDistance');
 const getDegree = require('./functions/getDegree');
+const initSettings = require('./functions/initSettings');
+const setFieldsetStatus = require('./functions/setFieldsetStatus');
+const sendToServer = require('./functions/sendToServer');
+const getSettings = require('./functions/getSettings');
+const decodeBase64Image = require('./functions/decodeBase64Image');
+const hideLoader = require('./functions/hideLoader');
+const serverMessage = require('./functions/serverMessage');
+const serverButtonClickHandler = require('./functions/serverButtonClickHandler');
 var fillObj;
 // Массив объектов, содержащих данные о каждом кропе.
 let croppingHistory = [];
@@ -67,6 +86,9 @@ let activeShape = undefined;
 const modalWindow = document.querySelector('body>aside.hint');
 // кнопки закрытия модального окна
 const closeModalButtons = modalWindow.querySelectorAll('button');
+const closeShortcutButtons = shortcutWindow.querySelectorAll('button');
+const closeSettingsButtons = settings.querySelectorAll('button.close');
+const serverButton = settings.querySelector('button#serverPath');
 // старое значение по X при работе с карандашом
 let penOldX;
 // старое значение по Y при работе с карандашом
@@ -76,25 +98,33 @@ let onCreate = false;
 let areaZoom = 1;
 let scale;
 
-
+// на случай говна
+serverMessage();
 stage.enableDOMEvents(true);
 addModalButtonListeners(closeModalButtons, closeModalButtonClickHandler, body,
-  modalWindow);
+    modalWindow);
+addModalButtonListeners(closeShortcutButtons, closeModalButtonClickHandler, body,
+    shortcutWindow);
+addModalButtonListeners(closeSettingsButtons, closeModalButtonClickHandler, body,
+    settings);
+applyCustomSettingsButton.addEventListener('change', applyCustomSettingsButtonChangeHandler, false);
+serverButton.addEventListener('click', serverButtonClickHandler, false);
 // обработчик клика по сцене
 stage.addEventListener('mousedown', stageMouseDownHandler)
     // Создаём меню приложения
 Menu(
     stage, stageMouseDownHandlerCrop, stageMouseUpHandlerCrop,
     stageMouseMoveHandlerCrop, openNewScreenshotDialog, callCrop,
-    callRect, callPen);
+    callRect, callPen, callArrow, callSave);
 
 ipcAdd(undoCrop, redoCrop, setDefaultSceneState, createScreenshot, callCrop,
-  callRect, callPen, body, modalWindow, getDrawStatus, callZoomIn, callZoomOut,
-  setDefaultZoom, callArrow,callSave);
+    callRect, callPen, body, modalWindow, getDrawStatus, callZoomIn, callZoomOut,
+    setDefaultZoom, callArrow, callSave, shortcutWindow, settings);
 // Метод вызова диалога о создании нового скриншота
 function openNewScreenshotDialog() {
     ipc.send('open-information-dialog');
 }
+initSettings(settings);
 // Делаем скриншот после первой инициализации
 createScreenshot();
 
@@ -104,6 +134,15 @@ createScreenshot();
 function stageMouseDownHandler(event) {
     let target = event.target;
     let name = target.parent.name;
+    // закрытие модалки по чёрному пространству вокруг
+    if (name === null && body.classList.contains('modal')) {
+        modalWindow.classList.remove('open');
+        shortcutWindow.classList.remove('open');
+        settings.classList.remove('open');
+        body.classList.remove('modal');
+        return;
+    }
+
     if (onCreate === false) {
         if (name) {
 
@@ -132,8 +171,10 @@ function stageMouseDownHandler(event) {
                     }
                 }
             }
-        } else {
-            // hide controls
+        } else if (name === null && activeShape !== undefined) {
+            hideControls(activeShape, stage);
+            activeShape = undefined;
+            return;
         }
     }
 
@@ -174,11 +215,11 @@ function stageMouseUpShapes(event) {
         let shape = activeShape.getChildByName('rect');
         let shapeBounds;
 
-        if(shape === null) {
-          shape = activeShape.getChildByName('arrow');
-          shapeBounds = activeShape.getChildByName('arrow').getBounds();
+        if (shape === null) {
+            shape = activeShape.getChildByName('arrow');
+            shapeBounds = activeShape.getChildByName('arrow').getBounds();
         } else {
-          shapeBounds = activeShape.getChildByName('rect').getBounds();
+            shapeBounds = activeShape.getChildByName('rect').getBounds();
         }
 
         deleteButton.x = -10;
@@ -192,9 +233,9 @@ function stageMouseUpShapes(event) {
 
     let arrow = activeShape.getChildByName('arrow');
 
-    if(arrow !== null) {
-      transformButton.x = arrow.length + 25;
-      transformButton.y = 10;
+    if (arrow !== null) {
+        transformButton.x = arrow.length + 25;
+        transformButton.y = 10;
     }
 
     activeShape.addChild(deleteButton);
@@ -202,6 +243,8 @@ function stageMouseUpShapes(event) {
 
     hideControls(activeShape, stage);
 
+    penOldX = undefined;
+    penOldY = undefined;
     activeShape = undefined;
     setDefaultSceneState();
 }
@@ -239,19 +282,19 @@ function transformMoveHandler(event) {
     for (i = 0, n = activeShape.children.length; i < n; i++) {
         if ((child[i].name === 'transform')) {
             child[i].scaleX = child[i].scaleY = 1 / activeShape.scaleX;
-            if(arrow !== null) {
-              child[i].x = arrow.length + 25 / activeShape.scaleX;
-              child[i].y = 10 / activeShape.scaleX;
+            if (arrow !== null) {
+                child[i].x = arrow.length + 25 / activeShape.scaleX;
+                child[i].y = 10 / activeShape.scaleX;
             } else {
-              child[i].x = activeShape.getBounds().width + 10 / activeShape.scaleX;
-              child[i].y = activeShape.getBounds().height + 10 / activeShape.scaleX;
+                child[i].x = activeShape.getBounds().width + 10 / activeShape.scaleX;
+                child[i].y = activeShape.getBounds().height + 10 / activeShape.scaleX;
             }
         }
 
         if ((child[i].name === 'close')) {
             let rect = activeShape.getChildByName('rect');
-            if(rect === null) {
-              rect = activeShape.getChildByName('arrow');
+            if (rect === null) {
+                rect = activeShape.getChildByName('arrow');
             }
             child[i].scaleX = child[i].scaleY = 1 / activeShape.scaleX;
             child[i].x = rect.x - 10 / activeShape.scaleX;
@@ -259,15 +302,15 @@ function transformMoveHandler(event) {
         }
 
         if ((child[i].name === 'rect')) {
-          let width = child[i].getBounds().width;
-          let height = child[i].getBounds().height;
-          let top = child[i].y;
-          let left = child[i].x;
+            let width = child[i].getBounds().width;
+            let height = child[i].getBounds().height;
+            let top = child[i].y;
+            let left = child[i].x;
 
-          child[i].graphics.clear().setStrokeStyle(4 / activeShape.scaleX).beginStroke("#D50000").drawRoundRect(left, top, width, height, 2 / activeShape.scaleX);
+            child[i].graphics.clear().setStrokeStyle(4 / activeShape.scaleX).beginStroke("#D50000").drawRoundRect(left, top, width, height, 2 / activeShape.scaleX);
         }
         if ((child[i].name === 'arrow')) {
-          drawArrow(child[i], child[i].length)
+            drawArrow(child[i], child[i].length)
         }
     }
 
@@ -292,13 +335,14 @@ function createScreenshot() {
         types: ['screen'],
         thumbnailSize: thumbSize
     };
+
     let answer = ipcRenderer.sendSync('synchronous-message', 'hide');
     if (answer === 'ok') {
         setTimeout(() => {
             addScreenshot(options, thumbSize, image, ctx, stage, bitmap)
         }, 100);
     }
-
+    image = new Image();
     modalOnStart(body, modalWindow);
 }
 
@@ -348,10 +392,12 @@ function stageMouseDownHandlerArrow(event) {
  * Метод создания стрелки
  */
 function drawArrow(arrow, length) {
-  let arrowSize = Math.sqrt(length)/1.5;
-  arrow.graphics.clear().ss(4 / activeShape.scaleX).s("#D50000").mt(0,0).lineTo(length,0).f("#D50000")
-  .dp(length-arrowSize, 0, arrowSize, 3);
-  arrow.set({length:length});
+    let arrowSize = Math.sqrt(length) / 1.5;
+    arrow.graphics.clear().ss(4 / activeShape.scaleX).s("#D50000").mt(0, 0).lineTo(length, 0).f("#D50000")
+        .dp(length - arrowSize, 0, arrowSize, 3);
+    arrow.set({
+        length: length
+    });
 }
 
 /**
@@ -362,7 +408,7 @@ function stageMouseMoveHandlerArrow(event) {
     let shapeX = event.stageX - stage.x - activeShape.x;
     let shapeY = event.stageY - stage.y - activeShape.y;
 
-    let length = Math.sqrt(shapeX*shapeX+shapeY*shapeY);
+    let length = Math.sqrt(shapeX * shapeX + shapeY * shapeY);
 
     activeShape.removeChildAt(0);
 
@@ -371,7 +417,7 @@ function stageMouseMoveHandlerArrow(event) {
     arrow.setBounds(0, 0, shapeX, shapeY);
 
     activeShape.addChild(arrow);
-    activeShape.rotation = Math.atan2(shapeY,shapeX) * 180/Math.PI;
+    activeShape.rotation = Math.atan2(shapeY, shapeX) * 180 / Math.PI;
 
     stage.update();
 }
@@ -410,14 +456,13 @@ function setDefaultSceneState() {
     setDefaultScene(stage, stageMouseDownHandler, body);
     setDefaultFrame(frame);
 
-    mouseDownX = 0;
-    mouseDownY = 0;
-    penOldX = undefined;
-    penOldY = undefined;
-
     // если жмём esc во время работы с фигурой
     // добавить условие про crop
     if (onCreate === true) {
+        mouseDownX = 0;
+        mouseDownY = 0;
+        penOldX = undefined;
+        penOldY = undefined;
         stage.removeChild(activeShape);
         stage.update();
         activeShape = undefined;
@@ -450,17 +495,17 @@ function callRect() {
  * Вешаем обработчики для стрелки
  */
 function callArrow() {
-  const answer = ipcRenderer.sendSync('synchronous-message', 'pen');
-  if (answer === 'ok') {
-      setDefaultSceneState();
-      hideControls(activeShape, stage);
+    const answer = ipcRenderer.sendSync('synchronous-message', 'pen');
+    if (answer === 'ok') {
+        setDefaultSceneState();
+        hideControls(activeShape, stage);
 
-      if (activeShape) {
-          activeShape.removeAllEventListeners();
-      }
+        if (activeShape) {
+            activeShape.removeAllEventListeners();
+        }
 
-      onCreate = true;
-      arrowListeners(stageMouseDownHandlerArrow, stageMouseUpShapes, stage);
+        onCreate = true;
+        arrowListeners(stageMouseDownHandlerArrow, stageMouseUpShapes, stage);
     }
 }
 
@@ -710,58 +755,117 @@ function callZoomOut() {
     }
 }
 
+/**
+ * Set default zoom handler
+ */
 function setDefaultZoom() {
     areaZoom = 1;
     body.style.transform = `scale(${areaZoom})`;
 }
 
+/**
+ * Обработчик сохранения результата
+ */
 function callSave() {
-  let img = new Image();
-  let data;
 
-  hideControls(activeShape, stage);
-  activeShape = undefined;
+    if (loader.classList.contains('show')) {
+      return;
+    }
 
-  data = workArea.toDataURL( '', 'image/jpeg' );
+    let img = new Image();
+    let data;
+    let answer;
+    let time = new Date();
+    let settings = getSettings();
+    let homePath = process.env.HOME || process.env.USERPROFILE;
+    let screenshotPath = path.join(`${homePath}/--shots`, `${Date.now()}.png`);
+    let imageBuffer;
+    let difference;
+    let answerOffline;
 
-  sendDoServer(data);
+    if (!fs.existsSync(`${homePath}/--shots`)) {
+        fs.mkdirSync(`${homePath}/--shots`);
+    }
+
+    hideControls(activeShape, stage);
+    activeShape = undefined;
+
+    loader.style.transform = `scale(${1/areaZoom})`;
+    loader.classList.add('show');
+    loaderText.textContent = 'Saving';
+    workArea.style.transform = `scale(${1/areaZoom})`;
+    data = workArea.toDataURL('', 'image/jpeg');
+    workArea.style.transform = '';
+    answer = ipcRenderer.sendSync('synchronous-message', 'optimize', data);
+
+    isOnline(function(err, isOnline) {
+        if (isOnline !== true) {
+            if (['local base64', 'local', 'base64'].indexOf(settings) === -1) {
+                settings = 'offline';
+            }
+        }
+
+        switch (settings) {
+            case 'offline':
+                answerOffline = confirm("You're offline now. Are you agree to save a screenshot locally?");
+                if (answerOffline) {
+                    data = data.replace(/\s+/g, '');
+                    imageBuffer = decodeBase64Image(data);
+                    fs.writeFile(screenshotPath, imageBuffer.data);
+
+                    difference = Math.abs(new Date() - time);
+                    hideLoader(difference, `Saved at "${homePath}/--shots"`, loaderText);
+                } else {
+                    hideLoader(difference, `Stopping`, loaderText);
+                }
+                break;
+            case 'local':
+                data = data.replace(/\s+/g, '');
+                imageBuffer = decodeBase64Image(data);
+                fs.writeFile(screenshotPath, imageBuffer.data);
+
+                difference = Math.abs(new Date() - time);
+                hideLoader(difference, `Saved at "${homePath}/--shots"`, loaderText);
+                break;
+
+            case 'base64':
+                data = data.replace(/\s+/g, '');
+                clipboard.writeText(data);
+
+                difference = Math.abs(new Date() - time);
+                hideLoader(difference, `Copied to buffer`, loaderText);
+                break;
+
+            case 'server link':
+                sendToServer(data, time, loader, loaderText);
+                break;
+
+            case 'local base64':
+                data = data.replace(/\s+/g, '');
+                clipboard.writeText(data);
+                imageBuffer = decodeBase64Image(data);
+                fs.writeFile(screenshotPath, imageBuffer.data);
+
+                difference = Math.abs(new Date() - time);
+                hideLoader(difference, `Saved at "${homePath}/--shots" an copied to buffer`, loaderText);
+                break;
+
+            case 'server local link':
+                data = data.replace(/\s+/g, '');
+                imageBuffer = decodeBase64Image(data);
+                fs.writeFile(screenshotPath, imageBuffer.data);
+                sendToServer(data, time, loader, loaderText, `${homePath}/--shots`);
+                break;
+            default:
+                sendToServer(data, time, loader, loaderText);
+                break;
+        }
+    });
 }
 
-function sendDoServer(code) {
-  let data = new FormData();
-  let xhr = new XMLHttpRequest()
-  data.append('shot', code);
-  xhr.open("POST", "http://shots.binjo.ru/savephoto.php");
-  xhr.send(data);
-  xhr.onload = () => {
-    var data;
-
-  	switch ( xhr.status )
-  	{
-  		case 500:
-  			alert( 'Ошибка сервера' );
-  			break;
-
-  		case 400:
-  			alert( 'Невыполнимый запрос' );
-  			break;
-
-  		case 401:
-  			alert( 'Ошибка авторизации' );
-  			break;
-
-  		case 200:
-  			if ( xhr )
-  			{
-  				data = JSON.parse( xhr.responseText );
-          clipboard.writeText(data)
-  			}
-
-  			break;
-
-  		default:
-  			alert( 'Неизвестная ошибка' );
-  			break;
-  	}
-  }
+/**
+ * Обработчик нажатия на чекбокс применения кастомных настроек.
+ */
+function applyCustomSettingsButtonChangeHandler(event) {
+    setFieldsetStatus(settingFieldsets, !event.target.checked);
 }
