@@ -3,8 +3,8 @@
 # --shots 
 An application for creating screenshots. It's simple and free!<br />
 Just download the package for your OS and start working!<br />
-You can save the screenshot locally, the file is base64 or send it to the server and get the link.<br />
-To access the tools use the global menu, context menu(by pressing the right mouse button) or shortcuts.<br />
+You can save the screenshot locally, copy the code or send it to the server and get a link.<br />
+To access the tools use the global menu, context menu(click on the right mouse button) or shortcuts.<br />
 [Project's site with video](http://shots.binjo.ru)
 
 ## Available tools
@@ -25,7 +25,6 @@ To access the tools use the global menu, context menu(by pressing the right mous
 * PHP
 
 ## How can I save screenshots on my own server?
-* Download the source code
 * Put `functions.php` and `savePhoto.php` on your server
 * Launch app
 * Open 'Settings' and click on 'Change server path'
