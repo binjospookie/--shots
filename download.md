@@ -4,5 +4,8 @@
 
 Available for Linux and Windows:tada:
 
-* [shots_0.1.0-2_amd64.deb](http://shots.binjo.ru/downloads/shots_0.1.0-2_amd64.deb) <br />
-* [.exe](link) <br />
+### Linux
+[shots_0.1.0-2_amd64.deb](http://shots.binjo.ru/downloads/shots_0.1.0-2_amd64.deb) <br />
+
+### Windows
+[shots Setup 0.1.0.exe.zip](http://shots.binjo.ru/downloads/shots_0.1.0.exe.zip) <br />
