@@ -4,5 +4,5 @@
 
 Available for Linux and Windows:tada:
 
-[.deb](http://shots.binjo.ru/dowloads/shots_0.1.0-2_amd64.deb) <br />
+[shots_0.1.0-2_amd64.deb](http://shots.binjo.ru/dowloads/shots_0.1.0-2_amd64.deb) <br />
 [.exe](link) <br />
