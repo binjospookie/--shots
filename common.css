@@ -312,6 +312,11 @@ aside.settings > form > fieldset:disabled input, aside.settings > form > fieldse
 aside.settings > form label{
     -webkit-user-select: none;
 }
+aside.settings > form label.capture{
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 36px;
+}
 aside.settings > form > input#serverinput, aside.settings > form > button#serverPath{
     position: absolute;
     left: 305px;
