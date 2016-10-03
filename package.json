@@ -11,8 +11,7 @@
         "compile": "rimraf build/out",
         "pack": "npm run compile && build --dir",
         "dist": "npm run compile && build",
-        "release": "npm run compile && build",
-        "win": "build --win"
+        "release": "npm run compile && build"
     },
     "build": {
         "appId": "org.binjo.shots",
@@ -21,7 +20,10 @@
         "maintainer": "Victor Pasynok",
         "copyright": "Copyright © 2016 Victor Pasynok",
         "linux": {
-            "target": ["rpm","AppImage"]
+            "target": ["AppImage","rpm"]
+        },
+        "win": {
+          "target": ["exe"]
         }
     },
     "bugs": {
@@ -34,7 +36,13 @@
         "gulp-postcss": "^6.2.0",
         "postcss": "^5.2.2",
         "rimraf": "^2.5.4",
-        "is-online": "^5.1.2"
+        "is-online": "^5.1.2",
+        "eslint": "^3.2.2",
+        "eslint-config-airbnb": "^12.0.0",
+        "eslint-loader": "^1.3.0",
+        "eslint-plugin-import": "^2.0.0",
+        "eslint-plugin-jsx-a11y": "^2.0.1",
+        "eslint-plugin-react": "^6.0.0"
     },
     "dependencies": {
         "is-online": "^5.1.2"
