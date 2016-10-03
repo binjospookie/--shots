@@ -6,6 +6,7 @@ Just download the package for your OS and start working!<br />
 You can save the screenshot locally, copy the code or send it to the server and get a link.<br />
 To access the tools use the global menu, context menu(click on the right mouse button) or shortcuts.<br />
 [Project's site with video](http://shots.binjo.ru)
+[Download links](https://github.com/binjospookie/--shots/blob/master/download.md)
 
 ## Available tools
 * Arrow
