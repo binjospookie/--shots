@@ -7,6 +7,12 @@ const {
     ipcRenderer
 } = require('electron');
 let screenshotPath = '';
+const commonSettings = localStorage.getItem('commonSettings');
+let array = [];
+
+if(commonSettings !== null) {
+  array = JSON.parse(commonSettings);
+}
 
 /**
  * Создание скриншота, добавление на канвас и изменение размеров окна
@@ -20,6 +26,8 @@ let screenshotPath = '';
  */
 module.exports = function addScreenshot(options, thumbSize, image, ctx, stage, bitmap) {
     let time = new Date().getTime() / 1000;
+    let cursourPos = electron.screen.getCursorScreenPoint();
+
     desktopCapturer.getSources(options, function(error, sources) {
         sources.forEach(function(source) {
             if (source.name === 'Entire screen' || source.name === 'Screen 1') {
@@ -35,6 +43,14 @@ module.exports = function addScreenshot(options, thumbSize, image, ctx, stage, b
 
                         bitmap = new createjs.Bitmap(image);
 
+                        if(array.indexOf('capture') != -1) {
+                          let cimage = new Image();
+                          cimage.src = './images/cursor.png'
+                          cimage.onload = () => {
+                            addCursor(cimage,stage,cursourPos);
+                          }
+                        }
+
                         stage.addChild(bitmap);
                         stage.update();
 
@@ -48,3 +64,12 @@ module.exports = function addScreenshot(options, thumbSize, image, ctx, stage, b
         })
     })
 };
+
+function addCursor(image,stage,cursourPos) {
+  let cursor = new createjs.Bitmap(image);
+  cursor.name = 'cursor';
+  cursor.x = cursourPos.x;
+  cursor.y = cursourPos.y;
+  stage.addChild(cursor);
+  stage.update();
+}

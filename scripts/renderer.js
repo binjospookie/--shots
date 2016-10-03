@@ -68,6 +68,7 @@ const modalOnStart = require('./functions/modalOnStart');
 const setTransformRectDistance = require('./functions/setTransformRectDistance');
 const getDegree = require('./functions/getDegree');
 const initSettings = require('./functions/initSettings');
+const initCommonSettings = require('./functions/initCommonSettings');
 const setFieldsetStatus = require('./functions/setFieldsetStatus');
 const sendToServer = require('./functions/sendToServer');
 const getSettings = require('./functions/getSettings');
@@ -125,6 +126,7 @@ function openNewScreenshotDialog() {
     ipc.send('open-information-dialog');
 }
 initSettings(settings);
+initCommonSettings(settings);
 // Делаем скриншот после первой инициализации
 createScreenshot();
 
@@ -342,7 +344,9 @@ function createScreenshot() {
             addScreenshot(options, thumbSize, image, ctx, stage, bitmap)
         }, 100);
     }
+
     image = new Image();
+    stage.update();
     modalOnStart(body, modalWindow);
 }
 
