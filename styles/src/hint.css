@@ -9,7 +9,7 @@ aside.hint {
     display: none;
 
     width: 500px;
-    max-height: 445px;
+    max-height: 465px;
     padding: 20px;
     margin: auto;
 
@@ -42,6 +42,11 @@ aside.hint {
            padding: 0;
            font-size: 14px;
            line-height: 1.4rem;
+			
+			> span {
+				font-weight: 600;
+			}
+
        }
    }
 
