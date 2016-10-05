@@ -17,18 +17,18 @@ session_set_cookie_params( 0 );
 
 require_once 'functions.php';
 
-if ( ( $_SERVER['REQUEST_METHOD'] !== 'POST' ))
-{
-	set_http_code( '400 Bad Request' );
-	echo '{"error":"Incorrect data"}';
-	exit;
-}
-
 $data = $_POST['shot'];
-
+$dir = 'saved';
+$files = opendir($dir);
 $filename = uniqid(rand(), true) . '.png';
+for ($i = 1; $i <= $files.length; $i++) {
+    if ($filename === $files[i]) {
+			$filename = uniqid(rand(), true) . '.png';
+		}
+}
 $data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $data));
 file_put_contents('saved/'.$filename, $data);
-$path = 'http://shots.binjo.ru/saved/'.$filename;
+$actual_link = "http://".$_SERVER['HTTP_HOST']."/saved/";
+$path = $actual_link.$filename;
 
 echo json_encode($path);
