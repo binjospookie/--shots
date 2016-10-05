@@ -1,3 +1,4 @@
+const APP_VERSION = '0.1.1';
 const CLOSE = 'close';
 const MAX_ZOOM = 2;
 const MIN_ZOOM = .5;
