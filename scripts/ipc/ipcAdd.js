@@ -3,17 +3,18 @@ const renderIpc = require('./ipcRendered');
 module.exports =
 	function ipcAdd(
 		undoCrop,redoCrop,setDefaultSceneState,createScreenshot,callCrop,callRect,callPen,body,modalWindow,getDrawStatus,callZoomIn, callZoomOut, setDefaultZoom, callArrow, callSave,
-	shortcutWindow,settingsWindow ) {
+	shortcutWindow,settingsWindow,signinWindow ) {
 	renderIpc.undo(undoCrop, body);
 	renderIpc.redo(redoCrop, body);
-	renderIpc.stop(body, modalWindow,setDefaultSceneState,shortcutWindow, settingsWindow);
+	renderIpc.stop(body, modalWindow,setDefaultSceneState,shortcutWindow, settingsWindow, signinWindow);
 	renderIpc.newShot(createScreenshot, body);
 	renderIpc.crop(callCrop, body);
 	renderIpc.rect(callRect, body);
 	renderIpc.pen(callPen, body);
-	renderIpc.help(body, modalWindow, getDrawStatus,shortcutWindow, settingsWindow);
-	renderIpc.settings(body, modalWindow, getDrawStatus,shortcutWindow, settingsWindow);
-	renderIpc.shortcut(body, shortcutWindow, getDrawStatus, modalWindow, settingsWindow);
+	renderIpc.signin(body, modalWindow, getDrawStatus,shortcutWindow, settingsWindow, signinWindow);
+	renderIpc.help(body, modalWindow, getDrawStatus,shortcutWindow, settingsWindow,signinWindow);
+	renderIpc.settings(body, modalWindow, getDrawStatus,shortcutWindow, settingsWindow,signinWindow);
+	renderIpc.shortcut(body, shortcutWindow, getDrawStatus, modalWindow, settingsWindow,signinWindow);
 	renderIpc.zoomIn(callZoomIn, body);
 	renderIpc.zoomOut(callZoomOut, body);
 	renderIpc.defaultZoom(setDefaultZoom, body);

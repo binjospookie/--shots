@@ -110,6 +110,11 @@ module.exports = function appMenu(app, appWindow) {
                         click () { appWindow.webContents.send('settings'); }
                     },
                     {
+                        label: 'Sign In',
+                        accelerator: 'I',
+                        click () { appWindow.webContents.send('signin'); }
+                    },
+                    {
                         label: 'Check for updates',
                         click () { appWindow.webContents.send('updates'); }
                     },

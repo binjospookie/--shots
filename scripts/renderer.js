@@ -33,6 +33,7 @@ let shortcutWindow = document.querySelector('.shortcut');
 let settings = document.querySelector('aside.settings');
 let applyCustomSettingsButton = settings.querySelector('#applyCustom');
 let settingFieldsets = settings.querySelectorAll('fieldset');
+let signinWindow = document.querySelector('aside.sign-in');
 const setDefaultFrame = require('./functions/setDefaultFrame');
 // сам canvas
 const workArea = document.querySelector('canvas');
@@ -77,6 +78,7 @@ const decodeBase64Image = require('./functions/decodeBase64Image');
 const hideLoader = require('./functions/hideLoader');
 const serverMessage = require('./functions/serverMessage');
 const serverButtonClickHandler = require('./functions/serverButtonClickHandler');
+const signinFormSubmitHandler = require('./functions/signinFormSubmitHandler');
 var fillObj;
 // Массив объектов, содержащих данные о каждом кропе.
 let croppingHistory = [];
@@ -89,6 +91,8 @@ const modalWindow = document.querySelector('body>aside.hint');
 // кнопки закрытия модального окна
 const closeModalButtons = modalWindow.querySelectorAll('button');
 const closeShortcutButtons = shortcutWindow.querySelectorAll('button');
+const signinButtons = signinWindow.querySelectorAll('button[type="button"]');
+const signinForm = signinWindow.querySelector('form');
 const closeSettingsButtons = settings.querySelectorAll('button.close');
 const serverButton = settings.querySelector('button#serverPath');
 // старое значение по X при работе с карандашом
@@ -107,8 +111,11 @@ addModalButtonListeners(closeModalButtons, closeModalButtonClickHandler, body,
     modalWindow);
 addModalButtonListeners(closeShortcutButtons, closeModalButtonClickHandler, body,
     shortcutWindow);
+addModalButtonListeners(signinButtons, closeModalButtonClickHandler, body,
+    signinWindow);
 addModalButtonListeners(closeSettingsButtons, closeModalButtonClickHandler, body,
     settings);
+signinForm.addEventListener('submit', signinFormSubmitHandler, false);
 applyCustomSettingsButton.addEventListener('change', applyCustomSettingsButtonChangeHandler, false);
 serverButton.addEventListener('click', serverButtonClickHandler, false);
 // обработчик клика по сцене
@@ -121,7 +128,7 @@ Menu(
 
 ipcAdd(undoCrop, redoCrop, setDefaultSceneState, createScreenshot, callCrop,
     callRect, callPen, body, modalWindow, getDrawStatus, callZoomIn, callZoomOut,
-    setDefaultZoom, callArrow, callSave, shortcutWindow, settings);
+    setDefaultZoom, callArrow, callSave, shortcutWindow, settings,signinWindow);
 // Метод вызова диалога о создании нового скриншота
 function openNewScreenshotDialog() {
     ipc.send('open-information-dialog');
@@ -142,6 +149,7 @@ function stageMouseDownHandler(event) {
         modalWindow.classList.remove('open');
         shortcutWindow.classList.remove('open');
         settings.classList.remove('open');
+        signinWindow.classList.remove('open');
         body.classList.remove('modal');
         return;
     }

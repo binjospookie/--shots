@@ -16,12 +16,13 @@ function redo(redoCrop, body) {
 		redoCrop();
 	});
 }
-function stop(body, modalWindow,setDefaultSceneState, shortcutWindow, settingsWindow) {
+function stop(body, modalWindow,setDefaultSceneState, shortcutWindow, settingsWindow, signinWindow) {
 	ipcRenderer.on('stop', () => {
 		setDefaultSceneState();
 		shortcutWindow.classList.remove('open');
 		modalWindow.classList.remove('open');
 		settingsWindow.classList.remove('open');
+		signinWindow.classList.remove('open');
 		body.classList.remove('modal');
 	});
 }
@@ -57,13 +58,44 @@ function pen(callPen, body) {
 		callPen();
 	});
 }
-function help(body, modalWindow, getDrawStatus,shortcutWindow,settingsWindow) {
+
+function signin(body, shortcutWindow, getDrawStatus,modalWindow,settingsWindow,signinWindow) {
+	ipcRenderer.on('signin', () => {
+		let signForm = signinWindow.querySelector('form');
+
+		if(document.activeElement.tagName === "INPUT") {
+			return;
+		}
+		let areaZoom = body.style.transform;
+		if(getDrawStatus() === false) {
+			if(modalWindow.classList.contains('open') || settingsWindow.classList.contains('open') || shortcutWindow.classList.contains('open')) {
+				 modalWindow.classList.remove('open');
+				 settingsWindow.classList.remove('open');
+				 shortcutWindow.classList.remove('open');
+			} else {
+				body.classList.toggle('modal');
+			}
+			areaZoom = scaleToNumber(areaZoom);
+			if (areaZoom !== 0) {
+				signinWindow.style.transform = `scale(${1/areaZoom})`;
+			}
+			signinWindow.classList.toggle('open');
+		}
+		if(localStorage.getItem('token') !== null) {
+			signForm.style.display = "none";
+			alert('You are authorized user. 🐮')
+		}
+	});
+}
+
+function help(body, modalWindow, getDrawStatus,shortcutWindow,settingsWindow,signinWindow) {
 	ipcRenderer.on('help', () => {
 		let areaZoom = body.style.transform;
 		if(getDrawStatus() === false) {
-			if(shortcutWindow.classList.contains('open') ||settingsWindow.classList.contains('open')) {
+			if(shortcutWindow.classList.contains('open') ||settingsWindow.classList.contains('open') || signinWindow.classList.contains('open')) {
 				 shortcutWindow.classList.remove('open');
 				 settingsWindow.classList.remove('open');
+				 signinWindow.classList.remove('open');
 			} else {
 				body.classList.toggle('modal');
 			}
@@ -75,13 +107,14 @@ function help(body, modalWindow, getDrawStatus,shortcutWindow,settingsWindow) {
 		}
 	});
 }
-function shortcut(body, shortcutWindow, getDrawStatus,modalWindow,settingsWindow) {
+function shortcut(body, shortcutWindow, getDrawStatus,modalWindow,settingsWindow,signinWindow) {
 	ipcRenderer.on('shortcut', () => {
 		let areaZoom = body.style.transform;
 		if(getDrawStatus() === false) {
-			if(modalWindow.classList.contains('open') ||settingsWindow.classList.contains('open')) {
+			if(modalWindow.classList.contains('open') ||settingsWindow.classList.contains('open') || signinWindow.classList.contains('open')) {
 				 modalWindow.classList.remove('open');
 				 settingsWindow.classList.remove('open');
+				 signinWindow.classList.remove('open');
 			} else {
 				body.classList.toggle('modal');
 			}
@@ -94,16 +127,17 @@ function shortcut(body, shortcutWindow, getDrawStatus,modalWindow,settingsWindow
 	});
 }
 
-function settings(body, shortcutWindow, getDrawStatus,modalWindow,settingsWindow) {
+function settings(body, shortcutWindow, getDrawStatus,modalWindow,settingsWindow,signinWindow) {
 	ipcRenderer.on('settings', () => {
-		if (settingsWindow.classList.contains('open')) {
-			return;
-		}
+	if(document.activeElement.tagName === "INPUT") {
+		return;
+	}
 		let areaZoom = body.style.transform;
 		if(getDrawStatus() === false) {
-			if(modalWindow.classList.contains('open') || shortcutWindow.classList.contains('open') ) {
+			if(modalWindow.classList.contains('open') || shortcutWindow.classList.contains('open') || signinWindow.classList.contains('open') ) {
 				 modalWindow.classList.remove('open');
 				 shortcutWindow.classList.remove('open');
+				 signinWindow.classList.remove('open');
 			} else {
 				body.classList.toggle('modal');
 			}
@@ -218,5 +252,6 @@ module.exports = {
 	callSave: callSave,
 	shortcut: shortcut,
 	settings: settings,
-	updates: updates
+	updates: updates,
+	signin: signin
 };

@@ -396,3 +396,96 @@ aside.settings > button:focus{
 aside.settings.open{
     display: block;
 }
+aside.sign-in{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    display: none;
+    width: 300px;
+    height: 210px;
+    padding: 20px;
+    margin: auto;
+    font-family: 'Roboto', sans-serif;
+    background: #F4F3F2;
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.08), 0 3px 12px 0 rgba(0, 0, 0, 0.12);
+}
+aside.sign-in >h2{
+    padding: 0;
+    margin: 20px 0 0 10px;
+    font-weight: 600;
+}
+aside.sign-in >form{
+    margin: 40px 0 0 10px;
+}
+aside.sign-in >form > label{
+    display: block;
+    width: 220px;
+    margin: 0 auto 20px auto;
+}
+aside.sign-in >form > label > input{
+    width: 100%;
+    height: 20px;
+    font-size: 14px;
+    border: none;
+    color: black;
+    border-bottom: 1px solid #37aee2;
+    background: transparent;
+}
+aside.sign-in >form >button{
+    display: inline-block;
+    font-size: 0.9em;
+    color: #4285f4;
+    cursor: pointer;
+    background: none;
+    border: none;
+    text-transform: uppercase;
+}
+aside.sign-in >form >button[type="submit"]{
+    margin: 40px auto;
+    display: block;
+}
+aside.sign-in >form >button.js-close-agree{
+    width: 100%;
+    margin-top: 20px;
+    padding-right: 20px;
+    text-align: right;
+}
+aside.sign-in >form >button.js-close-hint{
+    position: absolute;
+    top: 10px;
+    right: 5px;
+    display: block;
+    overflow: hidden;
+    width: 40px;
+    height: 32px;
+    opacity: .3;
+    cursor: pointer;
+    text-indent: 40px;
+}
+aside.sign-in >form >button.js-close-hint:before, aside.sign-in >form >button.js-close-hint:after{
+    position: absolute;
+    top: 0;
+    left: 18px;
+    content: '';
+    height: 33px;
+    width: 2px;
+    background-color: #8C8888;
+}
+aside.sign-in >form >button.js-close-hint:before{
+    transform: rotate(45deg);
+}
+aside.sign-in >form >button.js-close-hint:after{
+    transform: rotate(-45deg);
+}
+aside.sign-in >form >button.js-close-hint:hover{
+    opacity: 1;
+}
+aside.sign-in >form >button:focus{
+    outline: none;
+}
+aside.sign-in.open{
+    display: block;
+}
