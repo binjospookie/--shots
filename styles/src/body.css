@@ -27,4 +27,8 @@ body {
   &.move {
       cursor: move;
   }
+
+  &.draw {
+    cursor: pointer;
+  }
 }

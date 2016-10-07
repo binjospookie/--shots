@@ -51,6 +51,9 @@ body.crop{
 body.move{
     cursor: move;
 }
+body.draw{
+    cursor: pointer;
+}
 canvas{
     position: absolute;
     top: 0;

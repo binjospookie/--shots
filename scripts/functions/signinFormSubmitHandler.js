@@ -8,17 +8,19 @@ module.exports = function signinFormSubmitHandler(event) {
   sendRequest({
         login: login,
         password: password
-    });
+    }, event.target);
 }
 
-function sendRequest(data) {
-    var xhr;
-    var formData;
+function sendRequest(data, target) {
+    let xhr;
+    let formData;
+    let form = target;
 
     xhr = new XMLHttpRequest();
     formData = new FormData();
 
-    xhr.onload = function() {
+    xhr.onload = function(event) {
+
         switch (xhr.status) {
             case 500:
                 alert('Server error 😱');
@@ -40,6 +42,8 @@ function sendRequest(data) {
                     } else {
                         alert('You have been authorized 🐮');
                         localStorage.setItem('token', xhr.responseText);
+                        document.body.classList.remove('modal');
+                				document.querySelector('aside.sign-in').classList.remove('open');
                     }
                 }
 

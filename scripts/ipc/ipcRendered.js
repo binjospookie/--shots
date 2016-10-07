@@ -1,4 +1,5 @@
 const {ipcRenderer} = require('electron');
+const ipc = require('electron').ipcRenderer;
 
 function undo(undoCrop, body) {
 	ipcRenderer.on('undo', () => {
@@ -82,8 +83,10 @@ function signin(body, shortcutWindow, getDrawStatus,modalWindow,settingsWindow,s
 			signinWindow.classList.toggle('open');
 		}
 		if(localStorage.getItem('token') !== null) {
-			signForm.style.display = "none";
-			alert('You are authorized user. 🐮')
+			  ipc.send('open-signin-dialog');
+				body.classList.remove('modal');
+				signinWindow.classList.remove('open');
+				return;
 		}
 	});
 }
@@ -175,6 +178,15 @@ function zoomOut(callZoomOut, body) {
 		callZoomOut();
 	});
 }
+
+function signOut(body,signinWindow) {
+	ipcRenderer.on('signout', () => {
+			localStorage.removeItem('token');
+			body.classList.add('modal');
+			signinWindow.classList.add('open');
+	});
+}
+
 function defaultZoom(setDefaultZoom, body) {
 	ipcRenderer.on('defaultZoom', () => {
 		if(body.classList.contains('modal')) {
@@ -253,5 +265,6 @@ module.exports = {
 	shortcut: shortcut,
 	settings: settings,
 	updates: updates,
-	signin: signin
+	signin: signin,
+	signOut: signOut
 };

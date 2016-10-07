@@ -21,4 +21,5 @@ module.exports =
 	renderIpc.callArrow(callArrow, body);
 	renderIpc.callSave(callSave, body);
 	renderIpc.updates(body);
+	renderIpc.signOut(body,signinWindow);
 };

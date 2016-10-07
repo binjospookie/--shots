@@ -11,15 +11,17 @@ module.exports = function sendToServer(code, old, loader, loaderText, path) {
     let newText;
     let pathToServer;
     let storage = localStorage.getItem('serverpath');
-    console.log(storage)
-
+    const token = (localStorage.getItem('token') !== null) ? JSON.parse(localStorage.getItem('token')).token : '';
+    console.log(token)
     pathToServer = (storage === null || storage === "") ?
       "http://shots.binjo.ru/savephoto.php" : JSON.parse(storage);
 
     newText = (path === undefined) ? 'Send and copied to buffer' :
     `Send, saved at "${path}"  and copied to buffer`;
 
-    data.append('shot', code);
+
+    data.append('shot',code);
+    data.append('token',token);
     xhr.open("POST", pathToServer);
     xhr.send(data);
     xhr.onload = () => {

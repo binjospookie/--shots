@@ -7,7 +7,7 @@ module.exports = function appMenu(app, appWindow) {
                 label: 'File',
                 submenu: [
                     {
-                        label: 'New',
+                        label: 'New shot',
                         accelerator: 'CmdOrCtrl+N',
                         click () { appWindow.webContents.send('new'); }
                     },
@@ -43,6 +43,11 @@ module.exports = function appMenu(app, appWindow) {
                         label: 'Redo',
                         accelerator: 'CmdOrCtrl+Shift+Z',
                         click () { appWindow.webContents.send('redo'); }
+                    },
+                    {
+                        label: 'Settings',
+                        accelerator: 'S',
+                        click () { appWindow.webContents.send('settings'); }
                     }
                 ]
             },
@@ -63,7 +68,7 @@ module.exports = function appMenu(app, appWindow) {
                         label: 'Default zoom',
                         accelerator: 'CmdOrCtrl+0',
                         click () { appWindow.webContents.send('defaultZoom'); }
-                    },
+                    }
                 ]
             },
             {
@@ -105,11 +110,6 @@ module.exports = function appMenu(app, appWindow) {
                         click () { appWindow.webContents.send('shortcut'); }
                     },
                     {
-                        label: 'Settings',
-                        accelerator: 'S',
-                        click () { appWindow.webContents.send('settings'); }
-                    },
-                    {
                         label: 'Sign In',
                         accelerator: 'I',
                         click () { appWindow.webContents.send('signin'); }
@@ -119,7 +119,7 @@ module.exports = function appMenu(app, appWindow) {
                         click () { appWindow.webContents.send('updates'); }
                     },
                     {
-                        label: 'About',
+                        label: 'Source code',
                         click () { shell.openExternal('https://github.com/binjospookie/--shots'); }
                     }
                 ]

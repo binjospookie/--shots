@@ -215,6 +215,7 @@ function stageMouseUpShapes(event) {
     let deleteButton = createDeleteButton();
 
     onCreate = false;
+    body.classList.remove('draw');
 
     deleteButton.addEventListener('click', deleteShape);
 
@@ -500,6 +501,7 @@ function callRect() {
         }
 
         onCreate = true;
+        body.classList.add('draw');
         rectListeners(stageMouseDownHandlerRect, stageMouseUpShapes, stage);
     }
 }
@@ -518,6 +520,7 @@ function callArrow() {
         }
 
         onCreate = true;
+        body.classList.add('draw');
         arrowListeners(stageMouseDownHandlerArrow, stageMouseUpShapes, stage);
     }
 }
@@ -537,6 +540,7 @@ function callPen() {
             activeShape.removeAllEventListeners();
         }
         onCreate = true;
+        body.classList.add('draw');
         penListeners(stageMouseDownHandlerPen, stageMouseUpShapes, stage);
     }
 }

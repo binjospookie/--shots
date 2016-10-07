@@ -32,6 +32,13 @@ const newShotDialog = {
     buttons: ['Yes', 'No']
 };
 
+const signInDialog = {
+    type: 'info',
+    title: 'Sign out',
+    message: `You're authorized user. Would you want to sign out?`,
+    buttons: ['Yes', 'No']
+};
+
 /**
  * Создаём окно, когда приложение инициализировано
  * И регистрируем необходимые клаиши для обработки истории
@@ -137,6 +144,17 @@ ipc.on('open-information-dialog', function() {
     })
 });
 
+/**
+ * Выводим диалог перед деавторизацией
+ */
+ipc.on('open-signin-dialog', function() {
+    dialog.showMessageBox(signInDialog, function(index) {
+        // если пользователь подтвердил выбор — далем новый скриншот
+        if (index === 0) {
+          appWindow.webContents.send( 'signout' );
+        }
+    })
+});
 
 /**
  * Метод создания окна приложения
