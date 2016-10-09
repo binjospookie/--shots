@@ -31,4 +31,4 @@ To access the tools use the global menu, context menu(click on the right mouse b
 * Open 'Settings' and click on 'Change server path'
 * Type path and click on 'Save'.
 
-> If you want send shots to default server just erase your path san click on 'Save'.
+> If you want send shots to default server just erase your path than click on 'Save'.
