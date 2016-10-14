@@ -94,6 +94,76 @@ module.exports = function appMenu(app, appWindow) {
                         accelerator: 'B',
                         click () { appWindow.webContents.send('pen'); }
                     },
+                    {
+                        label: 'Emoji',
+                        submenu: [
+                            {
+                                label: 'Angry face',
+                                accelerator: 'Alt+Q',
+                                click () { appWindow.webContents.send('emoji', 'angry'); }
+                            },
+                            {
+                                label: 'Bug',
+                                accelerator: 'Alt+W',
+                                click () { appWindow.webContents.send('emoji', 'bug'); }
+                            },
+                            {
+                                label: 'Expressionless face',
+                                accelerator: 'Alt+E',
+                                click () { appWindow.webContents.send('emoji', 'expressionless'); }
+                            },
+                            {
+                                label: 'Eyes',
+                                accelerator: 'Alt+R',
+                                click () { appWindow.webContents.send('emoji', 'eyes'); }
+                            },
+                            {
+                                label: 'Fire',
+                                accelerator: 'Alt+T',
+                                click () { appWindow.webContents.send('emoji', 'fire'); }
+                            },
+                            {
+                                label: 'Loudly crying face',
+                                accelerator: 'Alt+Y',
+                                click () { appWindow.webContents.send('emoji', 'loudly'); }
+                            },
+                            {
+                                label: 'OMG',
+                                accelerator: 'Alt+U',
+                                click () { appWindow.webContents.send('emoji', 'omg'); }
+                            },
+                            {
+                                label: 'Poop',
+                                accelerator: 'Alt+I',
+                                click () { appWindow.webContents.send('emoji', 'poop'); }
+                            },
+                            {
+                                label: 'See no evil monkey',
+                                accelerator: 'Alt+O',
+                                click () { appWindow.webContents.send('emoji', 'monkey'); }
+                            },
+                            {
+                                label: 'Thinking face',
+                                accelerator: 'Alt+P',
+                                click () { appWindow.webContents.send('emoji', 'thinking'); }
+                            },
+                            {
+                                label: 'Thumbs up',
+                                accelerator: 'Alt+A',
+                                click () { appWindow.webContents.send('emoji', 'up'); }
+                            },
+                            {
+                                label: 'Upside down face',
+                                accelerator: 'Alt+S',
+                                click () { appWindow.webContents.send('emoji', 'upside'); }
+                            },
+                            {
+                                label: 'Waving hand sign',
+                                accelerator: 'Alt+D',
+                                click () { appWindow.webContents.send('emoji', 'hand'); }
+                            }
+                        ]
+                    },
                 ]
             },
             {

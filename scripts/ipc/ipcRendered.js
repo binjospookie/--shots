@@ -211,6 +211,11 @@ function callSave(callSave, body) {
 		callSave();
 	});
 }
+function emoji(createEmoji) {
+	ipcRenderer.on('emoji', (event,type) => {
+		createEmoji(type);
+	});
+}
 function updates(body) {
 	ipcRenderer.on('updates', () => {
 		if(body.classList.contains('modal')) {
@@ -266,5 +271,6 @@ module.exports = {
 	settings: settings,
 	updates: updates,
 	signin: signin,
-	signOut: signOut
+	signOut: signOut,
+	emoji: emoji,
 };

@@ -128,7 +128,8 @@ Menu(
 
 ipcAdd(undoCrop, redoCrop, setDefaultSceneState, createScreenshot, callCrop,
     callRect, callPen, body, modalWindow, getDrawStatus, callZoomIn, callZoomOut,
-    setDefaultZoom, callArrow, callSave, shortcutWindow, settings,signinWindow);
+    setDefaultZoom, callArrow, callSave, shortcutWindow, settings,signinWindow,
+    createEmoji);
 // Метод вызова диалога о создании нового скриншота
 function openNewScreenshotDialog() {
     ipc.send('open-information-dialog');
@@ -307,20 +308,29 @@ function transformMoveHandler(event) {
             let rect = activeShape.getChildByName('rect');
             if (rect === null) {
                 rect = activeShape.getChildByName('arrow');
+                if (rect === null) {
+                    rect = activeShape.getChildByName('emoji');
+                }
             }
             child[i].scaleX = child[i].scaleY = 1 / activeShape.scaleX;
             child[i].x = rect.x - 10 / activeShape.scaleX;
             child[i].y = rect.y - 10 / activeShape.scaleX;
         }
 
-        if ((child[i].name === 'rect')) {
+        if ((child[i].name === 'rect') || (child[i].name === 'outline')) {
             let width = child[i].getBounds().width;
             let height = child[i].getBounds().height;
             let top = child[i].y;
             let left = child[i].x;
+            let name = child[i].name;
 
-            child[i].graphics.clear().setStrokeStyle(4 / activeShape.scaleX).beginStroke("#D50000").drawRoundRect(left, top, width, height, 2 / activeShape.scaleX);
+            if (name === 'rect') {
+              child[i].graphics.clear().setStrokeStyle(4 / activeShape.scaleX).beginStroke("#D50000").drawRoundRect(left, top, width, height, 2 / activeShape.scaleX);
+            } else {
+              child[i].graphics.clear().setStrokeStyle(1 / activeShape.scaleX).beginStroke("#37aee2").drawRoundRect(left, top, width, height, 2 / activeShape.scaleX);
+            }
         }
+
         if ((child[i].name === 'arrow')) {
             drawArrow(child[i], child[i].length)
         }
@@ -780,6 +790,51 @@ function setDefaultZoom() {
     body.style.transform = `scale(${areaZoom})`;
 }
 
+function createEmoji(type) {
+  const emojiImage = new Image();
+  const container = new createjs.Container();
+
+  container.name = 'shapeContainer';
+  emojiImage.src = `./images/emoji/${type}.png`
+
+  emojiImage.onload = () => {
+    const deleteButton = createDeleteButton();
+    const transformButton = createTransformButton();
+    const emoji = new createjs.Bitmap(emojiImage);
+
+    emoji.name = 'emoji';
+    emoji.scaleX = emoji.scaleY = 0.35;
+    container.addChild(emoji);
+
+    addOutline(container);
+
+    deleteButton.addEventListener('click', deleteShape);
+    deleteButton.x = -10;
+    deleteButton.y = -10;
+    container.addChild(deleteButton);
+
+    transformButton.x = container.getBounds().width + 10 / container.scaleX;
+    transformButton.y = container.getBounds().height + 10 / container.scaleX;
+    transformButton.addEventListener('mousedown', transformPressHandler)
+    transformButton.addEventListener('pressmove', transformMoveHandler);
+    transformButton.addEventListener('pressup', transformUpHandler);
+
+    container.addChild(transformButton);
+
+    if(croppingHistory.length === 0) {
+      container.x = workArea.width / 2 - 128;
+      container.y = workArea.height / 2 - 128;
+    } else {
+      container.x = workArea.width / 2 - 128 - croppingHistory[historyIndex].stageX;
+      container.y = workArea.height / 2 - 128 - croppingHistory[historyIndex].stageY;
+    }
+
+    stage.addChild(container);
+    hideControls(container, stage);
+    stage.update();
+  }
+}
+
 /**
  * Обработчик сохранения результата
  */
@@ -885,4 +940,28 @@ function callSave() {
  */
 function applyCustomSettingsButtonChangeHandler(event) {
     setFieldsetStatus(settingFieldsets, !event.target.checked);
+}
+
+function addOutline(emoji) {
+  const frame = new createjs.Shape();
+  const hitArea = new createjs.Shape();
+  const bounds = emoji.getBounds();
+  const width = bounds.width;
+  const height = bounds.height;
+
+  hitArea.graphics
+    .setStrokeStyle(1)
+    .beginStroke('#F00')
+    .beginFill('black')
+    .drawRect(-width/2, -height/2, width, height);
+
+  frame.hitArea = hitArea;
+
+  frame.graphics.setStrokeStyle(1).beginStroke('#37aee2')
+    .drawRect(0, 0, width, height);
+
+  frame.setBounds(0, 0, width, height);
+
+  frame.name = 'outline';
+  emoji.addChild(frame);
 }

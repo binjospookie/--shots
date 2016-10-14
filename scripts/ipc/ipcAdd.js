@@ -3,7 +3,7 @@ const renderIpc = require('./ipcRendered');
 module.exports =
 	function ipcAdd(
 		undoCrop,redoCrop,setDefaultSceneState,createScreenshot,callCrop,callRect,callPen,body,modalWindow,getDrawStatus,callZoomIn, callZoomOut, setDefaultZoom, callArrow, callSave,
-	shortcutWindow,settingsWindow,signinWindow ) {
+	shortcutWindow,settingsWindow,signinWindow, createEmoji ) {
 	renderIpc.undo(undoCrop, body);
 	renderIpc.redo(redoCrop, body);
 	renderIpc.stop(body, modalWindow,setDefaultSceneState,shortcutWindow, settingsWindow, signinWindow);
@@ -22,4 +22,5 @@ module.exports =
 	renderIpc.callSave(callSave, body);
 	renderIpc.updates(body);
 	renderIpc.signOut(body,signinWindow);
+	renderIpc.emoji(createEmoji);
 };

@@ -44,6 +44,7 @@ const signInDialog = {
  * И регистрируем необходимые клаиши для обработки истории
  */
 app.on('ready', () => {
+
     createWindow();
 
     const template = appMenu(app, appWindow);
@@ -71,15 +72,6 @@ app.on('ready', () => {
 					})
         }
     },
-    // {
-    //     label: 'Open',
-		// 		click() {
-		// 			  // show is not a func
-		// 				appWindow.restore();
-		// 				appWindow.setAlwaysOnTop(true)
-		// 				//console.log(appWindow.getBounds(), appWindow.isVisible())
-		// 		}
-    // },
     {
         label: 'Quit',
 				click() {
@@ -170,6 +162,7 @@ function createWindow() {
     appWindow.on('closed', function() {
         appWindow = null;
     });
+
     appWindow.setAutoHideMenuBar(false);
 }
 
