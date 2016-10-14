@@ -102,7 +102,7 @@ let areaZoom = 1;
 let scale;
 
 // на случай говна
-serverMessage();
+serverMessage(APP_VERSION);
 stage.enableDOMEvents(true);
 addModalButtonListeners(closeModalButtons, closeModalButtonClickHandler, body,
     modalWindow);
@@ -125,11 +125,11 @@ Menu(
 
 ipcAdd(undoCrop, redoCrop, setDefaultSceneState, createScreenshot, callCrop,
     callRect, callPen, body, modalWindow, getDrawStatus, callZoomIn, callZoomOut,
-    setDefaultZoom, callArrow, callSave, shortcutWindow, settings,signinWindow,
-    createEmoji);
+    setDefaultZoom, callArrow, callSave, shortcutWindow, settings, signinWindow,
+    createEmoji, APP_VERSION);
 // Метод вызова диалога о создании нового скриншота
 function openNewScreenshotDialog() {
-    ipc.send('open-information-dialog');
+  ipc.send('open-information-dialog');
 }
 initSettings(settings);
 initCommonSettings(settings);
