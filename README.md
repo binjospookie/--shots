@@ -32,3 +32,9 @@ To access the tools use the global menu, context menu(click on the right mouse b
 * Type path and click on 'Save'.
 
 > If you want send shots to default server just erase your path than click on 'Save'.
+
+## Coding Style Guidelines
+
+[![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
+
+Use the [Standard Style](https://github.com/feross/standard).
