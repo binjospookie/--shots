@@ -10,7 +10,7 @@ let screenshotPath = '';
 const commonSettings = localStorage.getItem('commonSettings');
 let array = [];
 
-if(commonSettings !== null) {
+if (commonSettings !== null) {
   array = JSON.parse(commonSettings);
 }
 
@@ -25,48 +25,48 @@ if(commonSettings !== null) {
  * @param bitmap
  */
 module.exports = function addScreenshot(options, thumbSize, image, ctx, stage, bitmap) {
-    let time = new Date().getTime() / 1000;
-    let cursourPos = electron.screen.getCursorScreenPoint();
+  const time = new Date().getTime() / 1000;
+  const cursourPos = electron.screen.getCursorScreenPoint();
 
-    desktopCapturer.getSources(options, function(error, sources) {
-        sources.forEach(function(source) {
-            if (source.name === 'Entire screen' || source.name === 'Screen 1') {
-                screenshotPath = path.join(os.tmpdir(), `${time}.png`);
-                fs.writeFile(screenshotPath, source.thumbnail.toPng(), () => {
-                    image.src = screenshotPath;
-                    image.onload = () => {
-                        ctx.canvas.width = image.width;
-                        ctx.canvas.height = image.height;
+  desktopCapturer.getSources(options, (error, sources) => {
+    sources.forEach((source) => {
+      if (source.name === 'Entire screen' || source.name === 'Screen 1') {
+        screenshotPath = path.join(os.tmpdir(), `${time}.png`);
+        fs.writeFile(screenshotPath, source.thumbnail.toPng(), () => {
+          image.src = screenshotPath;
+          image.onload = () => {
+            ctx.canvas.width = image.width;
+            ctx.canvas.height = image.height;
 
-                        stage.removeAllChildren();
-                        stage.update();
+            stage.removeAllChildren();
+            stage.update();
 
-                        bitmap = new createjs.Bitmap(image);
+            bitmap = new createjs.Bitmap(image);
 
-                        if(array.indexOf('capture') != -1) {
-                          let cimage = new Image();
-                          cimage.src = './images/cursor.png'
-                          cimage.onload = () => {
-                            addCursor(cimage,stage,cursourPos);
-                          }
-                        }
-
-                        stage.addChild(bitmap);
-                        stage.update();
-
-                        ipcRenderer.send('synchronous-message', thumbSize);
-                        fs.unlinkSync(screenshotPath);
-                        image = null;
-                        screenshotPath = '';
-                    };
-                });
+            if (array.indexOf('capture') !== -1) {
+              const cimage = new Image();
+              cimage.src = './images/cursor.png'
+              cimage.onload = () => {
+                addCursor(cimage, stage, cursourPos);
+              }
             }
-        })
-    })
+
+            stage.addChild(bitmap);
+            stage.update();
+
+            ipcRenderer.send('synchronous-message', thumbSize);
+            fs.unlinkSync(screenshotPath);
+            image = null;
+            screenshotPath = '';
+          };
+        });
+      }
+    });
+  });
 };
 
-function addCursor(image,stage,cursourPos) {
-  let cursor = new createjs.Bitmap(image);
+function addCursor(image, stage, cursourPos) {
+  const cursor = new createjs.Bitmap(image);
   cursor.name = 'cursor';
   cursor.x = cursourPos.x;
   cursor.y = cursourPos.y;

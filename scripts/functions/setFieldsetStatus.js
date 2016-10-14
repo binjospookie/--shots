@@ -1,7 +1,5 @@
 module.exports = function setFieldsetStatus(fieldsets, status) {
-  let state = status;
-  const form = document.getElementById('settingsForm');
-  const buttton = form.querySelector('#applyCustom');
+  const state = status;
   let existSettings = [];
   let optionObj = {};
   let inputs;
@@ -12,7 +10,7 @@ module.exports = function setFieldsetStatus(fieldsets, status) {
     Array.prototype.forEach.call(
       fieldsets,
       (fieldset) => {
-        inputs = fieldset.querySelectorAll('input')
+        inputs = fieldset.querySelectorAll('input');
         Array.prototype.forEach.call(
           inputs,
           (input) => {
@@ -33,4 +31,4 @@ module.exports = function setFieldsetStatus(fieldsets, status) {
       fieldset.disabled = state;
     }
   );
-}
+};

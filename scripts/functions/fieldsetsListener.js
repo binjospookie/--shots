@@ -1,11 +1,9 @@
 module.exports = function fieldsetsListener(event) {
-  let target = event.target;
-  let optionObj = {};
-  let storage = localStorage.getItem('settings');
-  let existSettings = [];
-  let filteredArray;
+  const target = event.target;
+  const optionObj = {};
+  const existSettings = [];
 
-  if (target.checked === true ) {
+  if (target.checked === true) {
     localStorage.removeItem('settings');
     optionObj[target.value] = true;
     existSettings.push(optionObj);
@@ -16,4 +14,4 @@ module.exports = function fieldsetsListener(event) {
   } else {
       localStorage.setItem('settings', JSON.stringify(existSettings));
   }
-}
+};

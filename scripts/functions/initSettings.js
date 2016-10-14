@@ -2,10 +2,10 @@ const setFieldsetStatus = require('./setFieldsetStatus');
 const fieldsetsListener = require('./fieldsetsListener');
 
 module.exports = function initSettings(settings) {
-  let customCheckbox = settings.querySelector('#applyCustom');
-  let fieldsets =  settings.querySelectorAll('fieldset');
-  let inputs = settings.querySelectorAll('fieldset > ul > li > input');
-  let storage = localStorage.getItem('settings');
+  const customCheckbox = settings.querySelector('#applyCustom');
+  const fieldsets = settings.querySelectorAll('fieldset');
+  const inputs = settings.querySelectorAll('fieldset > ul > li > input');
+  const storage = localStorage.getItem('settings');
   let settingsValue;
   let settingName = '';
 
@@ -23,5 +23,5 @@ module.exports = function initSettings(settings) {
     (input) => {
       input.addEventListener('change', fieldsetsListener, false);
     }
-  )
-}
+  );
+};

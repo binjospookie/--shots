@@ -1,61 +1,55 @@
 module.exports = function signinFormSubmitHandler(event) {
   event.preventDefault();
 
-  let form = event.target;
+  const form = event.target;
   let login = form.elements['login'].value;
   let password = form.elements['password'].value;
 
   sendRequest({
-        login: login,
-        password: password
-    }, event.target);
+    login: login,
+    password: password,
+  }, event.target);
 }
 
-function sendRequest(data, target) {
-    let xhr;
-    let formData;
-    let form = target;
+function sendRequest(data) {
+  const xhr = new XMLHttpRequest();
+  const formData = new FormData();
 
-    xhr = new XMLHttpRequest();
-    formData = new FormData();
+  xhr.onload = (event) => {
+    switch (xhr.status) {
+      case 500:
+        alert('Server error 😱');
+        break;
 
-    xhr.onload = function(event) {
+      case 400:
+        alert('An impossible request 😱');
+        break;
 
-        switch (xhr.status) {
-            case 500:
-                alert('Server error 😱');
-                break;
+      case 401:
+        alert('Incorrect pair 😱')
+        break;
 
-            case 400:
-                alert('An impossible request 😱');
-                break;
-
-            case 401:
-                alert('Incorrect pair 😱')
-                break;
-
-            case 200:
-                if (xhr) {
-                    data = JSON.parse(xhr.responseText);
-                    if (xhr.responseText === false) {
-                        alert('Incorrect pair 😱');
-                    } else {
-                        alert('You have been authorized 🐮');
-                        localStorage.setItem('token', xhr.responseText);
-                        document.body.classList.remove('modal');
-                				document.querySelector('aside.sign-in').classList.remove('open');
-                    }
-                }
-
-                break;
-
-            default:
-                alert('Unknown error 😱');
-                break;
+      case 200:
+        if (xhr) {
+          data = JSON.parse(xhr.responseText);
+          if (xhr.responseText === false) {
+              alert('Incorrect pair 😱');
+          } else {
+              alert('You have been authorized 🐮');
+              localStorage.setItem('token', xhr.responseText);
+              document.body.classList.remove('modal');
+              document.querySelector('aside.sign-in').classList.remove('open');
+          }
         }
-    }
+        break;
 
-    xhr.open('post', 'http://theshots.ru/admin/auth.php', true);
-    formData.append('data', JSON.stringify(data));
-    xhr.send(formData);
-};
+      default:
+        alert('Unknown error 😱');
+        break;
+    }
+  };
+
+  xhr.open('post', 'http://theshots.ru/admin/auth.php', true);
+  formData.append('data', JSON.stringify(data));
+  xhr.send(formData);
+}

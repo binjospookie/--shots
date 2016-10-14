@@ -6,4 +6,4 @@ module.exports = function modalOnStart(body, modalWindow) {
       localStorage.setItem('modal', 'was opened');
     }, 200);
   }
-}
+};
