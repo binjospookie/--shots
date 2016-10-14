@@ -228,7 +228,7 @@ function emoji(createEmoji) {
     createEmoji(type);
   });
 }
-function updates(body) {
+function updates(body, version) {
   ipcRenderer.on('updates', () => {
     if (body.classList.contains('modal')) {
       return;
@@ -252,7 +252,8 @@ function updates(body) {
 
         case 200:
           if (xhr) {
-            alert(`Actual version is "${xhr.responseText}". Your version is "0.1.0".`);
+            // TODO: version from renderer
+            alert(`Actual version is "${xhr.responseText}". Your version is ${version}.`);
           }
           break;
 

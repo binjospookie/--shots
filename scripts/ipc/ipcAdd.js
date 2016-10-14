@@ -5,7 +5,7 @@ function ipcAdd(
    undoCrop, redoCrop, setDefaultSceneState, createScreenshot, callCrop,
    callRect, callPen, body, modalWindow, getDrawStatus, callZoomIn, callZoomOut,
    setDefaultZoom, callArrow, callSave, shortcutWindow, settingsWindow,
-   signinWindow, createEmoji) {
+   signinWindow, createEmoji, APP_VERSION) {
   renderIpc.undo(undoCrop, body);
   renderIpc.redo(redoCrop, body);
   renderIpc.stop(body, modalWindow, setDefaultSceneState, shortcutWindow,
@@ -27,7 +27,7 @@ function ipcAdd(
   renderIpc.defaultZoom(setDefaultZoom, body);
   renderIpc.callArrow(callArrow, body);
   renderIpc.callSave(callSave, body);
-  renderIpc.updates(body);
+  renderIpc.updates(body, APP_VERSION);
   renderIpc.signOut(body, signinWindow);
   renderIpc.emoji(createEmoji);
 };
