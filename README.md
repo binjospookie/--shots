@@ -1,11 +1,11 @@
-<p align="center"> <img src="http://shots.binjo.ru/src/icongh.png" alt="logotype" /> </p>
+<p align="center"> <img src="https://shots.binjo.ru/src/icongh.png" alt="logotype" /> </p>
 
 # --shots 
 An application for creating screenshots. It's simple and free!<br />
 Just download the package for your OS and start working!<br />
 You can save the screenshot locally, copy the code or send it to the server and get a link.<br />
 To access the tools use the global menu, context menu(click on the right mouse button) or shortcuts.<br />
-[Project's site with video](http://theshots.ru) <br />
+[Project's site with video](https://theshots.ru) <br />
 [Download links](https://github.com/binjospookie/--shots/blob/master/download.md)
 
 ## Available tools
