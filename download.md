@@ -2,12 +2,12 @@
 
 ## 0.1.1
 
-Available for Linux and Windows:tada:
+Available for Linux,Windows, MacOS:tada:
 
-[shots-0.1.1-amd64.deb](https://github.com/binjospookie/--shots/releases/download/v0.1.1/shots-0.1.1-amd64.deb)<br />
-[shots-0.1.1.dmg](https://github.com/binjospookie/--shots/releases/download/v0.1.1/shots-0.1.1.dmg)<br />
-[shots-0.1.1.dmg.zip](https://github.com/binjospookie/--shots/releases/download/v0.1.1/shots-0.1.1.dmg.zip)<br />
-[shots.Setup.0.1.1.exe](https://github.com/binjospookie/--shots/releases/download/v0.1.1/shots.Setup.0.1.1.exe)<br />
-[shots.Setup.0.1.1.exe.zip](https://github.com/binjospookie/--shots/releases/download/v0.1.1/shots.Setup.0.1.1.exe.zip)<br />
-[Source code (zip)](https://github.com/binjospookie/--shots/archive/v0.1.1.zip)<br />
-[Source code (tar.gz)](https://github.com/binjospookie/--shots/archive/v0.1.1.tar.gz)
+* [shots-0.1.1-amd64.deb](https://github.com/binjospookie/--shots/releases/download/v0.1.1/shots-0.1.1-amd64.deb)<br />
+* [shots-0.1.1.dmg](https://github.com/binjospookie/--shots/releases/download/v0.1.1/shots-0.1.1.dmg)<br />
+* [shots-0.1.1.dmg.zip](https://github.com/binjospookie/--shots/releases/download/v0.1.1/shots-0.1.1.dmg.zip)<br />
+* [shots.Setup.0.1.1.exe](https://github.com/binjospookie/--shots/releases/download/v0.1.1/shots.Setup.0.1.1.exe)<br />
+* [shots.Setup.0.1.1.exe.zip](https://github.com/binjospookie/--shots/releases/download/v0.1.1/shots.Setup.0.1.1.exe.zip)<br />
+* [Source code (zip)](https://github.com/binjospookie/--shots/archive/v0.1.1.zip)<br />
+* [Source code (tar.gz)](https://github.com/binjospookie/--shots/archive/v0.1.1.tar.gz)
