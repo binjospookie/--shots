@@ -15,7 +15,7 @@ To access the tools use the global menu, context menu(click on the right mouse b
 * Rect
 * Emoji<br />
 
-> Press `F2` to see all shortcuts.
+> Press `F2` to see all shortcuts.<br />
 Learn about all the opportunities available [here](https://github.com/binjospookie/--shots/releases) 
 
 ## Used technologies
