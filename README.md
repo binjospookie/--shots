@@ -12,7 +12,8 @@ To access the tools use the global menu, context menu(click on the right mouse b
 * Arrow
 * Crop
 * Pen
-* Rect<br />
+* Rect
+* Emoji<br />
 
 > Press `F2` to see all shortcuts.
 
