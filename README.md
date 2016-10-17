@@ -16,6 +16,7 @@ To access the tools use the global menu, context menu(click on the right mouse b
 * Emoji<br />
 
 > Press `F2` to see all shortcuts.
+Learn about all the opportunities available [here](https://github.com/binjospookie/--shots/releases) 
 
 ## Used technologies
 * Electron
