@@ -237,7 +237,7 @@ aside.hint.shortcut{
     left: 0;
     z-index: 1;
     width: 570px;
-    height: 350px;
+    height: 390px;
     padding: 20px;
     margin: auto;
     font-family: 'Roboto', sans-serif;
@@ -247,16 +247,12 @@ aside.hint.shortcut{
 aside.hint.shortcut > ul{
     margin: 30px 0 0 0;
     width: 550px;
-    height: 250px;
     list-style-type: none;
     -webkit-column-count: 2;
 }
 aside.hint.shortcut > ul > li{
     width: 250px;
     margin-bottom: 10px;
-}
-aside.hint.shortcut > ul > li:nth-child(8n){
-    margin-bottom: 0;
 }
 aside.hint.shortcut > ul > li > span{
     font-weight: bold;
