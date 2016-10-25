@@ -49,7 +49,7 @@ function sendRequest(data) {
     }
   };
 
-  xhr.open('post', 'http://theshots.ru/admin/auth.php', true);
+  xhr.open('post', 'https://theshots.ru/admin/auth.php', true);
   formData.append('data', JSON.stringify(data));
   xhr.send(formData);
 }

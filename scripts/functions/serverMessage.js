@@ -1,7 +1,7 @@
 module.exports = function serverMessage(version) {
   const xhr = new XMLHttpRequest();
 
-  xhr.open('GET', 'http://shots.binjo.ru/serverMessage.php');
+  xhr.open('GET', 'https://theshots.ru/serverMessage.php');
   xhr.send();
   xhr.onload = () => {
     switch (xhr.status) {
@@ -20,9 +20,7 @@ module.exports = function serverMessage(version) {
       case 200:
         if (xhr) {
             if (xhr.responseText !== '' &&
-            xhr.responseText !== `This is deprecated version. Some functionality
-              can be unavailable. Please update the app to version ${version}.
-               http://theshots.ru`) {
+            xhr.responseText !== 'This is deprecated version. Please update the app to version 0.1.1.') {
                   alert(xhr.responseText);
             }
         }

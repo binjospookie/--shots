@@ -1,6 +1,6 @@
 {
     "name": "shots",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "An application for creating screenshots",
     "main": "main.js",
     "license": "NPOSL",
@@ -11,20 +11,13 @@
         "compile": "rimraf build/out",
         "pack": "npm run compile && build --dir",
         "dist": "npm run compile && build",
-        "release": "npm run compile && build"
+	"release": "npm run compile && build"
     },
     "build": {
-        "appId": "org.binjo.shots",
-        "category": "graphics",
-        "app-category-type": "shots.graphics",
         "maintainer": "Victor Pasynok",
         "copyright": "Copyright © 2016 Victor Pasynok",
-        "linux": {
-            "target": ["AppImage","rpm"]
-        },
-        "win": {
-          "target": ["exe"]
-        }
+	 "dmg": {
+	"icon": "./build/icon.icns"}
     },
     "bugs": {
         "url": "https://github.com/binjospookie/--shots/issues"

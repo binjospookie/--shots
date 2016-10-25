@@ -175,7 +175,7 @@ module.exports = function appMenu(app, appWindow) {
             click() { appWindow.webContents.send('help'); },
           },
           {
-            label: 'Shortcut',
+            label: 'Shortcuts',
             accelerator: 'F2',
             click() { appWindow.webContents.send('shortcut'); },
           },

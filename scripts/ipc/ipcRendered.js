@@ -234,7 +234,7 @@ function updates(body, version) {
       return;
     }
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://shots.binjo.ru/checkUpdates.php');
+    xhr.open('GET', 'https://theshots.ru/checkUpdates.php');
     xhr.send();
     xhr.onload = () => {
       switch (xhr.status) {
