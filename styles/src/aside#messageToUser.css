@@ -9,6 +9,7 @@ aside#messageToUser {
   align-items: center;
   justify-content: center;
   opacity: 0;
+  visibility: hidden;
 
   padding: 50px 20px;
   margin: auto;
@@ -19,6 +20,7 @@ aside#messageToUser {
   transition: all .3s;
 
   &.show-hide {
+    visibility: visible;
     opacity: 1;
 
     transition: all .3s;

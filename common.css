@@ -498,6 +498,7 @@ aside#messageToUser{
     align-items: center;
     justify-content: center;
     opacity: 0;
+    visibility: hidden;
     padding: 50px 20px;
     margin: auto;
     background: white;
@@ -522,6 +523,7 @@ aside#messageToUser > p:before{
     background: rgba(0, 0, 0, .8);
 }
 aside#messageToUser.show-hide{
+    visibility: visible;
     opacity: 1;
     transition: all .3s;
 }
