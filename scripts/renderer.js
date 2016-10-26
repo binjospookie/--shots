@@ -121,7 +121,7 @@ stage.addEventListener('mousedown', stageMouseDownHandler, false);
 Menu(
     stage, stageMouseDownHandlerCrop, stageMouseUpHandlerCrop,
     stageMouseMoveHandlerCrop, openNewScreenshotDialog, callCrop,
-    callRect, callPen, callArrow, callSave);
+    callRect, callPen, callArrow, callSave, setDefaultSceneState);
 
 ipcAdd(undoCrop, redoCrop, setDefaultSceneState, createScreenshot, callCrop,
     callRect, callPen, body, modalWindow, getDrawStatus, callZoomIn, callZoomOut,
@@ -210,8 +210,6 @@ function deleteShape(event) {
 function stageMouseUpShapes() {
   const deleteButton = createDeleteButton();
   const transformButton = createTransformButton();
-  onCreate = false;
-  body.classList.remove('draw');
 
   deleteButton.addEventListener('click', deleteShape);
 
@@ -253,7 +251,6 @@ function stageMouseUpShapes() {
   penOldX = undefined;
   penOldY = undefined;
   activeShape = undefined;
-  setDefaultSceneState();
 }
 
 /**
@@ -413,6 +410,9 @@ function drawArrow(arrow, length) {
  * Обработчик перемещения курсора мыши при работе со стрелкой
  */
 function stageMouseMoveHandlerArrow(event) {
+  if(activeShape === undefined) {
+    return;
+  }
   const arrow = new createjs.Shape();
   const shapeX = event.stageX - stage.x - activeShape.x;
   const shapeY = event.stageY - stage.y - activeShape.y;
@@ -435,6 +435,9 @@ function stageMouseMoveHandlerArrow(event) {
  * Обработчик перемещения курсора мыши при работе с прямоугольником
  */
 function stageMouseMoveHandlerRect(event) {
+  if(activeShape === undefined) {
+    return;
+  }
   const shape = new createjs.Shape();
   const width = Math.abs(event.stageX - stage.x - activeShape.x);
   const height = Math.abs(event.stageY - stage.y - activeShape.y);
@@ -476,6 +479,7 @@ function setDefaultSceneState() {
     stage.removeChild(activeShape);
     stage.update();
     activeShape = undefined;
+    body.classList.remove('draw');
   }
 
   onCreate = false;
@@ -559,6 +563,9 @@ function stageMouseDownHandlerPen() {
  * Обработчик перемещения мыши при работе с карандашом
  */
 function stageMouseMoveHandlerPen(event) {
+  if(activeShape === undefined) {
+    return;
+  }
   fillObj = activeShape.getChildAt(0).graphics.beginStroke(penColor).command;
   if (penOldX) {
     activeShape.getChildAt(0).graphics.setStrokeStyle(penSize / areaZoom, 'round')

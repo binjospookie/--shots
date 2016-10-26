@@ -75,6 +75,11 @@ module.exports = function appMenu(app, appWindow) {
         label: 'Tools',
         submenu: [
           {
+            label: 'Default',
+            accelerator: 'D',
+            click() { appWindow.webContents.send('stop'); },
+          },
+          {
             label: 'Crop',
             accelerator: 'C',
             click() { appWindow.webContents.send('crop'); },
