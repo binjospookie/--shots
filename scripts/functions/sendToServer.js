@@ -1,4 +1,7 @@
 const { clipboard } = require('electron');
+const popUp = require('./popUp');
+const popupWindow = document.querySelector('aside#messageToUser');
+const popupText = popupWindow.querySelector('p');
 
 module.exports = function sendToServer(code, old, loader, loaderText, path) {
   const data = new FormData();
@@ -42,15 +45,15 @@ module.exports = function sendToServer(code, old, loader, loaderText, path) {
 
     switch (xhr.status) {
       case 500:
-        alert('Server error 😱');
+        popUp(popupWindow, popupText, 'Server error 😱');
         break;
 
       case 400:
-        alert('An impossible request 😱');
+        popUp(popupWindow, popupText, 'An impossible request 😱');
         break;
 
       case 401:
-        alert('Auth error 😱');
+        popUp(popupWindow, popupText, 'Auth error 😱');
         break;
 
       case 200:
@@ -62,7 +65,7 @@ module.exports = function sendToServer(code, old, loader, loaderText, path) {
         break;
 
       default:
-        alert('Unknown error 😱');
+        popUp(popupWindow, popupText, 'Unknown error 😱');
         break;
     }
   };

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const electron = require('electron');
 const app = electron.app;
 const globalShortcut = electron.globalShortcut;
@@ -158,7 +160,7 @@ function createWindow() {
         icon: __dirname + '/icon.png'
     });
     appWindow.loadURL(`file://${__dirname}/index.html`);
-  //  appWindow.webContents.openDevTools();
+    appWindow.webContents.openDevTools();
     appWindow.on('closed', function() {
         appWindow = null;
     });

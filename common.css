@@ -488,3 +488,40 @@ aside.sign-in >form >button:focus{
 aside.sign-in.open{
     display: block;
 }
+aside#messageToUser{
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    padding: 50px 20px;
+    margin: auto;
+    background: white;
+    box-shadow: 0 2px 6px 0 rgba(0,0,0,.08),0 3px 12px 0 rgba(0,0,0,.12);
+    transition: all .3s;
+}
+aside#messageToUser > p{
+    position: relative;
+    z-index: 1;
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+}
+aside#messageToUser > p:before{
+    position: fixed;
+    top: 120px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    pointer-events: none;
+    content: '';
+    background: rgba(0, 0, 0, .8);
+}
+aside#messageToUser.show-hide{
+    opacity: 1;
+    transition: all .3s;
+}

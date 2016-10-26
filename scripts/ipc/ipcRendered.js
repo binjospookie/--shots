@@ -1,5 +1,9 @@
+/* eslint-disable */
 const { ipcRenderer } = require('electron');
 const ipc = require('electron').ipcRenderer;
+const popUp = require('../functions/popUp');
+const popupWindow = document.querySelector('aside#messageToUser');
+const popupText = popupWindow.querySelector('p');
 
 function undo(undoCrop, body) {
   ipcRenderer.on('undo', () => {
@@ -239,26 +243,25 @@ function updates(body, version) {
     xhr.onload = () => {
       switch (xhr.status) {
         case 500:
-          alert('Server error 😱');
+          popUp(popupWindow, popupText, 'Server error 😱');
           break;
 
         case 400:
-          alert('An impossible request 😱');
+          popUp(popupWindow, popupText, 'An impossible request 😱');
           break;
 
         case 401:
-          alert('Auth error 😱');
+          popUp(popupWindow, popupText, 'Auth error 😱');
           break;
 
         case 200:
           if (xhr) {
-            // TODO: version from renderer
-            alert(`Actual version is "${xhr.responseText}". Your version is ${version}.`);
+            popUp(popupWindow, popupText, `Actual version is "${xhr.responseText}". Your version is ${version}.`);
           }
           break;
 
         default:
-          alert('Unknown error 😱');
+          popUp(popupWindow, popupText, 'Unknown error 😱');
           break;
       }
     };

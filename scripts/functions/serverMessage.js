@@ -1,3 +1,7 @@
+const popUp = require('./popUp');
+const popupWindow = document.querySelector('aside#messageToUser');
+const popupText = popupWindow.querySelector('p');
+
 module.exports = function serverMessage(version) {
   const xhr = new XMLHttpRequest();
 
@@ -6,28 +10,28 @@ module.exports = function serverMessage(version) {
   xhr.onload = () => {
     switch (xhr.status) {
       case 500:
-        alert('Server error 😱');
+        popUp(popupWindow, popupText, 'Server error 😱');
         break;
 
       case 400:
-        alert('An impossible request 😱');
+        popUp(popupWindow, popupText, 'An impossible request 😱');
         break;
 
       case 401:
-        alert('Auth error 😱');
+        popUp(popupWindow, popupText, 'Auth error 😱');
         break;
 
       case 200:
         if (xhr) {
             if (xhr.responseText !== '' &&
             xhr.responseText !== 'This is deprecated version. Please update the app to version 0.1.1.') {
-                  alert(xhr.responseText);
+              popUp(popupWindow, popupText, xhr.responseText, true);
             }
         }
         break;
 
       default:
-        alert('Unknown error 😱');
+        popUp(popupWindow, popupText, 'Unknown error 😱');
         break;
     }
   };
