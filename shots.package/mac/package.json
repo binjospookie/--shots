@@ -16,8 +16,10 @@
     "build": {
         "maintainer": "Victor Pasynok",
         "copyright": "Copyright © 2016 Victor Pasynok",
-	 "dmg": {
-	"icon": "./build/icon.icns"}
+	"dmg": {
+	  "icon": "./build/icon.icns",
+	  "category": "public.app-category.graphics-design"			
+	}
     },
     "bugs": {
         "url": "https://github.com/binjospookie/--shots/issues"
