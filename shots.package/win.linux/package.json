@@ -20,6 +20,11 @@
         "app-category-type": "shots.graphics",
         "maintainer": "Victor Pasynok",
         "copyright": "Copyright © 2016 Victor Pasynok",
+        "linux": {
+          "target": ["rpm","AppImage", "deb"],  
+          "category": "Graphics",
+          "packageCategory": "graphics" 
+        },
         "win": {
           "iconUrl": "https://github.com/binjospookie/--shots/blob/master/build/icon.ico?raw=true"
         }
