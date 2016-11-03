@@ -85,6 +85,8 @@ let croppingHistory = [];
 let historyIndex = 0;
 // Текущая активная фигура
 let activeShape;
+// параметры блюра
+const blurFilter = new createjs.BlurFilter(12, 12, 1);
 // модальное окно с подсказкой
 const modalWindow = document.querySelector('body>aside.hint');
 // кнопки закрытия модального окна
@@ -165,7 +167,7 @@ function stageMouseDownHandler(event) {
           const demensionX = activeShape.x - event.stageX;
           const demensionY = activeShape.y - event.stageY;
 
-          if (name.indexOf('Pen') === -1 && onCreate === false) {
+          if ((name.indexOf('Pen') === -1) && (onCreate === false) && (activeShape.children[0].filled !== true)) {
             activeShape.on('pressmove', (event) => {
               body.classList.add('move');
 
@@ -221,7 +223,7 @@ function stageMouseUpShapes() {
   } else {
     let shape = activeShape.getChildByName('rect');
     let shapeBounds;
-
+    
     if (shape === null) {
       shape = activeShape.getChildByName('arrow');
       shapeBounds = activeShape.getChildByName('arrow').getBounds();
@@ -246,7 +248,10 @@ function stageMouseUpShapes() {
   }
 
   activeShape.addChild(deleteButton);
-  activeShape.addChild(transformButton);
+  
+  if (activeShape.children[0].filled !== true) {
+    activeShape.addChild(transformButton);
+  }
 
   hideControls(activeShape, stage);
 
@@ -312,7 +317,8 @@ function transformMoveHandler(event) {
       const top = child[i].y;
       const left = child[i].x;
       const name = child[i].name;
-
+      const filled = child[i].filled;
+      
       if (name === 'rect') {
         child[i].graphics.clear().setStrokeStyle(4 / activeShape.scaleX).beginStroke('#D50000').drawRoundRect(left, top, width, height, 2 / activeShape.scaleX);
       } else {
@@ -362,9 +368,16 @@ function createScreenshot() {
 /**
  * Обработчик нажатия кнопки мыши при работе с прямоугольником
  */
-function stageMouseDownHandlerRect(event) {
-  stageMouseDownHandlerDefault(event);
-  stage.on('stagemousemove', stageMouseMoveHandlerRect);
+function stageMouseDownHandlerRect(filled, event) {
+  const customEvent = (filled === 'filled') ? event : filled;
+  
+  if (filled === 'filled') {
+    stage.on('stagemousemove', stageMouseMoveHandlerRect.bind(null, filled));
+  } else {
+      stage.on('stagemousemove', stageMouseMoveHandlerRect);
+  }
+  
+  stageMouseDownHandlerDefault(customEvent);
 }
 
 /**
@@ -436,28 +449,48 @@ function stageMouseMoveHandlerArrow(event) {
 /**
  * Обработчик перемещения курсора мыши при работе с прямоугольником
  */
-function stageMouseMoveHandlerRect(event) {
+function stageMouseMoveHandlerRect(filled, event) {
   if(activeShape === undefined) {
     return;
   }
+  
+  const customEvent = (filled === 'filled') ? event : filled;
   const shape = new createjs.Shape();
-  const width = Math.abs(event.stageX - stage.x - activeShape.x);
-  const height = Math.abs(event.stageY - stage.y - activeShape.y);
+  const width = Math.abs(customEvent.stageX - stage.x - activeShape.x);
+  const height = Math.abs(customEvent.stageY - stage.y - activeShape.y);
   let shapeX = 0;
   let shapeY = 0;
 
   activeShape.removeChildAt(0);
   shape.name = 'rect';
 
-  if (event.stageX - stage.x < activeShape.x) {
-    shapeX = event.stageX - stage.x - activeShape.x;
+  if (customEvent.stageX - stage.x < activeShape.x) {
+    shapeX =(filled === 'filled') ? 0 : customEvent.stageX - stage.x - activeShape.x;
   }
-  if (event.stageY - stage.y < activeShape.y) {
-    shapeY = event.stageY - stage.y - activeShape.y;
+  if (customEvent.stageY - stage.y < activeShape.y ) {
+    shapeY = (filled === 'filled') ? 0 : customEvent.stageY - stage.y - activeShape.y;
+  }
+  
+  if (filled === 'filled') {
+    const pixeledImage = new Image();
+    const canva = document.createElement('canvas');
+    const canvaCtx = canva.getContext('2d');
+     
+    canva.width = width;
+    canva.height = height; 
+    pixeledImage.src = stage.children[0].image.src;
+    canvaCtx.drawImage(pixeledImage, -activeShape.x, -activeShape.y);  
+    
+    shape.graphics.beginBitmapFill(canva).drawRoundRect(shapeX, shapeY, width, height, 2 / areaZoom);
+    
+    shape.filters = [blurFilter];
+    shape.cache(shapeX, shapeY, width, height)
+    shape.filled = true;  
+  } else {
+    shape.graphics.setStrokeStyle(4 / areaZoom).beginStroke('#D50000')
+      .drawRoundRect(shapeX, shapeY, width, height, 2 / areaZoom);
   }
 
-  shape.graphics.setStrokeStyle(4 / areaZoom).beginStroke('#D50000')
-    .drawRoundRect(shapeX, shapeY, width, height, 2 / areaZoom);
   shape.setBounds(shapeX, shapeY, width, height);
   activeShape.addChild(shape);
 
@@ -491,7 +524,7 @@ function setDefaultSceneState() {
 /**
  * Вешаем обработчики для прямоугольника
  */
-function callRect() {
+function callRect(filled) {
   const answer = ipcRenderer.sendSync('synchronous-message', 'rect');
 
   if (answer === 'ok') {
@@ -504,7 +537,12 @@ function callRect() {
 
     onCreate = true;
     body.classList.add('draw');
-    rectListeners(stageMouseDownHandlerRect, stageMouseUpShapes, stage);
+    
+    if (filled === 'filled') {
+      rectListeners(stageMouseDownHandlerRect.bind(null,filled), stageMouseUpShapes, stage);
+    } else {
+      rectListeners(stageMouseDownHandlerRect, stageMouseUpShapes, stage);
+    }
   }
 }
 

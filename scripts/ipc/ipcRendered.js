@@ -49,11 +49,11 @@ function crop(callCrop, body) {
   });
 }
 function rect(callRect, body) {
-  ipcRenderer.on('rect', () => {
+  ipcRenderer.on('rect', (sender, param) => {
     if (body.classList.contains('modal')) {
       return;
     }
-    callRect();
+    callRect(param);
   });
 }
 function pen(callPen, body) {

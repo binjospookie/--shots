@@ -100,6 +100,11 @@ module.exports = function appMenu(app, appWindow) {
             click() { appWindow.webContents.send('pen'); },
           },
           {
+            label: 'Blur',
+            accelerator: 'F',
+            click() { appWindow.webContents.send('rect', 'filled'); },
+          },
+          {
             label: 'Emoji',
             submenu: [
               {

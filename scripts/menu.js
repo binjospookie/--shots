@@ -22,15 +22,6 @@ module.exports = function Menu(stage, stageMouseDownHandler, stageMouseUpHandler
     type: 'separator',
   }));
   menu.append(new MenuItem({
-    label: 'Crop',
-    click() {
-      callCrop();
-    },
-  }));
-  menu.append(new MenuItem({
-    type: 'separator',
-  }));
-  menu.append(new MenuItem({
     label: 'Save',
     click() {
       callSave();
@@ -43,6 +34,15 @@ module.exports = function Menu(stage, stageMouseDownHandler, stageMouseUpHandler
     label: 'Default',
     click() {
       setDefaultSceneState();
+    },
+  }));
+  menu.append(new MenuItem({
+    type: 'separator',
+  }));
+  menu.append(new MenuItem({
+    label: 'Crop',
+    click() {
+      callCrop();
     },
   }));
   menu.append(new MenuItem({
@@ -70,6 +70,15 @@ module.exports = function Menu(stage, stageMouseDownHandler, stageMouseUpHandler
     label: 'Pen',
     click() {
       callPen();
+    },
+  }));
+  menu.append(new MenuItem({
+    type: 'separator',
+  }));
+  menu.append(new MenuItem({
+    label: 'Blur',
+    click() {
+      callRect('filled');
     },
   }));
 
