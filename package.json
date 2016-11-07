@@ -24,7 +24,7 @@
     },
     "homepage": "http://shots.binjo.ru/",
     "devDependencies": {
-        "electron": "^1.4.4",
+        "electron": "^1.4.5",
         "electron-builder": "^7.14.2",
         "gulp-postcss": "^6.2.0",
         "postcss": "^5.2.5",
