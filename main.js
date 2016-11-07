@@ -75,6 +75,18 @@ app.on('ready', () => {
         }
     },
     {
+      label: 'Open',
+      click() {
+          appWindow.show();
+      }
+    },
+    {
+      label: 'Minimize to tray',
+      click() {
+          appWindow.hide();
+      }
+    },
+    {
         label: 'Quit',
 				click() {
 						globalShortcut.unregisterAll();
