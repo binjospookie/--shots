@@ -63,12 +63,10 @@ app.on('ready', () => {
     });
 
     tray = new Tray(__dirname + '/icon.png');
+    app.firstStartTray = true;
     appWindow.hide();
-    let contextMenu = createContextMenu(true, false);
 
     tray.setToolTip('--shots');
-    tray.setContextMenu(contextMenu);
-
 });
 
 app.on('will-quit', () => {
@@ -102,8 +100,6 @@ ipcMain.on('synchronous-message', (event, arg, data) => {
     } else if (arg === 'optimize') {
         let oImg = optimizeShots(data);
         event.returnValue = 'data';
-    } else if (arg === 'startTray') {
-        console.log(data)
     } else {
         appWindow.show();
         appWindow.setSize(arg.width, arg.height);
@@ -150,19 +146,24 @@ function createWindow() {
     });
     
     appWindow.on('minimize', function() {
-      let contextMenu = createContextMenu(true, false);
+      let contextMenu = createContextMenu(false, true, false);
       
       tray.setContextMenu(contextMenu);
     });
     
     appWindow.on('hide', function() {
-      let contextMenu = createContextMenu(true, false);
-      
-      tray.setContextMenu(contextMenu);
+      if (app.firstStartTray === true) {
+        let contextMenu = createContextMenu(true, false, false);
+        tray.setContextMenu(contextMenu);
+        app.firstStartTray = false;
+      } else {
+        let contextMenu = createContextMenu(true, true, false);
+        tray.setContextMenu(contextMenu);
+      }
     });
     
     appWindow.on('show', function(event, create) {
-      let contextMenu = createContextMenu(false, true);
+      let contextMenu = createContextMenu(true, false, true);
       
       tray.setContextMenu(contextMenu);
       if(app.createShot  === true) {
@@ -174,15 +175,17 @@ function createWindow() {
     appWindow.setAutoHideMenuBar(false);
 }
 
-function createContextMenu(open, tray) {
+function createContextMenu(newShot, open, tray) {
     return (
       Menu.buildFromTemplate([{
           label: 'New',
+          enabled: newShot,
           click() {
             dialog.showMessageBox(newShotDialog, function(index) {
                 // если пользователь подтвердил выбор — далем новый скриншот
                 if (index === 0) {
                     app.createShot = true;
+                    appWindow.maximize();
                     appWindow.show();
                 }
             })
