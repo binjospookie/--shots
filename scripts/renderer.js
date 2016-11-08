@@ -246,13 +246,19 @@ function stageMouseUpShapes() {
     transformButton.x = arrow.length + 25;
     transformButton.y = 10;
   }
-
-  activeShape.addChild(deleteButton);
   
   if (activeShape.children[0].filled !== true) {
     activeShape.addChild(transformButton);
   }
+  
+  if (activeShape.children[0].filled === true) {
+    activeShape.removeChildAt(1);
+    activeShape.removeChildAt(1);
+    
+    addOutline(activeShape);
+  }
 
+  activeShape.addChild(deleteButton);
   hideControls(activeShape, stage);
 
   penOldX = undefined;
@@ -462,6 +468,7 @@ function stageMouseMoveHandlerRect(filled, event) {
   let shapeY = 0;
 
   activeShape.removeChildAt(0);
+  activeShape.removeChildAt(1);
   shape.name = 'rect';
 
   if (customEvent.stageX - stage.x < activeShape.x) {
@@ -475,13 +482,17 @@ function stageMouseMoveHandlerRect(filled, event) {
     const pixeledImage = new Image();
     const canva = document.createElement('canvas');
     const canvaCtx = canva.getContext('2d');
-     
+    var borderShape = new createjs.Shape();
+    
+    borderShape.name = 'borderShape'; 
     canva.width = width;
     canva.height = height; 
     pixeledImage.src = stage.children[0].image.src;
     canvaCtx.drawImage(pixeledImage, -activeShape.x, -activeShape.y);  
     
     shape.graphics.beginBitmapFill(canva).drawRoundRect(shapeX, shapeY, width, height, 2 / areaZoom);
+    borderShape.graphics.setStrokeStyle(1 / areaZoom).beginStroke('#37AEE2')
+      .drawRoundRect(shapeX, shapeY, width, height, 2 / areaZoom);
     
     shape.filters = [blurFilter];
     shape.cache(shapeX, shapeY, width, height)
@@ -493,6 +504,10 @@ function stageMouseMoveHandlerRect(filled, event) {
 
   shape.setBounds(shapeX, shapeY, width, height);
   activeShape.addChild(shape);
+  
+  if (borderShape) {
+    activeShape.addChild(borderShape);
+  }
 
   stage.update();
 }
