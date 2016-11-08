@@ -185,7 +185,6 @@ function createContextMenu(newShot, open, tray) {
                 // если пользователь подтвердил выбор — далем новый скриншот
                 if (index === 0) {
                     app.createShot = true;
-                    appWindow.maximize();
                     appWindow.show();
                 }
             })
