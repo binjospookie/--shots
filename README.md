@@ -35,3 +35,6 @@ Learn about all the opportunities available [here](https://github.com/binjospook
 
 > If you want send shots to default server just erase your path than click on 'Save'.<br />
 But you can't use admin-page.
+
+<br />
+***First commit was added 24 Sep 2016***
