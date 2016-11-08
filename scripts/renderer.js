@@ -78,6 +78,7 @@ const hideLoader = require('./functions/hideLoader');
 const serverMessage = require('./functions/serverMessage');
 const serverButtonClickHandler = require('./functions/serverButtonClickHandler');
 const signinFormSubmitHandler = require('./functions/signinFormSubmitHandler');
+const calcAngle = require('./functions/calcAngle');
 
 // Массив объектов, содержащих данные о каждом кропе.
 let croppingHistory = [];
@@ -288,6 +289,8 @@ function transformMoveHandler(event) {
           historyIndex, activeShape, mouseDownX, mouseDownY);
   const distance1 = result.distance1;
   const distance2 = result.distance2;
+  let shapeName;
+  let degree;
 
   activeShape.scaleX = activeShape.scaleY =
       (distance2 / distance1) * scale;
@@ -334,7 +337,16 @@ function transformMoveHandler(event) {
 
     if ((child[i].name === 'arrow')) {
       drawArrow(child[i], child[i].length);
+      shapeName = 'arrow';
     }
+  }
+  
+  degree = calcAngle(activeShape.x, activeShape.y, event.stageX - stage.x, event.stageY - stage.y);
+  
+  if (shapeName === 'arrow') {
+    activeShape.rotation = degree;
+  } else {
+    activeShape.rotation = -(45 - degree);
   }
 
   stage.update();
