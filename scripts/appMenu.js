@@ -1,5 +1,11 @@
 const { shell } = require('electron');
-
+const dialog = require('electron').dialog;
+const newShotDialog = {
+    type: 'info',
+    title: 'Create new shot',
+    message: 'All your progress will be lost. Are you sure?',
+    buttons: ['Yes', 'No']
+};
 module.exports = function appMenu(app, appWindow) {
   return (
     [
@@ -9,7 +15,14 @@ module.exports = function appMenu(app, appWindow) {
           {
             label: 'New shot',
             accelerator: 'CmdOrCtrl+N',
-            click() { appWindow.webContents.send('new'); },
+            click() { 
+              dialog.showMessageBox(newShotDialog, function(index) {
+                  // если пользователь подтвердил выбор — далем новый скриншот
+                  if (index === 0) {
+                    appWindow.webContents.send('new');
+                  }
+              })
+             },
           },
           {
             label: 'Save',
