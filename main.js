@@ -51,7 +51,7 @@ app.on('ready', () => {
 
     const template = appMenu(app, appWindow);
     const menu = Menu.buildFromTemplate(template);
-
+    
     /**
      * Содаём меню приложения
      */
@@ -62,8 +62,9 @@ app.on('ready', () => {
         appWindow.webContents.send('stop');
     });
 
-    tray = new Tray(__dirname + '/icon.png')
-    let contextMenu = createContextMenu(false, true);
+    tray = new Tray(__dirname + '/icon.png');
+    appWindow.hide();
+    let contextMenu = createContextMenu(true, false);
 
     tray.setToolTip('--shots');
     tray.setContextMenu(contextMenu);
@@ -101,6 +102,8 @@ ipcMain.on('synchronous-message', (event, arg, data) => {
     } else if (arg === 'optimize') {
         let oImg = optimizeShots(data);
         event.returnValue = 'data';
+    } else if (arg === 'startTray') {
+        console.log(data)
     } else {
         appWindow.show();
         appWindow.setSize(arg.width, arg.height);
@@ -141,7 +144,7 @@ function createWindow() {
         icon: __dirname + '/icon.png'
     });
     appWindow.loadURL(`file://${__dirname}/index.html`);
-   // appWindow.webContents.openDevTools();
+  //  appWindow.webContents.openDevTools();
     appWindow.on('closed', function() {
         appWindow = null;
     });
@@ -158,10 +161,14 @@ function createWindow() {
       tray.setContextMenu(contextMenu);
     });
     
-    appWindow.on('show', function() {
+    appWindow.on('show', function(event, create) {
       let contextMenu = createContextMenu(false, true);
       
       tray.setContextMenu(contextMenu);
+      if(app.createShot  === true) {
+        appWindow.webContents.send( 'new' );
+        app.createShot = false;
+      }
     });
 
     appWindow.setAutoHideMenuBar(false);
@@ -175,7 +182,8 @@ function createContextMenu(open, tray) {
             dialog.showMessageBox(newShotDialog, function(index) {
                 // если пользователь подтвердил выбор — далем новый скриншот
                 if (index === 0) {
-                    appWindow.webContents.send( 'new' );
+                    app.createShot = true;
+                    appWindow.show();
                 }
             })
           }
