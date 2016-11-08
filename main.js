@@ -63,38 +63,7 @@ app.on('ready', () => {
     });
 
     tray = new Tray(__dirname + '/icon.png')
-    const contextMenu = Menu.buildFromTemplate([{
-        label: 'New',
-        click() {
-					dialog.showMessageBox(newShotDialog, function(index) {
-							// если пользователь подтвердил выбор — далем новый скриншот
-							if (index === 0) {
-									appWindow.webContents.send( 'new' );
-							}
-					})
-        }
-    },
-    {
-      label: 'Open',
-      click() {
-          appWindow.show();
-      }
-    },
-    {
-      label: 'Minimize to tray',
-      click() {
-          appWindow.hide();
-      }
-    },
-    {
-        label: 'Quit',
-				click() {
-						globalShortcut.unregisterAll();
-						if (process.platform !== 'darwin') {
-				        app.quit()
-				    }
-				}
-    }])
+    let contextMenu = createContextMenu(false, true);
 
     tray.setToolTip('--shots');
     tray.setContextMenu(contextMenu);
@@ -176,8 +145,65 @@ function createWindow() {
     appWindow.on('closed', function() {
         appWindow = null;
     });
+    
+    appWindow.on('minimize', function() {
+      let contextMenu = createContextMenu(true, false);
+      
+      tray.setContextMenu(contextMenu);
+    });
+    
+    appWindow.on('hide', function() {
+      let contextMenu = createContextMenu(true, false);
+      
+      tray.setContextMenu(contextMenu);
+    });
+    
+    appWindow.on('show', function() {
+      let contextMenu = createContextMenu(false, true);
+      
+      tray.setContextMenu(contextMenu);
+    });
 
     appWindow.setAutoHideMenuBar(false);
+}
+
+function createContextMenu(open, tray) {
+    return (
+      Menu.buildFromTemplate([{
+          label: 'New',
+          click() {
+            dialog.showMessageBox(newShotDialog, function(index) {
+                // если пользователь подтвердил выбор — далем новый скриншот
+                if (index === 0) {
+                    appWindow.webContents.send( 'new' );
+                }
+            })
+          }
+      },
+      {
+        label: 'Open',
+        enabled: open,
+        click() {
+            appWindow.show();
+        }
+      },
+      {
+        label: 'Minimize to tray',
+        enabled: tray,
+        click() {
+              appWindow.hide();
+        }
+      },
+      {
+          label: 'Quit',
+          click() {
+              globalShortcut.unregisterAll();
+              if (process.platform !== 'darwin') {
+                  app.quit()
+              }
+          }
+      }])
+    );
 }
 
 function optimizeShots(data) {

@@ -17,6 +17,11 @@ module.exports = function appMenu(app, appWindow) {
             click() { appWindow.webContents.send('save'); },
           },
           {
+            label: 'Minimize to tray',
+            accelerator: 'CmdOrCtrl+M',
+            click() { appWindow.hide(); },
+          },
+          {
             label: 'Restart',
             accelerator: 'CmdOrCtrl+R',
             click() {
