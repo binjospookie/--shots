@@ -138,8 +138,6 @@ function openNewScreenshotDialog() {
 }
 initSettings(settings);
 initCommonSettings(settings);
-// Делаем скриншот после первой инициализации
-createScreenshot();
 
 /**
  * Обработчик нажатия на сцене для выбора элементов
