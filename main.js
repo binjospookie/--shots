@@ -109,11 +109,7 @@ ipcMain.on('synchronous-message', (event, arg, data) => {
 /**
  * Выводим диалог перед новым скриншотом
  */
-ipc.on('open-information-dialog', function(event) {
-  if (data === undefined) {
-    appWindow.webContents.send( 'new' );
-    return;
-  }
+ipc.on('open-information-dialog', function() {
     dialog.showMessageBox(newShotDialog, function(index) {
         // если пользователь подтвердил выбор — далем новый скриншот
         if (index === 0) {
@@ -144,7 +140,7 @@ function createWindow() {
         icon: __dirname + '/icon.png'
     });
     appWindow.loadURL(`file://${__dirname}/index.html`);
-    appWindow.webContents.openDevTools();
+  //  appWindow.webContents.openDevTools();
     appWindow.on('closed', function() {
         appWindow = null;
     });
@@ -155,7 +151,7 @@ function createWindow() {
       tray.setContextMenu(contextMenu);
     });
     
-    appWindow.on('hide', function(event, data) {
+    appWindow.on('hide', function() {
       if (app.firstStartTray === true) {
         let contextMenu = createContextMenu(true, false, false);
         tray.setContextMenu(contextMenu);
@@ -166,7 +162,7 @@ function createWindow() {
       }
     });
     
-    appWindow.on('show', function(event, create) {
+    appWindow.on('show', function() {
       let contextMenu = createContextMenu(true, false, true);
       
       tray.setContextMenu(contextMenu);
