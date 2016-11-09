@@ -102,6 +102,7 @@ ipcMain.on('synchronous-message', (event, arg, data) => {
         event.returnValue = 'data';
     } else {
         appWindow.show();
+        appWindow.setPosition(0,0);
         appWindow.setSize(arg.width, arg.height);
     }
 });
@@ -185,6 +186,7 @@ function createContextMenu(newShot, open, tray) {
                 // если пользователь подтвердил выбор — далем новый скриншот
                 if (index === 0) {
                     app.createShot = true;
+                    appWindow.setPosition(0,0);
                     appWindow.show();
                 }
             })
@@ -195,6 +197,7 @@ function createContextMenu(newShot, open, tray) {
         enabled: open,
         click() {
             appWindow.show();
+            appWindow.setPosition(0,0);
         }
       },
       {
