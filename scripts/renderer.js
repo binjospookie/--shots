@@ -79,7 +79,7 @@ const serverMessage = require('./functions/serverMessage');
 const serverButtonClickHandler = require('./functions/serverButtonClickHandler');
 const signinFormSubmitHandler = require('./functions/signinFormSubmitHandler');
 const calcAngle = require('./functions/calcAngle');
-
+const preventDND = require('./functions/preventDND');
 // Массив объектов, содержащих данные о каждом кропе.
 let croppingHistory = [];
 // Индекс текущего кусочка истории в массива
@@ -105,7 +105,7 @@ let penOldY;
 let onCreate = false;
 let areaZoom = 1;
 let scale;
-
+preventDND(window)
 // на случай говна
 serverMessage(APP_VERSION);
 stage.enableDOMEvents(true);
