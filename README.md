@@ -13,7 +13,8 @@ To access the tools use the global menu, context menu(click on the right mouse b
 * Crop
 * Pen
 * Rect
-* Emoji<br />
+* Emoji
+* Blur<br />
 
 > Press `F2` to see all shortcuts.<br />
 Learn about all the opportunities available [here](https://github.com/binjospookie/--shots/releases) 
