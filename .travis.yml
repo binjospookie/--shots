@@ -21,7 +21,7 @@ matrix:
       env: TARGET_ARCH=arm
 
 script:
-  - npm run
+  - npm run release
 
 branches:
   only:
