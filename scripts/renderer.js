@@ -379,6 +379,7 @@ function createScreenshot() {
 
   image = new Image();
   stage.update();
+  body.classList.remove('centered');
   modalOnStart(body, modalWindow);
 }
 
@@ -754,6 +755,7 @@ function stageMouseUpHandlerCrop(event) {
 
   onCreate = false;
   setDefaultSceneState();
+  body.classList.add('centered');
 }
 
 /**
@@ -777,6 +779,10 @@ function undoCrop() {
   stage.update();
 
   historyIndex = index;
+  
+  if (historyIndex === 0) {
+    body.classList.remove('centered');
+  }
 }
 
 function beforeNewScreenshot() {
@@ -806,6 +812,8 @@ function redoCrop() {
   stage.update();
 
   historyIndex = index;
+  
+  body.classList.add('centered');
 }
 
 /**

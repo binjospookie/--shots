@@ -1,7 +1,6 @@
 @import 'https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&subset=cyrillic';
 @import './src/reset.css';
 @import './src/body.css';
-@import './src/canvas.css';
 @import './src/div#frame.css';
 @import './src/hint.css';
 @import './src/aside#loader.css';
