@@ -54,7 +54,7 @@ body.move{
 body.draw{
     cursor: pointer;
 }
-canvas{
+body.centered > canvas{
     position: absolute;
     top: 0;
     right: 0;
