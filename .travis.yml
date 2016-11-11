@@ -5,7 +5,11 @@ notifications:
 
 language: node_js
 node_js:
-  - "6.1"
+  - "6"
+install:
+  - rm -rf node_modules
+  - npm install
+  
 os:
   - linux
 env:
@@ -16,7 +20,8 @@ matrix:
     - os: linux
       env: TARGET_ARCH=arm
 
-script: './script/cibuild'
+script:
+  - npm run && npm start
 
 branches:
   only:
