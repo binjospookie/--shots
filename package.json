@@ -23,7 +23,7 @@
           "target": ["rpm","AppImage", "deb"],  
           "category": "Graphics",
           "packageCategory": "graphics" 
-        },
+        }
     },
     "bugs": {
         "url": "https://github.com/binjospookie/--shots/issues"
