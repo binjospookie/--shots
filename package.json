@@ -11,20 +11,26 @@
         "compile": "rimraf build/out",
         "pack": "npm run compile && build --dir",
         "dist": "npm run compile && build",
-	"release": "npm run compile && build"
+        "release": "npm run compile && build"
     },
     "build": {
+        "appId": "org.binjo.shots",
+        "category": "graphics",
+        "app-category-type": "shots.graphics",
         "maintainer": "Victor Pasynok",
         "copyright": "Copyright © 2016 Victor Pasynok",
-	 "dmg": {
-	"icon": "./build/icon.icns"}
+        "linux": {
+          "target": ["rpm","AppImage", "deb"],  
+          "category": "Graphics",
+          "packageCategory": "graphics" 
+        },
     },
     "bugs": {
         "url": "https://github.com/binjospookie/--shots/issues"
     },
     "homepage": "http://shots.binjo.ru/",
     "devDependencies": {
-        "electron": "^1.4.5",
+        "electron": "^1.4.4",
         "electron-builder": "^7.14.2",
         "gulp-postcss": "^6.2.0",
         "postcss": "^5.2.5",
