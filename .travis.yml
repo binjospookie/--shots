@@ -1,0 +1,23 @@
+git:
+  depth: 10
+notifications:
+  email: false
+
+language: node_js
+node_js:
+  - "4"
+os:
+  - linux
+env:
+  - TARGET_ARCH=x64
+
+matrix:
+  include:
+    - os: linux
+      env: TARGET_ARCH=arm
+
+script: './script/cibuild'
+
+branches:
+  only:
+    - master
