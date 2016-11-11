@@ -1,6 +1,8 @@
 <p align="center"> <img src="http://shots.binjo.ru/src/icongh.png" alt="logotype" /> </p>
 
-# --shots 
+# --shots
+[![Build Status](https://travis-ci.org/binjospookie/--shots.svg?branch=master)](https://travis-ci.org/binjospookie/--shots)
+
 An application for creating screenshots. It's simple and free!<br />
 Just download the package for your OS and start working!<br />
 You can save the screenshot locally, copy the code or send it to the server and get a link.<br />
