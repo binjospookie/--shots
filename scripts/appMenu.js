@@ -15,7 +15,7 @@ module.exports = function appMenu(app, appWindow) {
           {
             label: 'New shot',
             accelerator: 'CmdOrCtrl+N',
-            click() { 
+            click() {
               dialog.showMessageBox(newShotDialog, function(index) {
                   // если пользователь подтвердил выбор — далем новый скриншот
                   if (index === 0) {
@@ -234,6 +234,10 @@ module.exports = function appMenu(app, appWindow) {
           {
             label: 'Source code',
             click() { shell.openExternal('https://github.com/binjospookie/--shots'); },
+          },
+          {
+            label: 'Leave a feedback',
+            click() { shell.openExternal('https://theshots.ru/feedback'); },
           },
         ],
       },
