@@ -43,3 +43,5 @@ But you can't use admin-page.
 
 <br />
 ***First commit was added 24 Sep 2016***
+
+If you want to thank me, just starring the project :tada:
