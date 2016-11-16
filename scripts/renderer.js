@@ -107,7 +107,10 @@ let areaZoom = 1;
 let scale;
 preventDND(window)
 // на случай говна
-serverMessage(APP_VERSION);
+isOnline((err, status) => {
+  if (status === true) {
+    serverMessage(APP_VERSION);
+  }});
 stage.enableDOMEvents(true);
 addModalButtonListeners(closeModalButtons, closeModalButtonClickHandler, body,
     modalWindow);
