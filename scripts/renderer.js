@@ -927,7 +927,9 @@ function callSave() {
   data = workArea.toDataURL('', 'image/jpeg');
   workArea.style.transform = '';
   ipcRenderer.sendSync('synchronous-message', 'optimize', data);
-
+  
+  setDefaultSceneState();
+  
   isOnline((err, status) => {
     if (status !== true) {
       if (['local base64', 'local', 'base64'].indexOf(settings) === -1) {

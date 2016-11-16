@@ -26,7 +26,8 @@
           "packageCategory": "graphics" 
         },
         "win": {
-          "iconUrl": "https://github.com/binjospookie/--shots/blob/master/build/icon.ico?raw=true"
+          "iconUrl": "https://github.com/binjospookie/--shots/blob/master/build/icon.ico?raw=true",
+          /*"loadingGif": "path/to/gif"*/
         }
     },
     "bugs": {
