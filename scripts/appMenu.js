@@ -228,6 +228,10 @@ module.exports = function appMenu(app, appWindow) {
             click() { appWindow.webContents.send('signin'); },
           },
           {
+            label: 'Admin panel',
+            click() { shell.openExternal('https://theshots.ru/admin/'); },
+          },
+          {
             label: 'Check for updates',
             click() { appWindow.webContents.send('updates'); },
           },
