@@ -27,6 +27,7 @@ Learn about all the opportunities available [here](https://github.com/binjospook
 * Electron
 * HTML
 * CSS
+* PostCSS
 * JavaScript
 * NodeJs
 * PHP
