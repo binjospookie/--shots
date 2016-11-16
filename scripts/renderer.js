@@ -398,7 +398,7 @@ function stageMouseDownHandlerRect(filled, event) {
       stage.on('stagemousemove', stageMouseMoveHandlerRect);
   }
   
-  stageMouseDownHandlerDefault(customEvent);
+  stageMouseDownHandlerDefault(filled, customEvent);
 }
 
 /**
@@ -412,16 +412,22 @@ function stageMouseDownHandlerArrow(event) {
 /**
  * Обработчик нажатия кнопки мыши при стандартной работе с фигурой
  */
-function stageMouseDownHandlerDefault(event) {
+function stageMouseDownHandlerDefault(filled, event) {
+  const customEvent = (filled === 'filled') ? event : filled;
+  
   const container = new createjs.Container();
 
   container.name = 'shapeContainer';
-  container.x = event.stageX - stage.x;
-  container.y = event.stageY - stage.y;
+  container.x = customEvent.stageX - stage.x;
+  container.y = customEvent.stageY - stage.y;
 
   hideControls(activeShape, stage);
-
-  stage.addChild(container);
+  
+  if (filled === 'filled') {
+    stage.addChildAt(container, 1);
+  } else {
+    stage.addChild(container);
+  }
 
   stage.update();
 
