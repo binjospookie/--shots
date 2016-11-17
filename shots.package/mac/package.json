@@ -39,6 +39,7 @@
         "eslint-plugin-jsx-a11y": "^2.2.3"
     },
     "dependencies": {
-        "is-online": "^5.1.2"
+        "is-online": "^5.1.2",
+        "stylelint": "^7.5.0"
     }
 }
