@@ -11,11 +11,7 @@
         "compile": "rimraf build/out",
         "pack": "npm run compile && build --dir",
         "dist": "npm run compile && build",
-        "release": "npm run compile && build",
-        "lint-staged": "lint-staged"
-    },
-    "lint-staged": {
-      "*.css": "stylelint"
+        "release": "npm run compile && build"
     },
     "build": {
         "appId": "org.binjo.shots",
