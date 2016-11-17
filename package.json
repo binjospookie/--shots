@@ -11,7 +11,8 @@
         "compile": "rimraf build/out",
         "pack": "npm run compile && build --dir",
         "dist": "npm run compile && build",
-        "release": "npm run compile && build"
+        "release": "npm run compile && build",
+        "lint": "npm-run-all --parallel lint:*",
     },
     "build": {
         "appId": "org.binjo.shots",
@@ -44,6 +45,7 @@
     },
     "dependencies": {
         "is-online": "^5.1.2",
-        "stylelint": "^7.5.0"
+        "stylelint": "^7.5.0",
+        "npm-run-all": "^3.0.0"
     }
 }
