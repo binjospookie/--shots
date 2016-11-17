@@ -22,6 +22,7 @@ matrix:
 
 script:
   - npm run compile
+  - npm run lint
 
 branches:
   only:
