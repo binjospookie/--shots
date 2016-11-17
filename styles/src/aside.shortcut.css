@@ -5,19 +5,25 @@ aside.hint.shortcut {
     bottom: 0;
     left: 0;
     z-index: 1;
+
     width: 570px;
     height: 390px;
     padding: 20px;
     margin: auto;
-    font-family: 'Roboto', sans-serif;
+
+    font-family: "Roboto", sans-serif;
+
     background: #F4F3F2;
-    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.08), 0 3px 12px 0 rgba(0, 0, 0, 0.12);
+
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .08), 0 3px 12px 0 rgba(0, 0, 0, .12);
 }
 
 aside.hint.shortcut > ul {
-  margin: 30px 0 0 0;
   width: 550px;
+  margin: 30px 0 0;
+
   list-style-type: none;
+
   -webkit-column-count: 2;
 }
 

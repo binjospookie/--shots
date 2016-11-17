@@ -6,21 +6,23 @@ aside#messageToUser {
   z-index: 5;
 
   display: flex;
-  align-items: center;
   justify-content: center;
-  opacity: 0;
+  align-items: center;
   visibility: hidden;
 
   padding: 50px 20px;
   margin: auto;
 
+  opacity: 0;
   background: white;
-  box-shadow: 0 2px 6px 0 rgba(0,0,0,.08),0 3px 12px 0 rgba(0,0,0,.12);
+
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .08),0 3px 12px 0 rgba(0, 0, 0, .12);
 
   transition: all .3s;
 
   &.show-hide {
     visibility: visible;
+
     opacity: 1;
 
     transition: all .3s;
@@ -30,7 +32,7 @@ aside#messageToUser {
     position: relative;
     z-index: 1;
 
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 20px;
 
     &:before {
@@ -42,7 +44,7 @@ aside#messageToUser {
         z-index: -1;
 
         pointer-events: none;
-        content: '';
+        content: "";
 
         background: rgba(0, 0, 0, .8);
     }
