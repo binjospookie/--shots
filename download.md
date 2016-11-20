@@ -1,10 +1,10 @@
 # Download
 Available for Linux,Windows, MacOS
 
-## 0.1.2
+## 0.1.3
 
-* [shots-0.1.2-amd64.deb](https://github.com/binjospookie/--shots/releases/download/v0.1.3/shots_0.1.3_amd64.deb)<br />
-* [shots-0.1.2-x86_64.AppImage](https://github.com/binjospookie/--shots/releases/download/v0.1.3/shots-0.1.3-x86_64.AppImage)
+* [shots-0.1.3-amd64.deb](https://github.com/binjospookie/--shots/releases/download/v0.1.3/shots_0.1.3_amd64.deb)<br />
+* [shots-0.1.3-x86_64.AppImage](https://github.com/binjospookie/--shots/releases/download/v0.1.3/shots-0.1.3-x86_64.AppImage)
 
 ## 0.1.2
 
