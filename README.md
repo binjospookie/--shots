@@ -44,4 +44,4 @@ But you can't use admin-page.
 <br />
 ***First commit was added 24 Sep 2016***
 
-If you want to thank me, just starring the project :tada:
+If you want to thank me, just starring the project and tell your friends about --shots :tada:
