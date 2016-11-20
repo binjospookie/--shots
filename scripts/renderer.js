@@ -97,6 +97,13 @@ const signinButtons = signinWindow.querySelectorAll('button[type="button"]');
 const signinForm = signinWindow.querySelector('form');
 const closeSettingsButtons = settings.querySelectorAll('button.close');
 const serverButton = settings.querySelector('button#serverPath');
+const commonSettings = localStorage.getItem('commonSettings');
+let IMMEDIATELY_CROP = false;
+if (commonSettings !== null && commonSettings !== undefined) {
+  const commonSettingsArray = JSON.parse(commonSettings);
+  IMMEDIATELY_CROP = (commonSettingsArray.indexOf('immediatelycrop') !== -1);
+}
+
 // старое значение по X при работе с карандашом
 let penOldX;
 // старое значение по Y при работе с карандашом
@@ -225,7 +232,7 @@ function stageMouseUpShapes() {
   } else {
     let shape = activeShape.getChildByName('rect');
     let shapeBounds;
-    
+
     if (shape === null) {
       shape = activeShape.getChildByName('arrow');
       shapeBounds = activeShape.getChildByName('arrow').getBounds();
@@ -248,15 +255,15 @@ function stageMouseUpShapes() {
     transformButton.x = arrow.length + 25;
     transformButton.y = 10;
   }
-  
+
   if (activeShape.children[0].filled !== true) {
     activeShape.addChild(transformButton);
   }
-  
+
   if (activeShape.children[0].filled === true) {
     activeShape.removeChildAt(1);
     activeShape.removeChildAt(1);
-    
+
     addOutline(activeShape);
   }
 
@@ -328,7 +335,7 @@ function transformMoveHandler(event) {
       const left = child[i].x;
       const name = child[i].name;
       const filled = child[i].filled;
-      
+
       if (name === 'rect') {
         child[i].graphics.clear().setStrokeStyle(4 / activeShape.scaleX).beginStroke('#D50000').drawRoundRect(left, top, width, height, 2 / activeShape.scaleX);
       } else {
@@ -341,9 +348,9 @@ function transformMoveHandler(event) {
       shapeName = 'arrow';
     }
   }
-  
+
   degree = calcAngle(activeShape.x, activeShape.y, event.stageX - stage.x, event.stageY - stage.y);
-  
+
   if (shapeName === 'arrow') {
     activeShape.rotation = degree;
   } else {
@@ -371,7 +378,7 @@ function createScreenshot() {
     types: ['screen'],
     thumbnailSize: thumbSize,
   };
-  
+
   const answer = ipcRenderer.sendSync('synchronous-message', 'hide');
 
   if (answer === 'ok') {
@@ -384,6 +391,10 @@ function createScreenshot() {
   stage.update();
   body.classList.remove('centered');
   modalOnStart(body, modalWindow);
+
+  if (IMMEDIATELY_CROP) {
+    callCrop();
+  }
 }
 
 /**
@@ -391,13 +402,13 @@ function createScreenshot() {
  */
 function stageMouseDownHandlerRect(filled, event) {
   const customEvent = (filled === 'filled') ? event : filled;
-  
+
   if (filled === 'filled') {
     stage.on('stagemousemove', stageMouseMoveHandlerRect.bind(null, filled));
   } else {
       stage.on('stagemousemove', stageMouseMoveHandlerRect);
   }
-  
+
   stageMouseDownHandlerDefault(filled, customEvent);
 }
 
@@ -414,7 +425,7 @@ function stageMouseDownHandlerArrow(event) {
  */
 function stageMouseDownHandlerDefault(filled, event) {
   const customEvent = (filled === 'filled') ? event : filled;
-  
+
   const container = new createjs.Container();
 
   container.name = 'shapeContainer';
@@ -422,7 +433,7 @@ function stageMouseDownHandlerDefault(filled, event) {
   container.y = customEvent.stageY - stage.y;
 
   hideControls(activeShape, stage);
-  
+
   if (filled === 'filled') {
     stage.addChildAt(container, 1);
   } else {
@@ -480,7 +491,7 @@ function stageMouseMoveHandlerRect(filled, event) {
   if(activeShape === undefined) {
     return;
   }
-  
+
   const customEvent = (filled === 'filled') ? event : filled;
   const shape = new createjs.Shape();
   const width = Math.abs(customEvent.stageX - stage.x - activeShape.x);
@@ -498,26 +509,26 @@ function stageMouseMoveHandlerRect(filled, event) {
   if (customEvent.stageY - stage.y < activeShape.y ) {
     shapeY = (filled === 'filled') ? 0 : customEvent.stageY - stage.y - activeShape.y;
   }
-  
+
   if (filled === 'filled') {
     const pixeledImage = new Image();
     const canva = document.createElement('canvas');
     const canvaCtx = canva.getContext('2d');
     var borderShape = new createjs.Shape();
-    
-    borderShape.name = 'borderShape'; 
+
+    borderShape.name = 'borderShape';
     canva.width = width;
-    canva.height = height; 
+    canva.height = height;
     pixeledImage.src = stage.children[0].image.src;
-    canvaCtx.drawImage(pixeledImage, -activeShape.x, -activeShape.y);  
-    
+    canvaCtx.drawImage(pixeledImage, -activeShape.x, -activeShape.y);
+
     shape.graphics.beginBitmapFill(canva).drawRoundRect(shapeX, shapeY, width, height, 2 / areaZoom);
     borderShape.graphics.setStrokeStyle(1 / areaZoom).beginStroke('#37AEE2')
       .drawRoundRect(shapeX, shapeY, width, height, 2 / areaZoom);
-    
+
     shape.filters = [blurFilter];
     shape.cache(shapeX, shapeY, width, height)
-    shape.filled = true;  
+    shape.filled = true;
   } else {
     shape.graphics.setStrokeStyle(4 / areaZoom).beginStroke('#D50000')
       .drawRoundRect(shapeX, shapeY, width, height, 2 / areaZoom);
@@ -525,7 +536,7 @@ function stageMouseMoveHandlerRect(filled, event) {
 
   shape.setBounds(shapeX, shapeY, width, height);
   activeShape.addChild(shape);
-  
+
   if (borderShape) {
     activeShape.addChild(borderShape);
   }
@@ -573,7 +584,7 @@ function callRect(filled) {
 
     onCreate = true;
     body.classList.add('draw');
-    
+
     if (filled === 'filled') {
       rectListeners(stageMouseDownHandlerRect.bind(null,filled), stageMouseUpShapes, stage);
     } else {
@@ -788,7 +799,7 @@ function undoCrop() {
   stage.update();
 
   historyIndex = index;
-  
+
   if (historyIndex === 0) {
     body.classList.remove('centered');
   }
@@ -821,7 +832,7 @@ function redoCrop() {
   stage.update();
 
   historyIndex = index;
-  
+
   body.classList.add('centered');
 }
 
@@ -936,9 +947,9 @@ function callSave() {
   data = workArea.toDataURL('', 'image/jpeg');
   workArea.style.transform = '';
   ipcRenderer.sendSync('synchronous-message', 'optimize', data);
-  
+
   setDefaultSceneState();
-  
+
   isOnline((err, status) => {
     if (status !== true) {
       if (['local base64', 'local', 'base64'].indexOf(settings) === -1) {

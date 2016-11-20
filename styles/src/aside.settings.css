@@ -195,3 +195,9 @@ aside.settings {
         }
     }
 }
+
+.crop.capture {
+  position: relative;
+  top: 25px;
+  left: -135px;
+}
