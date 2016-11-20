@@ -27,9 +27,6 @@
 				Clicking on "New" is for creating a new screenshot.
 			</li>
 			<li>
-				Choose "Crop" for cropping your screenshot.
-			</li>
-			<li>
 				Choose "Crop" for cropping an area.
 			</li>
 			<li>
@@ -139,8 +136,11 @@
 			</label>
 			<button type="button" id="serverPath">Change server path</button>
 			<input type="text" id="serverinput"/>
-			<label for="applyCustom">Apply custom</label>
-			<input type="checkbox" id="applyCustom" />
+			<label class="switch" for="applyCustom">
+				<span>Apply custom</span>
+			  <input type="checkbox" id="applyCustom">
+			  <div class="slider round"></div>
+			</label>
 		</form>
 	</aside>
 	<aside class="sign-in">

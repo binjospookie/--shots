@@ -1,11 +1,12 @@
 @import 'https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&subset=cyrillic';
+/* stylelint-disable */
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video{
-    margin: 0;
     padding: 0;
-    border: 0;
-    font-size: 100%;
+    margin: 0;
     font: inherit;
+    font-size: 100%;
     vertical-align: baseline;
+    border: 0;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section{
@@ -42,7 +43,7 @@ body.modal:before{
     left: 0;
     z-index: 1;
     pointer-events: none;
-    content: '';
+    content: "";
     background: rgba(0, 0, 0, .8);
 }
 body.crop{
@@ -86,9 +87,9 @@ aside.hint{
     max-height: 495px;
     padding: 20px;
     margin: auto;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     background: #F4F3F2;
-    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.08), 0 3px 12px 0 rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .08), 0 3px 12px 0 rgba(0, 0, 0, .12);
 }
 aside.hint > h1{
     padding: 0;
@@ -102,12 +103,12 @@ aside.hint > h2{
     font-weight: 600;
 }
 aside.hint > ul{
-    margin: 0;
     padding: 10px 0 0 20px;
+    margin: 0;
 }
 aside.hint > ul > li{
-    margin-bottom: 10px;
     padding: 0;
+    margin-bottom: 10px;
     font-size: 14px;
     line-height: 1.4rem;
 }
@@ -116,17 +117,17 @@ aside.hint > ul > li > span{
 }
 aside.hint > button{
     display: inline-block;
-    font-size: 0.9em;
-    color: #4285f4;
+    font-size: .9em;
+    text-transform: uppercase;
     cursor: pointer;
+    color: #4285f4;
     background: none;
     border: none;
-    text-transform: uppercase;
 }
 aside.hint > button.js-close-agree{
     width: 100%;
-    margin-top: 20px;
     padding-right: 20px;
+    margin-top: 20px;
     text-align: right;
 }
 aside.hint > button.js-close-hint{
@@ -137,17 +138,17 @@ aside.hint > button.js-close-hint{
     overflow: hidden;
     width: 40px;
     height: 32px;
-    opacity: .3;
-    cursor: pointer;
     text-indent: 40px;
+    cursor: pointer;
+    opacity: .3;
 }
 aside.hint > button.js-close-hint:before, aside.hint > button.js-close-hint:after{
     position: absolute;
     top: 0;
     left: 18px;
-    content: '';
-    height: 33px;
     width: 2px;
+    height: 33px;
+    content: "";
     background-color: #8C8888;
 }
 aside.hint > button.js-close-hint:before{
@@ -183,7 +184,7 @@ aside#loader > span{
     bottom: 0;
     left: 0;
     margin: 55px auto;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     text-align: center;
     color: white;
 }
@@ -196,14 +197,14 @@ aside#loader > .spinner{
     width: 70px;
     height: 70px;
     margin: auto;
-    stroke: #4285f4;
     animation: rotation 1.4s linear infinite;
+    stroke: #4285f4;
 }
 aside#loader > .spinner > .circle{
-    stroke-dasharray: 187;
-    stroke-dashoffset: 0;
     transform-origin: center;
     animation: turn 1.4s ease-in-out infinite;
+    stroke-dasharray: 187;
+    stroke-dashoffset: 0;
 }
 aside#loader.show{
     display: block;
@@ -221,12 +222,12 @@ aside#loader.show{
         stroke-dashoffset: 187;
     }
     50%{
-        stroke-dashoffset: 46.75;
         transform: rotate(135deg);
+        stroke-dashoffset: 46.75;
     }
     100%{
-        stroke-dashoffset: 187;
         transform: rotate(450deg);
+        stroke-dashoffset: 187;
     }
 }
 aside.hint.shortcut{
@@ -240,13 +241,13 @@ aside.hint.shortcut{
     height: 390px;
     padding: 20px;
     margin: auto;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     background: #F4F3F2;
-    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.08), 0 3px 12px 0 rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .08), 0 3px 12px 0 rgba(0, 0, 0, .12);
 }
 aside.hint.shortcut > ul{
-    margin: 30px 0 0 0;
     width: 550px;
+    margin: 30px 0 0;
     list-style-type: none;
     -webkit-column-count: 2;
 }
@@ -269,9 +270,9 @@ aside.settings{
     height: 280px;
     padding: 20px;
     margin: auto;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     background: #F4F3F2;
-    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.08), 0 3px 12px 0 rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .08), 0 3px 12px 0 rgba(0, 0, 0, .12);
 }
 aside.settings > h2{
     padding: 0;
@@ -316,8 +317,8 @@ aside.settings > form label{
 }
 aside.settings > form label.capture{
     display: inline-block;
-    vertical-align: top;
     margin-top: 36px;
+    vertical-align: top;
 }
 aside.settings > form > input#serverinput, aside.settings > form > button#serverPath{
     position: absolute;
@@ -333,9 +334,9 @@ aside.settings > form > input#serverinput.visible{
 aside.settings > form > button#serverPath{
     top: 95px;
     padding: 0;
-    cursor: pointer;
     font-size: 16px;
     font-weight: 600;
+    cursor: pointer;
     color: black;
     background: none;
     border: none;
@@ -346,17 +347,17 @@ aside.settings > form > button#serverPath:hover{
 }
 aside.settings > button{
     display: inline-block;
-    font-size: 0.9em;
-    color: #4285f4;
+    font-size: .9em;
+    text-transform: uppercase;
     cursor: pointer;
+    color: #4285f4;
     background: none;
     border: none;
-    text-transform: uppercase;
 }
 aside.settings > button.js-close-agree{
     width: 100%;
-    margin-top: 20px;
     padding-right: 20px;
+    margin-top: 20px;
     text-align: right;
 }
 aside.settings > button.js-close-hint{
@@ -367,17 +368,17 @@ aside.settings > button.js-close-hint{
     overflow: hidden;
     width: 40px;
     height: 32px;
-    opacity: .3;
-    cursor: pointer;
     text-indent: 40px;
+    cursor: pointer;
+    opacity: .3;
 }
 aside.settings > button.js-close-hint:before, aside.settings > button.js-close-hint:after{
     position: absolute;
     top: 0;
     left: 18px;
-    content: '';
-    height: 33px;
     width: 2px;
+    height: 33px;
+    content: "";
     background-color: #8C8888;
 }
 aside.settings > button.js-close-hint:before{
@@ -407,9 +408,9 @@ aside.sign-in{
     height: 210px;
     padding: 20px;
     margin: auto;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     background: #F4F3F2;
-    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.08), 0 3px 12px 0 rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .08), 0 3px 12px 0 rgba(0, 0, 0, .12);
 }
 aside.sign-in >h2{
     padding: 0;
@@ -422,34 +423,34 @@ aside.sign-in >form{
 aside.sign-in >form > label{
     display: block;
     width: 220px;
-    margin: 0 auto 20px auto;
+    margin: 0 auto 20px;
 }
 aside.sign-in >form > label > input{
     width: 100%;
     height: 20px;
     font-size: 14px;
-    border: none;
     color: black;
-    border-bottom: 1px solid #37aee2;
     background: transparent;
+    border: none;
+    border-bottom: 1px solid #37aee2;
 }
 aside.sign-in >form >button{
     display: inline-block;
-    font-size: 0.9em;
-    color: #4285f4;
+    font-size: .9em;
+    text-transform: uppercase;
     cursor: pointer;
+    color: #4285f4;
     background: none;
     border: none;
-    text-transform: uppercase;
 }
 aside.sign-in >form >button[type="submit"]{
-    margin: 40px auto;
     display: block;
+    margin: 40px auto;
 }
 aside.sign-in >form >button.js-close-agree{
     width: 100%;
-    margin-top: 20px;
     padding-right: 20px;
+    margin-top: 20px;
     text-align: right;
 }
 aside.sign-in >form >button.js-close-hint{
@@ -460,17 +461,17 @@ aside.sign-in >form >button.js-close-hint{
     overflow: hidden;
     width: 40px;
     height: 32px;
-    opacity: .3;
-    cursor: pointer;
     text-indent: 40px;
+    cursor: pointer;
+    opacity: .3;
 }
 aside.sign-in >form >button.js-close-hint:before, aside.sign-in >form >button.js-close-hint:after{
     position: absolute;
     top: 0;
     left: 18px;
-    content: '';
-    height: 33px;
     width: 2px;
+    height: 33px;
+    content: "";
     background-color: #8C8888;
 }
 aside.sign-in >form >button.js-close-hint:before{
@@ -495,20 +496,20 @@ aside#messageToUser{
     left: 0;
     z-index: 5;
     display: flex;
-    align-items: center;
     justify-content: center;
-    opacity: 0;
+    align-items: center;
     visibility: hidden;
     padding: 50px 20px;
     margin: auto;
+    opacity: 0;
     background: white;
-    box-shadow: 0 2px 6px 0 rgba(0,0,0,.08),0 3px 12px 0 rgba(0,0,0,.12);
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .08),0 3px 12px 0 rgba(0, 0, 0, .12);
     transition: all .3s;
 }
 aside#messageToUser > p{
     position: relative;
     z-index: 1;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 20px;
 }
 aside#messageToUser > p:before{
@@ -519,11 +520,66 @@ aside#messageToUser > p:before{
     left: 0;
     z-index: -1;
     pointer-events: none;
-    content: '';
+    content: "";
     background: rgba(0, 0, 0, .8);
 }
 aside#messageToUser.show-hide{
     visibility: visible;
     opacity: 1;
     transition: all .3s;
+}
+.switch{
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+}
+.switch > span{
+    position: absolute;
+    width: 107px;
+    left: -106px;
+    top: 9px;
+}
+.switch input{
+    display: none;
+}
+.slider{
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+.slider:before{
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+input:checked + .slider{
+    background-color: #2196F3;
+}
+input:focus + .slider{
+    box-shadow: 0 0 1px #2196F3;
+}
+input:checked + .slider:before{
+    -webkit-transform: translateX(24px);
+    -ms-transform: translateX(24px);
+    transform: translateX(24px);
+}
+/* Rounded sliders */
+.slider.round{
+    border-radius: 34px;
+}
+.slider.round:before{
+    border-radius: 50%;
 }
