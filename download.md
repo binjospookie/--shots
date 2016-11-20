@@ -3,6 +3,11 @@ Available for Linux,Windows, MacOS
 
 ## 0.1.2
 
+* [shots-0.1.2-amd64.deb](https://github.com/binjospookie/--shots/releases/download/v0.1.3/shots-0.1.3-amd64.deb)<br />
+* [shots-0.1.2-x86_64.AppImage](https://github.com/binjospookie/--shots/releases/download/v0.1.3/shots-0.1.3-x86_64.AppImage)1.2.tar.gz)
+
+## 0.1.2
+
 * [shots-0.1.2-amd64.deb](https://github.com/binjospookie/--shots/releases/download/v0.1.2/shots-0.1.2-amd64.deb)<br />
 * [shots-0.1.2-x86_64.AppImage](https://github.com/binjospookie/--shots/releases/download/v0.1.2/shots-0.1.2-x86_64.AppImage)<br />
 * [shots-0.1.2.dmg.zip](https://github.com/binjospookie/--shots/releases/download/v0.1.2/shots-0.1.2-mac.zip)<br />
