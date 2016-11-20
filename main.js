@@ -41,17 +41,31 @@ const signInDialog = {
     buttons: ['Yes', 'No']
 };
 
+const shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
+  // Someone tried to run a second instance, we should focus our window
+  if (appWindow) {
+    if (appWindow.isMinimized()) appWindow.restore();
+    appWindow.focus();
+  }
+  return true;
+});
+
+if (shouldQuit) {
+  app.quit();
+  return;
+}
+
 /**
  * Создаём окно, когда приложение инициализировано
  * И регистрируем необходимые клаиши для обработки истории
  */
 app.on('ready', () => {
-
+    console.log(process.defaultApp);
     createWindow();
 
     const template = appMenu(app, appWindow);
     const menu = Menu.buildFromTemplate(template);
-    
+
     /**
      * Содаём меню приложения
      */
@@ -145,13 +159,13 @@ function createWindow() {
     appWindow.on('closed', function() {
         appWindow = null;
     });
-    
+
     appWindow.on('minimize', function() {
       let contextMenu = createContextMenu(false, true, false);
-      
+
       tray.setContextMenu(contextMenu);
     });
-    
+
     appWindow.on('hide', function() {
       if (app.firstStartTray === true) {
         let contextMenu = createContextMenu(true, false, false);
@@ -162,10 +176,10 @@ function createWindow() {
         tray.setContextMenu(contextMenu);
       }
     });
-    
+
     appWindow.on('show', function() {
       let contextMenu = createContextMenu(true, false, true);
-      
+
       tray.setContextMenu(contextMenu);
       if(app.createShot  === true) {
         appWindow.webContents.send( 'new' );
