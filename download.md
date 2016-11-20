@@ -1,5 +1,5 @@
 # Download
-Available for Linux,Windows, MacOS
+Available for Linux,Windows, MacOS (exclude v0.1.3)
 
 ## 0.1.3
 
