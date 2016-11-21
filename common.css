@@ -1,4 +1,4 @@
-@import 'https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&subset=cyrillic';
+@import "https://fonts.googleapis.com/css?family=Roboto:300,400,700&subset=cyrillic";
 /* stylelint-disable */
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video{
     padding: 0;
@@ -54,6 +54,9 @@ body.move{
 }
 body.draw{
     cursor: pointer;
+}
+body.text{
+    cursor: text;
 }
 body.centered > canvas{
     position: absolute;
@@ -588,4 +591,84 @@ input:checked + .slider:before{
 }
 .slider.round:before{
     border-radius: 50%;
+}
+form#textSidebar{
+    position: fixed;
+    top: 50%;
+    left: 20px;
+    display: none;
+    width: 310px;
+    min-height: 335px;
+    padding-top: 50px;
+    padding-bottom: 20px;
+    padding-left: 10px;
+    font-family: "Roboto", sans-serif;
+    background: #F4F3F2;
+    box-shadow: 0 14px 28px rgba(0, 0, 0 , .25), 0 10px 10px rgba(0, 0, 0, .22);
+    transform: translateY(-50%);
+}
+form#textSidebar > label{
+    display: block;
+    padding: 0;
+    margin: 20px 0 10px 10px;
+    font-weight: 600;
+    font-size: 20px;
+}
+form#textSidebar > textarea, form#textSidebar > select, form#textSidebar > input{
+    display: block;
+    margin-bottom: 30px;
+    margin-left: 10px;
+}
+form#textSidebar > textarea{
+    width: 280px;
+    resize: vertical;
+}
+form#textSidebar > button{
+    display: inline-block;
+    font-size: .9em;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: #4285f4;
+    background: none;
+    border: none;
+}
+form#textSidebar > button.close-button{
+    position: absolute;
+    top: 10px;
+    right: 5px;
+    display: block;
+    overflow: hidden;
+    width: 40px;
+    height: 32px;
+    text-indent: 40px;
+    cursor: pointer;
+}
+form#textSidebar > button.close-button:before, form#textSidebar > button.close-button:after{
+    position: absolute;
+    top: 0;
+    left: 18px;
+    width: 2px;
+    height: 33px;
+    content: "";
+    background-color: #8C8888;
+}
+form#textSidebar > button.close-button:before{
+    transform: rotate(45deg);
+}
+form#textSidebar > button.close-button:after{
+    transform: rotate(-45deg);
+}
+form#textSidebar > button:focus{
+    outline: none;
+}
+form#textSidebar > button.deleteText{
+    margin-left: 4px;
+}
+form#textSidebar.show{
+    display: block;
+}
+label.color{
+    position: absolute;
+    top: 145px;
+    left: 304px;
 }

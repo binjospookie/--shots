@@ -1,50 +1,54 @@
 {
-    "name": "shots",
-    "version": "0.1.3",
-    "description": "An application for creating screenshots",
-    "main": "main.js",
-    "license": "NPOSL",
-    "author": "Victor Pasynok <binjospookie@gmail.com>",
-    "email": "binjospookie@gmail.com",
-    "scripts": {
-        "start": "electron .",
-        "compile": "rimraf build/out",
-        "pack": "npm run compile && build --dir",
-        "dist": "npm run compile && build",
-        "release": "npm run compile && build"
-    },
-    "build": {
-        "appId": "org.binjo.shots",
-        "category": "graphics",
-        "build.mac.category": "shots.graphics",
-        "maintainer": "Victor Pasynok",
-        "copyright": "Copyright © 2016 Victor Pasynok",
-        "linux": {
-          "target": ["AppImage", "deb"],  
-          "category": "Graphics",
-          "packageCategory": "graphics" 
-        }
-    },
-    "bugs": {
-        "url": "https://github.com/binjospookie/--shots/issues"
-    },
-    "homepage": "http://shots.binjo.ru/",
-    "devDependencies": {
-        "electron": "^1.4.7",
-        "electron-builder": "^8.6.0",
-        "gulp-postcss": "^6.2.0",
-        "postcss": "^5.2.5",
-        "rimraf": "^2.5.4",
-        "is-online": "^5.1.2",
-        "eslint": "^3.10.2",
-        "eslint-config-airbnb": "^13.0.0",
-        "eslint-loader": "^1.6.1",
-        "eslint-plugin-import": "^2.2.0",
-        "eslint-plugin-jsx-a11y": "^2.2.3"
-    },
-    "dependencies": {
-        "is-online": "^5.1.2",
-        "stylelint": "^7.5.0",
-        "npm-run-all": "^3.1.1"
+  "name": "shots",
+  "version": "0.1.3",
+  "description": "An application for creating screenshots",
+  "main": "main.js",
+  "license": "NPOSL",
+  "author": "Victor Pasynok <binjospookie@gmail.com>",
+  "email": "binjospookie@gmail.com",
+  "scripts": {
+    "start": "electron .",
+    "compile": "rimraf build/out",
+    "pack": "npm run compile && build --dir",
+    "dist": "npm run compile && build",
+    "release": "npm run compile && build"
+  },
+  "build": {
+    "appId": "org.binjo.shots",
+    "category": "graphics",
+    "build.mac.category": "shots.graphics",
+    "maintainer": "Victor Pasynok",
+    "copyright": "Copyright © 2016 Victor Pasynok",
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Graphics",
+      "packageCategory": "graphics"
     }
+  },
+  "bugs": {
+    "url": "https://github.com/binjospookie/--shots/issues"
+  },
+  "homepage": "http://shots.binjo.ru/",
+  "devDependencies": {
+    "electron": "1.4.5",
+    "electron-builder": "^8.6.0",
+    "eslint": "^3.10.2",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-loader": "^1.6.1",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "gulp-postcss": "^6.2.0",
+    "is-online": "^5.1.2",
+    "postcss": "^5.2.5",
+    "postcss-scss": "^0.4.0",
+    "rimraf": "^2.5.4"
+  },
+  "dependencies": {
+    "is-online": "^5.1.2",
+    "stylelint": "^7.5.0",
+    "npm-run-all": "^3.1.1"
+  }
 }

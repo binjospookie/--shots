@@ -52,8 +52,7 @@ let fillObj;
 const body = document.body;
 // обработчик нажатия на кнопки закрытия в модальном окне
 const closeModalButtonClickHandler = require('./functions/closeModal');
-// цвет карандаша
-const penColor = '#D50000';
+const shapeColorPicker = document.querySelector('input[name="shapecolor"]');
 // толщина карандаша
 const penSize = 4;
 const addModalButtonListeners = require('./functions/addModalButtonListeners');
@@ -152,10 +151,13 @@ ipcAdd(undoCrop, redoCrop, setDefaultSceneState, createScreenshot, callCrop,
     setDefaultZoom, callArrow, callSave, shortcutWindow, settings, signinWindow,
     createEmoji, APP_VERSION, textSidebar);
 
+function localstorageColorChangeHandler(value) {
+  penColor = value;
+}
 /**
  * Вешаем обработчики в форме изменения текста
  */
-textEventListeners(textareaContent, textateaFontSize, textateaFontColor, textareaValueChangeHadler, 
+textEventListeners(textareaContent, textateaFontSize, textateaFontColor, textareaValueChangeHadler,
   textareaFontSizeChangeHadler, textareaFontColorChangeHadler, deleteTextButton, deleteTextButtonClickHandler,
   applyTextButton, applyTextButtonClickHandler, closeTextFormButton);
 
@@ -187,7 +189,7 @@ function deleteTextButtonClickHandler() {
  */
 function textareaValueChangeHadler(event) {
   let textareaValue = event.target.value;
-  
+
   activeShape.children[0].text = textareaValue;
   stage.update();
 }
@@ -218,7 +220,7 @@ function textareaFontSizeChangeHadler(event) {
  */
 function textareaFontColorChangeHadler(event) {
   let textareaColor = event.target.value;
-  
+
   activeShape.children[0].color = textareaColor;
   stage.update();
 }
@@ -228,8 +230,9 @@ function openNewScreenshotDialog() {
   ipc.send('open-information-dialog');
 }
 initSettings(settings);
-initCommonSettings(settings);
-
+initCommonSettings(settings, localstorageColorChangeHandler);
+// цвет карандаша
+let penColor = shapeColorPicker.value;
 /**
  * Обработчик нажатия на сцене для выбора элементов
  */
@@ -293,11 +296,11 @@ function stageMouseDownHandler(event) {
  */
 function deleteShape(event) {
   activeShape = event.target.parent;
-  
+
   if (activeShape.name === CLOSE) {
     activeShape = event.target.parent.parent;
   }
-  
+
   if (activeShape.name === 'shapeContainerText') {
     textSidebar.classList.remove('show');
   }
@@ -318,7 +321,7 @@ function stageMouseUpShapes() {
     return;
   }
   deleteButton.addEventListener('click', deleteShape);
-  
+
   if (penOldX !== undefined && penOldY !== undefined) {
     deleteButton.x = penOldX - 10;
     deleteButton.y = penOldY - 10;
@@ -430,7 +433,7 @@ function transformMoveHandler(event) {
       const filled = child[i].filled;
 
       if (name === 'rect') {
-        child[i].graphics.clear().setStrokeStyle(4 / activeShape.scaleX).beginStroke('#D50000').drawRoundRect(left, top, width, height, 2 / activeShape.scaleX);
+        child[i].graphics.clear().setStrokeStyle(4 / activeShape.scaleX).beginStroke(penColor).drawRoundRect(left, top, width, height, 2 / activeShape.scaleX);
       } else {
         child[i].graphics.clear().setStrokeStyle(1 / activeShape.scaleX).beginStroke('#37aee2').drawRoundRect(left, top, width, height, 2 / activeShape.scaleX);
       }
@@ -443,7 +446,7 @@ function transformMoveHandler(event) {
   }
 
   degree = calcAngle(activeShape.x, activeShape.y, event.stageX - stage.x, event.stageY - stage.y);
-  
+
   if (shapeName === 'arrow') {
     activeShape.rotation = degree;
   } else {
@@ -543,9 +546,9 @@ function stageMouseDownHandlerDefault(filled, event) {
  */
 function drawArrow(arrow, length) {
   const arrowSize = Math.sqrt(length) / 1.5;
-  arrow.graphics.clear().ss(4 / activeShape.scaleX).s('#D50000').mt(0, 0)
+  arrow.graphics.clear().ss(4 / activeShape.scaleX).s(penColor).mt(0, 0)
     .lineTo(length, 0)
-    .f('#D50000')
+    .f(penColor)
     .dp(length - arrowSize, 0, arrowSize, 3);
   arrow.set({
     length: length,
@@ -623,7 +626,7 @@ function stageMouseMoveHandlerRect(filled, event) {
     shape.cache(shapeX, shapeY, width, height)
     shape.filled = true;
   } else {
-    shape.graphics.setStrokeStyle(4 / areaZoom).beginStroke('#D50000')
+    shape.graphics.setStrokeStyle(4 / areaZoom).beginStroke(penColor)
       .drawRoundRect(shapeX, shapeY, width, height, 2 / areaZoom);
   }
 
@@ -887,25 +890,25 @@ function createText(oldEvent) {
   cimage.onload = () => {
     const editButton = createEditButton(cimage);
     container.name = 'shapeContainerText';
-    
+
     let text = new createjs.Text('Example', '30px Roboto', '#D50000');
     text.name = 'paragraph';
     text.x = textPosition.x;
     text.y = textPosition.y;
     text.textBaseline = "alphabetic";
-    
+
     container.addChild(text)
     deleteButton.addEventListener('click', deleteShape);
     deleteButton.x = text.x - 25;
     deleteButton.y = text.y - 30;
     container.addChild(deleteButton);
-    
+
     editButton.addEventListener('click', openTextSidebar);
 
     editButton.x = text.x - 25;
     editButton.y = text.y;
     container.addChild(editButton);
-    
+
     stage.addChild(container);
     activeShape = container;
     stage.update();
