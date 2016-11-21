@@ -32,10 +32,6 @@ body {
     cursor: pointer;
   }
 
-  &.text {
-    cursor: text; 
-  }
-
   &.centered {
 
     > canvas {
