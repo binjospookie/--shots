@@ -22,6 +22,7 @@ matrix:
 
 script:
   - npm run compile
+  - stylelint ./common.css
 
 branches:
   only:
