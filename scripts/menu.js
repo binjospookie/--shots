@@ -11,7 +11,7 @@ const menu = new Menu();
 
 module.exports = function Menu(stage, stageMouseDownHandler, stageMouseUpHandler,
   stageMouseMoveHandler, openNewScreenshotDialog, callCrop, callRect, callPen,
-  callArrow, callSave,setDefaultSceneState) {
+  callArrow, callSave,setDefaultSceneState, body) {
   menu.append(new MenuItem({
     label: 'New shot',
     click() {
@@ -61,6 +61,16 @@ module.exports = function Menu(stage, stageMouseDownHandler, stageMouseUpHandler
     label: 'Rect',
     click() {
       callRect();
+    },
+  }));
+  menu.append(new MenuItem({
+    type: 'separator',
+  }));
+  menu.append(new MenuItem({
+    label: 'Text',
+    click() {
+      setDefaultSceneState();
+      body.classList.add('text');
     },
   }));
   menu.append(new MenuItem({

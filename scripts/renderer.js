@@ -145,7 +145,7 @@ stage.addEventListener('mousedown', stageMouseDownHandler, false);
 Menu(
     stage, stageMouseDownHandlerCrop, stageMouseUpHandlerCrop,
     stageMouseMoveHandlerCrop, openNewScreenshotDialog, callCrop,
-    callRect, callPen, callArrow, callSave, setDefaultSceneState);
+    callRect, callPen, callArrow, callSave, setDefaultSceneState, body);
 
 ipcAdd(undoCrop, redoCrop, setDefaultSceneState, createScreenshot, callCrop,
     callRect, callPen, body, modalWindow, getDrawStatus, callZoomIn, callZoomOut,
