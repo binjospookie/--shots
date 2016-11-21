@@ -288,6 +288,7 @@ function stageMouseDownHandler(event) {
     } else if (name === null && activeShape !== undefined) {
       hideControls(activeShape, stage);
       activeShape = undefined;
+      textSidebar.classList.remove('show');
       return;
     }
   }
