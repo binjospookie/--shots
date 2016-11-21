@@ -128,7 +128,7 @@ module.exports = function appMenu(app, appWindow) {
             click() { appWindow.webContents.send('text'); },
           },
           {
-            label: 'Emoji',
+            label: 'Stickers',
             submenu: [
               {
                 label: 'Angry face',
