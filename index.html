@@ -162,6 +162,17 @@
 	<aside id="messageToUser">
 		<p></p>
 	</aside>
+	<form id="textSidebar">
+		<button type="button" class="close-button" id="closeTextForm">Close</button>
+		<label for="textContent">Your text</label>
+		<textarea id="textContent"></textarea>
+		<label for="fontSize">Font size</label>
+		<input type="number" id="fontSize" value="30" min="20" />
+		<label for="fontColor">Font color</label>
+		<input type="color" id="fontColor" value="#D50000" />
+		<button type="button" class="deleteText" id="deleteText">Delete</button>
+		<button type="button" id="applyText">Apply</button>
+	</form>	
 </body>
 <script src="./scripts/libs/createjs-2015.11.26.min.js"></script>
 <script>

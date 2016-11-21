@@ -6,17 +6,17 @@ const popupWindow = document.querySelector('aside#messageToUser');
 const popupText = popupWindow.querySelector('p');
 const os = require('os');
 
-function undo(undoCrop, body) {
+function undo(undoCrop, body, textSidebar) {
   ipcRenderer.on('undo', () => {
-    if (body.classList.contains('modal')) {
+    if (body.classList.contains('modal') || textSidebar.classList.contains('show')) {
       return;
     }
     undoCrop();
   });
 }
-function redo(redoCrop, body) {
+function redo(redoCrop, body, textSidebar) {
   ipcRenderer.on('redo', () => {
-    if (body.classList.contains('modal')) {
+    if (body.classList.contains('modal') || textSidebar.classList.contains('show')) {
       return;
     }
     redoCrop();
@@ -31,6 +31,7 @@ function stop(body, modalWindow, setDefaultSceneState, shortcutWindow,
     settingsWindow.classList.remove('open');
     signinWindow.classList.remove('open');
     body.classList.remove('modal');
+    body.classList.remove('text');
   });
 }
 function newShot(createScreenshot, body) {
@@ -41,25 +42,25 @@ function newShot(createScreenshot, body) {
     createScreenshot();
   });
 }
-function crop(callCrop, body) {
+function crop(callCrop, body, textSidebar) {
   ipcRenderer.on('crop', () => {
-    if (body.classList.contains('modal')) {
+    if (body.classList.contains('modal') || textSidebar.classList.contains('show')) {
       return;
     }
     callCrop();
   });
 }
-function rect(callRect, body) {
+function rect(callRect, body, textSidebar) {
   ipcRenderer.on('rect', (sender, param) => {
-    if (body.classList.contains('modal')) {
+    if (body.classList.contains('modal') || textSidebar.classList.contains('show')) {
       return;
     }
     callRect(param);
   });
 }
-function pen(callPen, body) {
+function pen(callPen, body, textSidebar) {
   ipcRenderer.on('pen', () => {
-    if (body.classList.contains('modal')) {
+    if (body.classList.contains('modal') || textSidebar.classList.contains('show')) {
       return;
     }
     callPen();
@@ -67,9 +68,9 @@ function pen(callPen, body) {
 }
 
 function signin(body, shortcutWindow, getDrawStatus, modalWindow,
-  settingsWindow, signinWindow) {
+  settingsWindow, signinWindow, textSidebar) {
   ipcRenderer.on('signin', () => {
-    if (document.activeElement.tagName === "INPUT") {
+    if (document.activeElement.tagName === "INPUT" || textSidebar.classList.contains('show')) {
       return;
     }
     let areaZoom = body.style.transform;
@@ -144,9 +145,9 @@ function shortcut(body, shortcutWindow, getDrawStatus, modalWindow,
 }
 
 function settings(body, shortcutWindow, getDrawStatus, modalWindow,
-  settingsWindow, signinWindow) {
+  settingsWindow, signinWindow, textSidebar) {
   ipcRenderer.on('settings', () => {
-    if (document.activeElement.tagName === 'INPUT') {
+    if (document.activeElement.tagName === 'INPUT' || textSidebar.classList.contains('show')) {
       return;
     }
     let areaZoom = body.style.transform;
@@ -178,58 +179,71 @@ function scaleToNumber(areaZoom) {
   return areaZoom;
 }
 
-function zoomIn(callZoomIn, body) {
+function zoomIn(callZoomIn, body, textSidebar) {
   ipcRenderer.on('zoomIn', () => {
-    if (body.classList.contains('modal')) {
+    if (body.classList.contains('modal') || textSidebar.classList.contains('show')) {
       return;
     }
     callZoomIn();
   });
 }
 
-function zoomOut(callZoomOut, body) {
+function zoomOut(callZoomOut, body, textSidebar) {
   ipcRenderer.on('zoomOut', () => {
-    if (body.classList.contains('modal')) {
+    if (body.classList.contains('modal') || textSidebar.classList.contains('show')) {
       return;
     }
     callZoomOut();
   });
 }
-
-function signOut(body, signinWindow) {
+function signOut(body, signinWindow, textSidebar) {
   ipcRenderer.on('signout', () => {
+    if (textSidebar.classList.contains('show')) {
+      return;
+    }
     localStorage.removeItem('token');
     body.classList.add('modal');
     signinWindow.classList.add('open');
   });
 }
 
-function defaultZoom(setDefaultZoom, body) {
+function defaultZoom(setDefaultZoom, body, textSidebar) {
   ipcRenderer.on('defaultZoom', () => {
-    if (body.classList.contains('modal')) {
+    if (body.classList.contains('modal') || textSidebar.classList.contains('show')) {
       return;
     }
     setDefaultZoom();
   });
 }
-function callArrow(callArrow, body) {
+function callArrow(callArrow, body, textSidebar) {
   ipcRenderer.on('arrow', () => {
-    if (body.classList.contains('modal')) {
+    if (body.classList.contains('modal') || textSidebar.classList.contains('show')) {
       return;
     }
     callArrow();
   });
 }
-function callSave(callSave, body) {
+function callSave(callSave, body, textSidebar) {
   ipcRenderer.on('save', () => {
-    if (body.classList.contains('modal')) {
+    if (body.classList.contains('modal') || textSidebar.classList.contains('show')) {
       return;
     }
     callSave();
   });
 }
-function emoji(createEmoji) {
+function text(body, textSidebar) {
+  ipcRenderer.on('text', (event) => {
+    if (body.classList.contains('modal') || textSidebar.classList.contains('show')) {
+      return;
+    }
+    body.classList.add('text');
+  });
+}   
+function emoji(createEmoji, textSidebar) {
   ipcRenderer.on('emoji', (event, type) => {
+    if (textSidebar.classList.contains('show')) {
+      return;
+    }
     createEmoji(type);
   });
 }
@@ -308,4 +322,5 @@ module.exports = {
   signin: signin,
   signOut: signOut,
   emoji: emoji,
+  text: text
 };

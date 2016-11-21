@@ -1,0 +1,105 @@
+form#textSidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  
+  display: none;
+  
+  width: 310px;
+  height: 100%;
+  padding-top: 50px;
+  
+  font-family: "Roboto", sans-serif;
+  
+  background: #F4F3F2;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .08), 0 3px 12px 0 rgba(0, 0, 0, .12);
+
+  > label {
+    display: block;
+    
+    padding: 0;
+    margin: 20px 0 10px 10px;
+    
+    font-weight: 600;
+    font-size: 20px;
+  }
+
+  > textarea,
+  > select,
+  > input {
+    display: block;
+    
+    margin-bottom: 30px;
+    margin-left: 10px;
+  }
+
+  > textarea {
+    width: 280px;
+    
+    resize: vertical;
+  }
+
+  > button {
+      display: inline-block;
+
+      font-size: .9em;
+      text-transform: uppercase;
+
+      cursor: pointer;
+
+      color: #4285f4;
+      background: none;
+
+      border: none;
+
+      &.close-button {
+          position: absolute;
+          top: 10px;
+          right: 5px;
+
+          display: block;
+          overflow: hidden;
+
+          width: 40px;
+          height: 32px;
+
+          text-indent: 40px;
+
+          cursor: pointer;
+
+          &:before,
+          &:after {
+              position: absolute;
+              top: 0;
+              left: 18px;
+
+              width: 2px;
+              height: 33px;
+
+              content: "";
+
+              background-color: #8C8888;
+          }
+
+          &:before {
+              transform: rotate(45deg);
+          }
+
+          &:after {
+              transform: rotate(-45deg);
+          }
+      }
+
+      &:focus {
+          outline: none;
+      }
+
+      &.deleteText {
+        margin-left: 4px;
+      }
+  }
+
+  &.show {
+    display: block;
+  }
+}

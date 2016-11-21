@@ -59,12 +59,14 @@ const penSize = 4;
 const addModalButtonListeners = require('./functions/addModalButtonListeners');
 const createDeleteButton = require('./functions/createDeleteButton');
 const createTransformButton = require('./functions/createTransformButton');
+const createEditButton = require('./functions/createEditButton');
 const hideControls = require('./functions/hideControls');
 const showControls = require('./functions/showControls');
 const cropListeners = require('./functions/cropListeners');
 const penListeners = require('./functions/penListeners');
 const rectListeners = require('./functions/rectListeners');
 const arrowListeners = require('./functions/arrowListeners');
+const textEventListeners = require('./functions/textEventListeners');
 const setDefaultScene = require('./functions/setDefaultScene');
 const modalOnStart = require('./functions/modalOnStart');
 const setTransformRectDistance = require('./functions/setTransformRectDistance');
@@ -98,6 +100,13 @@ const signinForm = signinWindow.querySelector('form');
 const closeSettingsButtons = settings.querySelectorAll('button.close');
 const serverButton = settings.querySelector('button#serverPath');
 const commonSettings = localStorage.getItem('commonSettings');
+const textSidebar = document.getElementById('textSidebar');
+const textareaContent = document.getElementById('textContent');
+const textateaFontSize = document.getElementById('fontSize');
+const textateaFontColor = document.getElementById('fontColor');
+const deleteTextButton = document.getElementById('deleteText');
+const applyTextButton = document.getElementById('applyText');
+const closeTextFormButton = document.getElementById('closeTextForm');
 let IMMEDIATELY_CROP = false;
 if (commonSettings !== null && commonSettings !== undefined) {
   const commonSettingsArray = JSON.parse(commonSettings);
@@ -141,7 +150,92 @@ Menu(
 ipcAdd(undoCrop, redoCrop, setDefaultSceneState, createScreenshot, callCrop,
     callRect, callPen, body, modalWindow, getDrawStatus, callZoomIn, callZoomOut,
     setDefaultZoom, callArrow, callSave, shortcutWindow, settings, signinWindow,
-    createEmoji, APP_VERSION);
+    createEmoji, APP_VERSION, textSidebar);
+body.addEventListener('click', bodyClickHandler);   
+
+/**
+ * Обработчик нажатия на body
+ * @param  {[type]} event [description]
+ * @return {[type]}       [description]
+ */
+function bodyClickHandler(event) {
+  if (body.classList.contains('text')) {
+    setDefaultSceneState();
+    createText(event);
+  }
+}
+
+/**
+ * Вешаем обработчики в форме изменения текста
+ */
+textEventListeners(textareaContent, textateaFontSize, textateaFontColor, textareaValueChangeHadler, 
+  textareaFontSizeChangeHadler, textareaFontColorChangeHadler, deleteTextButton, deleteTextButtonClickHandler,
+  applyTextButton, applyTextButtonClickHandler, closeTextFormButton);
+
+/**
+ * Обработчик закртыия формы с текстом
+ * @return {[type]} [description]
+ */
+function applyTextButtonClickHandler() {
+  hideControls(activeShape, stage);
+  activeShape = undefined;
+  stage.update();
+  textSidebar.classList.remove('show');
+}
+
+/**
+ * Обработчик удаления текста из формы
+ * @return {[type]} [description]
+ */
+function deleteTextButtonClickHandler() {
+  stage.removeChild(activeShape);
+  activeShape = undefined;
+  stage.update();
+  textSidebar.classList.remove('show');
+}
+/**
+ * Обработчик изменения контента текста
+ * @param  {[type]} event [description]
+ * @return {[type]}       [description]
+ */
+function textareaValueChangeHadler(event) {
+  let textareaValue = event.target.value;
+  
+  activeShape.children[0].text = textareaValue;
+  stage.update();
+}
+
+/**
+ * Обработчик изменения кегля
+ * @param  {[type]} event [description]
+ * @return {[type]}       [description]
+ */
+function textareaFontSizeChangeHadler(event) {
+  let textareaFontSize = event.target.value;
+  const oldFont = Number(activeShape.children[0].font.split('px')[0]);
+  if (oldFont < textareaFontSize) {
+      activeShape.children[1].y -= 1;
+  } else {
+    activeShape.children[1].y += 1;
+  }
+
+  activeShape.children[0].font = `${textareaFontSize}px Roboto`;
+
+  stage.update();
+}
+
+/**
+ * Обработчик изменения текста
+ * @param  {[type]} event [description]
+ * @return {[type]}       [description]
+ */
+function textareaFontColorChangeHadler(event) {
+  let textareaColor = event.target.value;
+  
+  activeShape.children[0].color = textareaColor;
+  stage.update();
+}
+
 // Метод вызова диалога о создании нового скриншота
 function openNewScreenshotDialog() {
   ipc.send('open-information-dialog');
@@ -206,9 +300,13 @@ function stageMouseDownHandler(event) {
  */
 function deleteShape(event) {
   activeShape = event.target.parent;
-
+  
   if (activeShape.name === CLOSE) {
     activeShape = event.target.parent.parent;
+  }
+  
+  if (activeShape.name === 'shapeContainerText') {
+    textSidebar.classList.remove('show');
   }
 
   hideControls(activeShape, stage);
@@ -223,9 +321,11 @@ function deleteShape(event) {
 function stageMouseUpShapes() {
   const deleteButton = createDeleteButton();
   const transformButton = createTransformButton();
-
+  if (activeShape.children.length === 0) {
+    return;
+  }
   deleteButton.addEventListener('click', deleteShape);
-
+  
   if (penOldX !== undefined && penOldY !== undefined) {
     deleteButton.x = penOldX - 10;
     deleteButton.y = penOldY - 10;
@@ -776,6 +876,57 @@ function stageMouseUpHandlerCrop(event) {
   onCreate = false;
   setDefaultSceneState();
   body.classList.add('centered');
+}
+
+/**
+ * Работа с текстом
+ */
+function createText(oldEvent) {
+  const textPosition = {
+    x: oldEvent.clientX,
+    y: oldEvent.clientY
+  }
+  
+  let container = new createjs.Container();
+  const deleteButton = createDeleteButton();
+  const editButton = createEditButton();
+  container.name = 'shapeContainerText';
+  
+  let text = new createjs.Text('Example', '30px Roboto', '#D50000');
+  text.name = 'paragraph';
+  text.x = textPosition.x;
+  text.y = textPosition.y;
+  text.textBaseline = "alphabetic";
+  
+  container.addChild(text)
+  deleteButton.addEventListener('click', deleteShape);
+  deleteButton.x = text.x - 25;
+  deleteButton.y = text.y - 30;
+  container.addChild(deleteButton);
+  
+  editButton.addEventListener('click', openTextSidebar);
+
+  editButton.x = text.x - 25;
+  editButton.y = text.y;
+  container.addChild(editButton);
+  
+  stage.addChild(container);
+  activeShape = container;
+  stage.update();
+  body.classList.remove('text');
+  openTextSidebar();
+}
+
+/**
+ * Инициализация модалки при открытии
+ * @return {[type]} [description]
+ */
+function openTextSidebar() {
+  const paragraph = activeShape.children[0];
+  textateaFontSize.value = paragraph.font.split('px')[0];
+  textareaContent.value = paragraph.text;
+  textateaFontColor.value = activeShape.children[0].color;
+  textSidebar.classList.toggle('show');
 }
 
 /**
