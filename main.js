@@ -60,7 +60,6 @@ if (shouldQuit) {
  * И регистрируем необходимые клаиши для обработки истории
  */
 app.on('ready', () => {
-    console.log(process.defaultApp);
     createWindow();
 
     const template = appMenu(app, appWindow);

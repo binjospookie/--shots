@@ -4,6 +4,7 @@ const ipc = require('electron').ipcRenderer;
 const popUp = require('../functions/popUp');
 const popupWindow = document.querySelector('aside#messageToUser');
 const popupText = popupWindow.querySelector('p');
+const os = require('os');
 
 function undo(undoCrop, body) {
   ipcRenderer.on('undo', () => {
@@ -256,7 +257,26 @@ function updates(body, version) {
 
         case 200:
           if (xhr) {
-            popUp(popupWindow, popupText, `Actual version is "${xhr.responseText}". Your version is ${version}.`);
+            /**
+             * Linux
+             * Mac
+             * Windows
+             */
+            let arrayOfVersions = xhr.responseText.split('$');
+            let versionForShow;
+
+            switch (os.type()) {
+              case 'Linux':
+                versionForShow = arrayOfVersions[0];
+                break;
+              case 'Darwin':
+                versionForShow = arrayOfVersions[1];
+                break;
+              default:
+                versionForShow = arrayOfVersions[2];
+                break;
+            }
+            popUp(popupWindow, popupText, `Actual version is "${versionForShow}". Your version is ${version}.`);
           }
           break;
 
