@@ -151,19 +151,6 @@ ipcAdd(undoCrop, redoCrop, setDefaultSceneState, createScreenshot, callCrop,
     callRect, callPen, body, modalWindow, getDrawStatus, callZoomIn, callZoomOut,
     setDefaultZoom, callArrow, callSave, shortcutWindow, settings, signinWindow,
     createEmoji, APP_VERSION, textSidebar);
-body.addEventListener('click', bodyClickHandler);   
-
-/**
- * Обработчик нажатия на body
- * @param  {[type]} event [description]
- * @return {[type]}       [description]
- */
-function bodyClickHandler(event) {
-  if (body.classList.contains('text')) {
-    setDefaultSceneState();
-    createText(event);
-  }
-}
 
 /**
  * Вешаем обработчики в форме изменения текста
@@ -247,6 +234,11 @@ initCommonSettings(settings);
  * Обработчик нажатия на сцене для выбора элементов
  */
 function stageMouseDownHandler(event) {
+  if (body.classList.contains('text')) {
+    setDefaultSceneState();
+    createText(event);
+    return;
+  }
   const target = event.target;
   const name = target.parent.name;
   // закрытие модалки по чёрному пространству вокруг
@@ -884,17 +876,16 @@ function stageMouseUpHandlerCrop(event) {
  */
 function createText(oldEvent) {
   const textPosition = {
-    x: oldEvent.clientX,
-    y: oldEvent.clientY
+    x: oldEvent.stageX - stage.x,
+    y: oldEvent.stageY - stage.y
   }
-  
+
   let container = new createjs.Container();
   const deleteButton = createDeleteButton();
   const cimage = new Image();
   cimage.src = './images/edit.png'
   cimage.onload = () => {
     const editButton = createEditButton(cimage);
-    console.log(cimage)
     container.name = 'shapeContainerText';
     
     let text = new createjs.Text('Example', '30px Roboto', '#D50000');
