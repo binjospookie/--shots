@@ -1,18 +1,22 @@
 form#textSidebar {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 50%;
+  left: 20px;
   
   display: none;
   
   width: 310px;
-  height: 100%;
+  min-height: 335px;
   padding-top: 50px;
+  padding-bottom: 20px;
+  padding-left: 10px;
   
   font-family: "Roboto", sans-serif;
   
   background: #F4F3F2;
-  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .08), 0 3px 12px 0 rgba(0, 0, 0, .12);
+  box-shadow: 0 14px 28px rgba(0, 0, 0 , .25), 0 10px 10px rgba(0, 0, 0, .22);
+  
+  transform: translateY(-50%);
 
   > label {
     display: block;
