@@ -450,7 +450,7 @@ function transformMoveHandler(event) {
   }
 
   degree = calcAngle(activeShape.x, activeShape.y, event.stageX - stage.x, event.stageY - stage.y);
-
+  
   if (shapeName === 'arrow') {
     activeShape.rotation = degree;
   } else {
@@ -889,32 +889,37 @@ function createText(oldEvent) {
   
   let container = new createjs.Container();
   const deleteButton = createDeleteButton();
-  const editButton = createEditButton();
-  container.name = 'shapeContainerText';
-  
-  let text = new createjs.Text('Example', '30px Roboto', '#D50000');
-  text.name = 'paragraph';
-  text.x = textPosition.x;
-  text.y = textPosition.y;
-  text.textBaseline = "alphabetic";
-  
-  container.addChild(text)
-  deleteButton.addEventListener('click', deleteShape);
-  deleteButton.x = text.x - 25;
-  deleteButton.y = text.y - 30;
-  container.addChild(deleteButton);
-  
-  editButton.addEventListener('click', openTextSidebar);
+  const cimage = new Image();
+  cimage.src = './images/edit.png'
+  cimage.onload = () => {
+    const editButton = createEditButton(cimage);
+    console.log(cimage)
+    container.name = 'shapeContainerText';
+    
+    let text = new createjs.Text('Example', '30px Roboto', '#D50000');
+    text.name = 'paragraph';
+    text.x = textPosition.x;
+    text.y = textPosition.y;
+    text.textBaseline = "alphabetic";
+    
+    container.addChild(text)
+    deleteButton.addEventListener('click', deleteShape);
+    deleteButton.x = text.x - 25;
+    deleteButton.y = text.y - 30;
+    container.addChild(deleteButton);
+    
+    editButton.addEventListener('click', openTextSidebar);
 
-  editButton.x = text.x - 25;
-  editButton.y = text.y;
-  container.addChild(editButton);
-  
-  stage.addChild(container);
-  activeShape = container;
-  stage.update();
-  body.classList.remove('text');
-  openTextSidebar();
+    editButton.x = text.x - 25;
+    editButton.y = text.y;
+    container.addChild(editButton);
+    
+    stage.addChild(container);
+    activeShape = container;
+    stage.update();
+    body.classList.remove('text');
+    openTextSidebar();
+  }
 }
 
 /**
@@ -927,6 +932,10 @@ function openTextSidebar() {
   textareaContent.value = paragraph.text;
   textateaFontColor.value = activeShape.children[0].color;
   textSidebar.classList.toggle('show');
+  if (!textSidebar.classList.contains('show')) {
+    hideControls(activeShape, stage);
+    activeShape = undefined;
+  }
 }
 
 /**
