@@ -91,9 +91,7 @@ app.on('will-quit', () => {
  * Уничтожаем процесс, когда все окна закрыты
  */
 app.on('window-all-closed', function() {
-    if (process.platform !== 'darwin') {
-        app.quit()
-    }
+    app.quit()
 });
 
 /**
@@ -154,7 +152,11 @@ function createWindow() {
         height: 0,
         icon: __dirname + '/icon.png'
     });
-    appWindow.loadURL(`file://${__dirname}/index.html`);
+    if (process.platform === 'darwin') {
+      appWindow.loadURL(`file://${__dirname}/index.mac.html`);
+    }else {
+      appWindow.loadURL(`file://${__dirname}/index.html`);
+    });
   //  appWindow.webContents.openDevTools();
     appWindow.on('closed', function() {
         appWindow = null;
