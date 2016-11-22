@@ -154,9 +154,9 @@ function createWindow() {
     });
     if (process.platform === 'darwin') {
       appWindow.loadURL(`file://${__dirname}/index.mac.html`);
-    }else {
+    } else {
       appWindow.loadURL(`file://${__dirname}/index.html`);
-    });
+    }
   //  appWindow.webContents.openDevTools();
     appWindow.on('closed', function() {
         appWindow = null;

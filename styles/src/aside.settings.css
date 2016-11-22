@@ -201,3 +201,13 @@ aside.settings {
   top: 25px;
   left: -135px;
 }
+
+body.mac {
+  .crop.capture {
+    margin-top: 15px !important;
+    left: 0 !important;
+  }
+  label.capture{
+    margin-top: 15px !important;
+  }
+}

@@ -404,6 +404,13 @@ aside.settings.open{
     top: 25px;
     left: -135px;
 }
+body.mac .crop.capture{
+    margin-top: 15px !important;
+    left: 0 !important;
+}
+body.mac label.capture{
+    margin-top: 15px !important;
+}
 aside.sign-in{
     position: absolute;
     top: 0;

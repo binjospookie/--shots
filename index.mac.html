@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width,user-scalable=yes,initial-scale=1,maximum-scale=2,minimum-scale=1">
+	<title>--shots</title>
+	<link rel="stylesheet" href="./common.css">
+</head>
+
+<body class="mac">
+	<canvas id="stage" width="0" height="0"></canvas>
+	<div id="frame"></div>
+	<aside class="hint">
+		<button type="button" class="js-close-hint">
+		Close
+	</button>
+		<h1>Hi! It's a free app for creating screenshots.</h1>
+		<h2>
+		How to use:
+	</h2>
+		<ul>
+			<li>
+				Click the right mouse button for calling a context menu.
+			</li>
+			<li>
+				Clicking on "New" is for creating a new screenshot.
+			</li>
+			<li>
+				Choose "Crop" for cropping an area.
+			</li>
+			<li>
+				"Ctrl+Z" allows you to cancel(undo), and "Ctrl+Shift+Z" to return(redo).
+			</li>
+			<li>
+				For focusing on a particular area use "Rect".
+			</li>
+			<li>
+				Take "Arrow" for focusing on details.
+			</li>
+			<li>
+				Write something with "Text" tool.
+			</li>
+			<li>
+				Press `ESC` or right mouse button to choose default instrument.
+			</li>
+			<li>
+				Press "Ctrl+S" to save your screenshot.<br /> <span>By default it will be send to server and copied to buffer.</span>
+			</li>
+			<li>
+				To see all shortcuts press "F2" or open "More->Shortcuts".
+			</li>
+		</ul>
+		<button type="button" class="js-close-agree">
+		I understand
+	</button>
+	</aside>
+	<aside id="loader">
+		<svg xmlns="http://www.w3.org/2000/svg" class="spinner" viewBox="0 0 66 66"><circle stroke-width="4" cx="33" cy="33" r="30" fill="none" class="circle"/></svg>
+		<span>Saving</span>
+	</aside>
+	<aside class="hint shortcut">
+		<button type="button" class="js-close-hint">
+			Close
+		</button>
+			<h2>Shortcuts</h2>
+    <ul>
+      <li>
+        <span>New</span> - "Ctrl + N"
+      </li><li>
+        <span>Save</span> - "Ctrl + S"
+      </li><li>
+        <span>Restart</span> - "Ctrl + R"
+      </li><li>
+        <span>Quit</span> - "Ctrl + Q"
+      </li><li>
+        <span>Undo</span> - "Ctrl + Z"
+      </li><li>
+        <span>Redo</span> - "Ctrl + Shift + Z"
+      </li><li>
+      	<span>Zoom in</span> - "Ctrl + Shift + Plus"
+      </li><li>
+        <span>Zoom out</span> - "Ctrl + Minus"
+      </li><li>
+        <span>Defaul zoom</span> - "Ctrl + 0"
+      </li><li>
+        <span>Default tool</span> - "D"
+      </li><li>
+        <span>Crop</span> - "C"
+      </li><li>
+        <span>Arrow</span> - "A"
+      </li><li>
+        <span>Rect</span> - "R"
+      </li><li>
+        <span>Pen</span> - "P"
+      </li><li>
+        <span>Help</span> - "F1"
+      </li><li>
+        <span>Shortcuts</span> - "F2"
+      </li><li>
+        <span>Settings</span> - "S"
+      </li><li>
+        <span>Emoji</span> - "Alt + `Emoji letter`"
+      </li><li>
+        <span>Blur</span> - "F"
+      </li><li>
+        <span>Text</span> - "T"
+      </li>
+    </ul>
+  </aside>
+	<aside class="settings">
+		<button type="button" class="js-close-hint close">
+			Close
+		</button>
+		<h2>Settings</h2>
+		<form id="settingsForm">
+			<fieldset>
+				<legend>Copy</legend>
+				<ul>
+					<li>
+						<input id="local" type="radio" name="save" value="local" />
+						<label for="local">Local</label>
+					</li><li>
+						<input id="base64" type="radio" name="save" value="base64" />
+						<label for="base64">Copy image</label>
+					</li><li>
+						<input id="serverlink" type="radio" name="save" value="server link" />
+						<label for="serverlink">Server + link</label>
+					</li><li>
+						<input id="localbase64" type="radio" name="save" value="local base64" />
+						<label for="localbase64">Local + copy image</label>
+					</li><li>
+						<input id="serverlocallink" type="radio" name="save" value="server local link" />
+						<label for="serverlocallink">Server + local + link</label>
+					</li>
+				</ul>
+			</fieldset>
+			<label class="capture crop" data-type="common">
+				Crop after new
+				<input type="checkbox" name="immediatelycrop" value="immediatelycrop" />
+			</label>
+			<label class="capture color" data-type="common">
+				Shape's color
+				<input type="color" name="shapecolor" value="#D50000" />
+			</label>
+			<button type="button" id="serverPath">Change server path</button>
+			<input type="text" id="serverinput"/>
+			<label class="switch" for="applyCustom">
+				<span>Apply custom</span>
+			  <input type="checkbox" id="applyCustom">
+			  <div class="slider round"></div>
+			</label>
+		</form>
+	</aside>
+	<aside class="sign-in">
+		<form>
+			<button type="button" class="js-close-hint close">
+				Close
+			</button>
+			<label>
+				<span>Login</span>
+				<input type="email" name="login" required="">
+			</label>
+			<label>
+				<span>Password</span>
+				<input type="password" name="password" required="">
+			</label>
+			<button type="submit">Sign In</button>
+		</form>
+	</aside>
+	<aside id="messageToUser">
+		<p></p>
+	</aside>
+	<form id="textSidebar">
+		<button type="button" class="close-button" id="closeTextForm">Close</button>
+		<label for="textContent">Your text</label>
+		<textarea id="textContent"></textarea>
+		<label for="fontSize">Font size</label>
+		<input type="number" id="fontSize" value="30" min="20" />
+		<label for="fontColor">Font color</label>
+		<input type="color" id="fontColor" value="#D50000" />
+		<button type="button" class="deleteText" id="deleteText">Delete</button>
+		<button type="button" id="applyText">Apply</button>
+	</form>
+</body>
+<script src="./scripts/libs/createjs-2015.11.26.min.js"></script>
+<script>
+	require('./scripts/renderer.js')
+</script>
+
+</html>
