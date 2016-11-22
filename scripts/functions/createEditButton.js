@@ -5,7 +5,7 @@ module.exports = function createEditButton(bitmap) {
   const edit = new createjs.Shape();
   const icon = new createjs.Bitmap(bitmap);
 
-  edit.graphics.beginFill('red').drawCircle(10, 10, 10).endFill();
+  edit.graphics.beginFill('#37aee2').drawCircle(10, 10, 10).endFill();
   edit.shadow = new createjs.Shadow('rgba(0,0,0,0.19)', 0, 10, 20);
   icon.x = 3;
   icon.y = 3;
