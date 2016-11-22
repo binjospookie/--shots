@@ -60,6 +60,7 @@ if (shouldQuit) {
  * И регистрируем необходимые клаиши для обработки истории
  */
 app.on('ready', () => {
+    tray = new Tray(__dirname + '/icon.png');
     createWindow();
 
     const template = appMenu(app, appWindow);
@@ -75,7 +76,7 @@ app.on('ready', () => {
         appWindow.webContents.send('stop');
     });
 
-    tray = new Tray(__dirname + '/icon.png');
+
     app.firstStartTray = true;
     appWindow.hide();
 
@@ -159,6 +160,10 @@ function createWindow() {
         appWindow = null;
     });
 
+    let contextMenu = createContextMenu(true, false, false);
+    tray.setContextMenu(contextMenu);
+    
+    app.firstStartTray = false;
     appWindow.on('minimize', function() {
       let contextMenu = createContextMenu(false, true, false);
 
@@ -199,6 +204,7 @@ function createContextMenu(newShot, open, tray) {
                 // если пользователь подтвердил выбор — далем новый скриншот
                 if (index === 0) {
                     app.createShot = true;
+                    appWindow.webContents.send('new');
                     appWindow.setPosition(0,0);
                     appWindow.show();
                 }
@@ -224,9 +230,8 @@ function createContextMenu(newShot, open, tray) {
           label: 'Quit',
           click() {
               globalShortcut.unregisterAll();
-              if (process.platform !== 'darwin') {
+
                   app.quit()
-              }
           }
       }])
     );
