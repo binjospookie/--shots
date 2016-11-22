@@ -201,14 +201,9 @@ function textareaValueChangeHadler(event) {
  */
 function textareaFontSizeChangeHadler(event) {
   let textareaFontSize = event.target.value;
-  const oldFont = Number(activeShape.children[0].font.split('px')[0]);
-  if (oldFont < textareaFontSize) {
-      activeShape.children[1].y -= 1;
-  } else {
-    activeShape.children[1].y += 1;
-  }
-
+  
   activeShape.children[0].font = `${textareaFontSize}px Roboto`;
+  activeShape.children[1].y = activeShape.getBounds().y - 5;
 
   stage.update();
 }
