@@ -201,7 +201,7 @@ function textareaValueChangeHadler(event) {
  */
 function textareaFontSizeChangeHadler(event) {
   let textareaFontSize = event.target.value;
-  
+
   activeShape.children[0].font = `${textareaFontSize}px Roboto`;
   activeShape.children[1].y = activeShape.getBounds().y - 5;
 
@@ -239,6 +239,14 @@ function stageMouseDownHandler(event) {
   }
   const target = event.target;
   const name = target.parent.name;
+  // HACK: for MacOS
+  if (name === 'close') {
+    hideControls(activeShape, stage);
+    stage.removeChild(activeShape);
+    activeShape = undefined;
+    stage.update();
+    return;
+  }
   // закрытие модалки по чёрному пространству вокруг
   if (name === null && body.classList.contains('modal')) {
     modalWindow.classList.remove('open');
