@@ -162,27 +162,27 @@ function createWindow() {
 
     let contextMenu = createContextMenu(true, false, false);
     tray.setContextMenu(contextMenu);
-    
+
     app.firstStartTray = false;
     appWindow.on('minimize', function() {
-      let contextMenu = createContextMenu(false, true, false);
+      contextMenu = createContextMenu(false, true, false);
 
       tray.setContextMenu(contextMenu);
     });
 
     appWindow.on('hide', function() {
       if (app.firstStartTray === true) {
-        let contextMenu = createContextMenu(true, false, false);
+        contextMenu = createContextMenu(true, false, false);
         tray.setContextMenu(contextMenu);
         app.firstStartTray = false;
       } else {
-        let contextMenu = createContextMenu(true, true, false);
+        contextMenu = createContextMenu(true, true, false);
         tray.setContextMenu(contextMenu);
       }
     });
 
     appWindow.on('show', function() {
-      let contextMenu = createContextMenu(true, false, true);
+      contextMenu = createContextMenu(true, false, true);
 
       tray.setContextMenu(contextMenu);
       if(app.createShot  === true) {
