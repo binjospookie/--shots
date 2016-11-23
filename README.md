@@ -38,12 +38,12 @@ Learn about all the opportunities available [here](https://github.com/binjospook
 * Open 'Settings' and click on 'Change server path'
 * Type path and click on 'Save'.
 
+> If you want send shots to default server just erase your path than click on 'Save'.<br />
+But you can't use admin-page.
+
 ## How run --shots from console?
 * `npm install`
 * `npm run && npm start`
-
-> If you want send shots to default server just erase your path than click on 'Save'.<br />
-But you can't use admin-page.
 
 <br />
 ***First commit was added 24 Sep 2016***
