@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-const APP_VERSION = '0.1.3';
+const APP_VERSION = '1.0.0';
 const CLOSE = 'close';
 const MAX_ZOOM = 2;
 const MIN_ZOOM = 0.5;
@@ -232,6 +232,7 @@ let penColor = shapeColorPicker.value;
  * Обработчик нажатия на сцене для выбора элементов
  */
 function stageMouseDownHandler(event) {
+  event.preventDefault();
   if (body.classList.contains('text')) {
     setDefaultSceneState();
     createText(event);
@@ -246,6 +247,10 @@ function stageMouseDownHandler(event) {
     activeShape = undefined;
     stage.update();
     textSidebar.classList.remove('show');
+    return;
+  } 
+  if (name === 'edit') {
+    textSidebar.classList.add('show');
     return;
   }
   // закрытие модалки по чёрному пространству вокруг
@@ -931,7 +936,7 @@ function openTextSidebar() {
   textateaFontSize.value = paragraph.font.split('px')[0];
   textareaContent.value = paragraph.text;
   textateaFontColor.value = activeShape.children[0].color;
-  textSidebar.classList.toggle('show');
+  textSidebar.classList.add('show');
   if (!textSidebar.classList.contains('show')) {
     hideControls(activeShape, stage);
     activeShape = undefined;

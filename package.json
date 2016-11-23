@@ -1,6 +1,6 @@
 {
   "name": "shots",
-  "version": "0.1.3",
+  "version": "1.0.0",
   "description": "An application for creating screenshots",
   "main": "main.js",
   "license": "NPOSL",
