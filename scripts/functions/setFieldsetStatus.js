@@ -28,7 +28,9 @@ module.exports = function setFieldsetStatus(fieldsets, status) {
   Array.prototype.forEach.call(
     fieldsets,
     (fieldset) => {
-      fieldset.disabled = state;
+      if(!fieldset.classList.contains('not-blocked')) {
+        fieldset.disabled = state;
+      }
     }
   );
 };
