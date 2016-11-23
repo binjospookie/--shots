@@ -1,6 +1,6 @@
 {
     "name": "shots",
-    "version": "0.1.2",
+    "version": "1.0.0",
     "description": "An application for creating screenshots",
     "main": "main.js",
     "license": "NPOSL",
@@ -17,14 +17,8 @@
     "build": {
         "appId": "org.binjo.shots",
         "category": "graphics",
-        "build.mac.category": "shots.graphics",
         "maintainer": "Victor Pasynok",
         "copyright": "Copyright © 2016 Victor Pasynok",
-        "linux": {
-          "target": ["rpm","AppImage", "deb"],  
-          "category": "Graphics",
-          "packageCategory": "graphics" 
-        },
         "win": {
           "iconUrl": "https://github.com/binjospookie/--shots/blob/master/build/icon.ico?raw=true",
           "loadingGif": "build/install-spinner.gif",
@@ -37,7 +31,7 @@
     },
     "homepage": "http://shots.binjo.ru/",
     "devDependencies": {
-        "electron": "^1.4.7",
+        "electron": "^1.4.5",
         "electron-builder": "^8.6.0",
         "gulp-postcss": "^6.2.0",
         "postcss": "^5.2.5",
