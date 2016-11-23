@@ -250,7 +250,7 @@ function stageMouseDownHandler(event) {
     return;
   } 
   if (name === 'edit') {
-    textSidebar.classList.add('show');
+    openTextSidebar();
     return;
   }
   // закрытие модалки по чёрному пространству вокруг
