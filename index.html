@@ -135,18 +135,26 @@
 					</li>
 				</ul>
 			</fieldset>
-			<label class="capture" data-type="common">
-				Capture cursor
-				<input type="checkbox" name="capture" value="capture" />
-			</label>
-			<label class="capture crop" data-type="common">
-				Crop after new
-				<input type="checkbox" name="immediatelycrop" value="immediatelycrop" />
-			</label>
-			<label class="capture color" data-type="common">
-				Shape's color
-				<input type="color" name="shapecolor" value="#D50000" />
-			</label>
+			<fieldset class="not-blocked">
+				<ul>
+					<li>
+						<label class="capture" data-type="common">
+							Capture cursor
+							<input type="checkbox" name="capture" value="capture" />
+						</label>
+					</li><li>
+						<label class="capture crop" data-type="common">
+							Crop after new
+							<input type="checkbox" name="immediatelycrop" value="immediatelycrop" />
+						</label>
+					</li><li>
+						<label class="capture color" data-type="common">
+							Shape's color
+							<input type="color" name="shapecolor" value="#D50000" />
+						</label>
+					</li>
+				</ul>
+			</fieldset>
 			<button type="button" id="serverPath">Change server path</button>
 			<input type="text" id="serverinput"/>
 			<label class="switch" for="applyCustom">

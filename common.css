@@ -288,6 +288,7 @@ aside.settings > form{
 aside.settings > form > fieldset{
     display: inline-block;
     width: 270px;
+    vertical-align: top;
 }
 aside.settings > form > fieldset > legend{
     padding: 0;
@@ -309,6 +310,9 @@ aside.settings > form > fieldset > ul > li > label{
 aside.settings > form > fieldset > ul > li > input{
     margin-right: 10px;
 }
+aside.settings > form > fieldset.not-blocked > ul{
+    margin-top: 35px;
+}
 aside.settings > form > fieldset:disabled{
     opacity: .5;
 }
@@ -317,11 +321,6 @@ aside.settings > form > fieldset:disabled input, aside.settings > form > fieldse
 }
 aside.settings > form label{
     -webkit-user-select: none;
-}
-aside.settings > form label.capture{
-    display: inline-block;
-    margin-top: 36px;
-    vertical-align: top;
 }
 aside.settings > form > input#serverinput, aside.settings > form > button#serverPath{
     position: absolute;
@@ -398,18 +397,6 @@ aside.settings > button:focus{
 }
 aside.settings.open{
     display: block;
-}
-.crop.capture{
-    position: relative;
-    top: 25px;
-    left: -135px;
-}
-body.mac .crop.capture{
-    margin-top: 15px !important;
-    left: 0 !important;
-}
-body.mac label.capture{
-    margin-top: 15px !important;
 }
 aside.sign-in{
     position: absolute;
@@ -673,9 +660,4 @@ form#textSidebar > button.deleteText{
 }
 form#textSidebar.show{
     display: block;
-}
-label.color{
-    position: absolute;
-    top: 145px;
-    left: 304px;
 }
