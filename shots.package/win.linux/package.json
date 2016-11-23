@@ -27,7 +27,9 @@
         },
         "win": {
           "iconUrl": "https://github.com/binjospookie/--shots/blob/master/build/icon.ico?raw=true",
-          "loadingGif": "build/install-spinner.gif"
+          "loadingGif": "build/install-spinner.gif",
+          "remoteReleases": true,
+          "msi": true
         }
     },
     "bugs": {
