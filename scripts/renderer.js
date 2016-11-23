@@ -245,6 +245,7 @@ function stageMouseDownHandler(event) {
     stage.removeChild(activeShape);
     activeShape = undefined;
     stage.update();
+    textSidebar.classList.remove('show');
     return;
   }
   // закрытие модалки по чёрному пространству вокруг
@@ -437,6 +438,7 @@ function transformMoveHandler(event) {
 
       if (name === 'rect') {
         child[i].graphics.clear().setStrokeStyle(4 / activeShape.scaleX).beginStroke(penColor).drawRoundRect(left, top, width, height, 2 / activeShape.scaleX);
+        shapeName = 'rect';
       } else {
         child[i].graphics.clear().setStrokeStyle(1 / activeShape.scaleX).beginStroke('#37aee2').drawRoundRect(left, top, width, height, 2 / activeShape.scaleX);
       }
@@ -452,7 +454,7 @@ function transformMoveHandler(event) {
 
   if (shapeName === 'arrow') {
     activeShape.rotation = degree;
-  } else {
+  } else if(shapeName !== 'rect') {
     activeShape.rotation = -(45 - degree);
   }
 
