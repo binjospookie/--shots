@@ -47,6 +47,14 @@ But you can't use admin-page.
 * `npm run && npm start`
 
 <br />
+
+## Posts about --shots
+* https://mavielinux.com/2016/11/28/shots-pour-prendre-et-editer-vos-captures-decran/
+* http://blog.desdelinux.net/shots-capturar-pantalla/#
+* http://www.fousoft.com/shots.html
+
+<br />
+
 ***First commit was added 24 Sep 2016***
 
 If you want to thank me, just starring the project and tell your friends about --shots :tada:
