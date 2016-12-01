@@ -1,7 +1,11 @@
 # Download
 Available for Linux,Windows, MacOS (exclude v0.1.3)
 
-## 1.0.0
+## v1.0.1
+
+Short links were added. You don't need to download new version of app. It's works from v0.1.1.
+
+## v1.0.0
 * [shots-1.0.0-amd64.deb](https://github.com/binjospookie/--shots/releases/download/v1.0.0/shots_1.0.0_amd64.deb)<br />
 * [shots-1.0.0-x86_64.AppImage](https://github.com/binjospookie/--shots/releases/download/v1.0.0/shots-1.0.0-x86_64.AppImage)<br />
 * [shots-1.0.0.pacman](https://github.com/binjospookie/--shots/releases/download/v1.0.0/shots-1.0.0.pacman)<br />
@@ -10,12 +14,12 @@ Available for Linux,Windows, MacOS (exclude v0.1.3)
 * [Source code (zip)](https://github.com/binjospookie/--shots/archive/v1.0.0.zip)<br />
 * [Source code (tar.gz)](https://github.com/binjospookie/--shots/archive/v1.0.0.tar.gz)
 
-## 0.1.3
+## v0.1.3
 
 * [shots-0.1.3-amd64.deb](https://github.com/binjospookie/--shots/releases/download/v0.1.3/shots_0.1.3_amd64.deb)<br />
 * [shots-0.1.3-x86_64.AppImage](https://github.com/binjospookie/--shots/releases/download/v0.1.3/shots-0.1.3-x86_64.AppImage)
 
-## 0.1.2
+## v0.1.2
 
 * [shots-0.1.2-amd64.deb](https://github.com/binjospookie/--shots/releases/download/v0.1.2/shots-0.1.2-amd64.deb)<br />
 * [shots-0.1.2-x86_64.AppImage](https://github.com/binjospookie/--shots/releases/download/v0.1.2/shots-0.1.2-x86_64.AppImage)<br />
@@ -25,7 +29,7 @@ Available for Linux,Windows, MacOS (exclude v0.1.3)
 * [Source code (zip)](https://github.com/binjospookie/--shots/archive/v0.1.2.zip)<br />
 * [Source code (tar.gz)](https://github.com/binjospookie/--shots/archive/v0.1.2.tar.gz)
 
-## 0.1.1
+## v0.1.1
 
 * [shots-0.1.1-amd64.deb](https://github.com/binjospookie/--shots/releases/download/v0.1.1/shots-0.1.1-amd64.deb)<br />
 * [shots-0.1.1-x86_64.AppImage](https://github.com/binjospookie/--shots/releases/download/v0.1.1/shots-0.1.1-x86_64.AppImage)<br />
