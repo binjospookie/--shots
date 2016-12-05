@@ -12,6 +12,9 @@ To access the tools use the global menu, context menu(click on the right mouse b
 [Project's site with video](https://theshots.ru) <br />
 [Download links](https://github.com/binjospookie/--shots/blob/master/download.md)
 
+## Why --shots
+--shots provides all the tools you may need to work with screenshots. It's forever free application without annoying ads and etc.
+
 ## Available tools
 * Arrow
 * Crop
