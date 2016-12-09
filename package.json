@@ -33,7 +33,7 @@
   },
   "homepage": "http://shots.binjo.ru/",
   "devDependencies": {
-    "electron": "^1.4.10",
+    "electron": "^1.4.11",
     "electron-builder": "^8.6.0",
     "eslint": "^3.10.2",
     "eslint-config-airbnb": "^13.0.0",
