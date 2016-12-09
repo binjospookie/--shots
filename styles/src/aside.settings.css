@@ -65,6 +65,15 @@ aside.settings {
 
             > label {
               display: inline-block;
+
+              > input {
+
+                &[type="number"] {
+                  display: inline-block;
+                  
+                  width: 60px;
+                }
+              }
             }
 
             > input {

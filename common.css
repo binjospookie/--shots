@@ -307,11 +307,16 @@ aside.settings > form > fieldset > ul > li{
 aside.settings > form > fieldset > ul > li > label{
     display: inline-block;
 }
+aside.settings > form > fieldset > ul > li > label > input{}
+aside.settings > form > fieldset > ul > li > label > input[type="number"]{
+    display: inline-block;
+    width: 60px;
+}
 aside.settings > form > fieldset > ul > li > input{
     margin-right: 10px;
 }
 aside.settings > form > fieldset.not-blocked > ul{
-    margin-top: 35px;
+    margin-top: 36px;
 }
 aside.settings > form > fieldset:disabled{
     opacity: .5;
@@ -533,7 +538,7 @@ aside#messageToUser.show-hide{
 .switch{
     position: absolute;
     right: 46px;
-    bottom: 53px;
+    bottom: 20px;
     display: inline-block;
     width: 50px;
     height: 25px;
