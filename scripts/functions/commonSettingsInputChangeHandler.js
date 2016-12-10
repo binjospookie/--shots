@@ -25,8 +25,22 @@ module.exports = function commonSettingsInputChangeHandler(localstorageColorChan
     array.push(target.value);
     localStorage.setItem('commonSettings', JSON.stringify(array));
     localstorageColorChangeHandler(target.value);
-    // TODO: delete old color
-  } else {
+  } else if(target.type === 'number') {
+    if (commonSettings == null) {
+      array = [];
+    } else {
+      array = JSON.parse(commonSettings);
+    }
+
+    let delayIndex = array.indexOf(findDelayInArray(array));
+    if (delayIndex > -1) {
+        array.splice(delayIndex, 1);
+    }
+    array.push(`$${target.value}`);
+    localStorage.setItem('commonSettings', JSON.stringify(array));
+    localstorageColorChangeHandler(target.value);
+
+  }  else {
     array = JSON.parse(commonSettings);
     if (!array) {
       return;
@@ -55,4 +69,16 @@ function findColorInArray(array) {
   });
 
   return colorInArray;
+}
+
+function findDelayInArray(array) {
+  let delayInArray;
+
+  array.forEach((element)=>{
+    if (element.charAt(0) === '$') {
+      delayInArray = element;
+    }
+  });
+
+  return delayInArray;
 }

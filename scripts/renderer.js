@@ -107,6 +107,8 @@ const deleteTextButton = document.getElementById('deleteText');
 const applyTextButton = document.getElementById('applyText');
 const closeTextFormButton = document.getElementById('closeTextForm');
 let IMMEDIATELY_CROP = false;
+let DELAY_DURATION = 100;
+
 if (commonSettings !== null && commonSettings !== undefined) {
   const commonSettingsArray = JSON.parse(commonSettings);
   IMMEDIATELY_CROP = (commonSettingsArray.indexOf('immediatelycrop') !== -1);
@@ -248,7 +250,7 @@ function stageMouseDownHandler(event) {
     stage.update();
     textSidebar.classList.remove('show');
     return;
-  } 
+  }
   if (name === 'edit') {
     openTextSidebar();
     return;
@@ -485,12 +487,29 @@ function createScreenshot() {
     thumbnailSize: thumbSize,
   };
 
+  if (commonSettings !== null && commonSettings !== undefined) {
+    const commonSettingsArray = JSON.parse(commonSettings);
+    for (let i in commonSettingsArray) {
+      if (commonSettingsArray[i].charAt(0) === '$') {
+        DELAY_DURATION = commonSettingsArray[i].split('$')[1];
+        if (DELAY_DURATION > 10) {
+          DELAY_DURATION = 10;
+        }
+        if (DELAY_DURATION < 1) {
+          DELAY_DURATION = 1;
+        }
+
+        DELAY_DURATION *= 1000;
+      }
+    }
+  }
+console.log(DELAY_DURATION)
   const answer = ipcRenderer.sendSync('synchronous-message', 'hide');
 
   if (answer === 'ok') {
     setTimeout(() => {
       addScreenshot(options, thumbSize, image, ctx, stage, bitmap);
-    }, 100);
+    }, DELAY_DURATION);
   }
 
   image = new Image();

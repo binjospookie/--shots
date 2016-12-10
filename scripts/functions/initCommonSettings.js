@@ -14,13 +14,18 @@ module.exports = function initCommonSettings(settings, localstorageColorChangeHa
         input = label.querySelector('input');
         if (array.indexOf(input.value) !== -1) {
           input.checked = true;
-        } else {
-          if (input.type === 'color')
+        } else if (input.type === 'color') {
             array.forEach((settingValue)=>{
             if (settingValue.charAt(0) === '#') {
               input.value = settingValue;
             }
           });
+        } else if (input.type === 'number') {
+          array.forEach((settingValue)=>{
+          if (settingValue.charAt(0) === '$') {
+            input.value = settingValue.split('$')[1];
+          }
+        });
         }
       }
     );
