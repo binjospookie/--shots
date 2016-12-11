@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-const APP_VERSION = '1.0.0';
+const APP_VERSION = '1.0.2';
 const CLOSE = 'close';
 const MAX_ZOOM = 2;
 const MIN_ZOOM = 0.5;
