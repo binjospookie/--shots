@@ -206,8 +206,13 @@ module.exports = function appMenu(app, appWindow) {
                 click() { appWindow.webContents.send('emoji', 'upside'); },
               },
               {
-                label: 'Waving hand sign',
+                label: 'Yoba face',
                 accelerator: 'Alt+H',
+                click() { appWindow.webContents.send('emoji', 'yoba'); },
+              },
+              {
+                label: 'Waving hand sign',
+                accelerator: 'Alt+J',
                 click() { appWindow.webContents.send('emoji', 'hand'); },
               },
             ],

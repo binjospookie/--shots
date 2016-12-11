@@ -1,6 +1,6 @@
 {
     "name": "shots",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "description": "An application for creating screenshots",
     "main": "main.js",
     "license": "NPOSL",
@@ -22,7 +22,6 @@
         "win": {
           "iconUrl": "https://github.com/binjospookie/--shots/blob/master/build/icon.ico?raw=true",
           "loadingGif": "build/install-spinner.gif",
-          "remoteReleases": true,
           "msi": true
         }
     },
@@ -31,21 +30,23 @@
     },
     "homepage": "http://shots.binjo.ru/",
     "devDependencies": {
-        "electron": "^1.4.5",
-        "electron-builder": "^8.6.0",
-        "gulp-postcss": "^6.2.0",
-        "postcss": "^5.2.5",
-        "rimraf": "^2.5.4",
-        "is-online": "^5.1.2",
-        "eslint": "^3.10.2",
-        "eslint-config-airbnb": "^13.0.0",
-        "eslint-loader": "^1.6.1",
-        "eslint-plugin-import": "^2.2.0",
-        "eslint-plugin-jsx-a11y": "^2.2.3"
+      "electron": "^1.4.11",
+      "electron-builder": "^8.6.0",
+      "eslint": "^3.10.2",
+      "eslint-config-airbnb": "^13.0.0",
+      "eslint-loader": "^1.6.1",
+      "eslint-plugin-import": "^2.2.0",
+      "eslint-plugin-jsx-a11y": "^2.2.3",
+      "gulp-postcss": "^6.2.0",
+      "is-online": "^5.1.2",
+      "postcss": "^5.2.5",
+      "postcss-scss": "^0.4.0",
+      "rimraf": "^2.5.4"
     },
     "dependencies": {
-        "is-online": "^5.1.2",
-        "stylelint": "^7.5.0",
-        "npm-run-all": "^3.1.1"
+      "gulp": "^3.9.1",
+      "is-online": "^5.1.2",
+      "precss": "^1.4.0",
+      "stylelint": "^7.5.0"
     }
 }
