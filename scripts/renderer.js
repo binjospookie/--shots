@@ -108,6 +108,28 @@ const applyTextButton = document.getElementById('applyText');
 const closeTextFormButton = document.getElementById('closeTextForm');
 let IMMEDIATELY_CROP = false;
 let DELAY_DURATION = 100;
+let SHIFT_PRESSED;
+
+window.addEventListener('keydown', event => {
+  if (event.which === 16) {
+    SHIFT_PRESSED = true;
+  }
+  if (event.which === 27) {
+    setDefaultSceneState();
+    shortcutWindow.classList.remove('open');
+    modalWindow.classList.remove('open');
+    settings.classList.remove('open');
+    signinWindow.classList.remove('open');
+    body.classList.remove('modal');
+    body.classList.remove('text');
+  }
+});
+
+window.addEventListener('keyup', event => {
+  if (event.which === 16) {
+    SHIFT_PRESSED = false;
+  }
+});
 
 if (commonSettings !== null && commonSettings !== undefined) {
   const commonSettingsArray = JSON.parse(commonSettings);
@@ -503,7 +525,7 @@ function createScreenshot() {
       }
     }
   }
-console.log(DELAY_DURATION)
+
   const answer = ipcRenderer.sendSync('synchronous-message', 'hide');
 
   if (answer === 'ok') {
@@ -779,15 +801,39 @@ function stageMouseMoveHandlerPen(event) {
     return;
   }
   fillObj = activeShape.getChildAt(0).graphics.beginStroke(penColor).command;
+  let newX = event.stageX - stage.x;
+  let newY = event.stageY - stage.y;
   if (penOldX) {
-    activeShape.getChildAt(0).graphics.setStrokeStyle(penSize / areaZoom, 'round')
-        .moveTo(penOldX, penOldY)
-        .lineTo(event.stageX - stage.x, event.stageY - stage.y);
+    if (SHIFT_PRESSED) {
+      let deltaX = Math.abs(penOldX - event.stageX - stage.x);
+      let deltaY = Math.abs(penOldY - event.stageY - stage.y);
+
+      if (deltaX < deltaY) {
+        newX = penOldX;
+        newY = event.stageY - stage.y;
+        activeShape.getChildAt(0).graphics.setStrokeStyle(penSize / areaZoom, 'round')
+            .moveTo(penOldX, penOldY)
+            .lineTo(penOldX, newY);
+      } else {
+        newX = event.stageX - stage.x;
+        newY = penOldY;
+        activeShape.getChildAt(0).graphics.setStrokeStyle(penSize / areaZoom, 'round')
+            .moveTo(penOldX, penOldY)
+            .lineTo(newX, penOldY);
+      }
+    } else {
+      activeShape.getChildAt(0).graphics.setStrokeStyle(penSize / areaZoom, 'round')
+          .moveTo(penOldX, penOldY)
+          .lineTo(newX, newY);
+    }
+
     stage.update();
   }
 
-  penOldX = event.stageX - stage.x;
-  penOldY = event.stageY - stage.y;
+  if (!penOldX || SHIFT_PRESSED === false) {
+    penOldX = newX;
+    penOldY = newY;
+  }
 }
 
 /** Crop block. Hate not pure functions( **/

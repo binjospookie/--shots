@@ -71,12 +71,6 @@ app.on('ready', () => {
      */
     Menu.setApplicationMenu(menu);
 
-    // регистрируем esc
-    const Esc = globalShortcut.register('Esc', () => {
-        appWindow.webContents.send('stop');
-    });
-
-
     app.firstStartTray = true;
     appWindow.hide();
 
@@ -157,7 +151,7 @@ function createWindow() {
     } else {
       appWindow.loadURL(`file://${__dirname}/index.html`);
     }
-    //appWindow.webContents.openDevTools();
+  //  appWindow.webContents.openDevTools();
     appWindow.on('closed', function() {
         appWindow = null;
     });
