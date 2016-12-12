@@ -1,6 +1,16 @@
 # Download
 Available for Linux,Windows, MacOS (exclude v0.1.3)
 
+## v1.0.2
+* [shots-1.0.2-amd64.deb](https://github.com/binjospookie/--shots/releases/download/v1.0.2/shots_1.0.2_amd64.deb)<br />
+* [shots-1.0.2-x86_64.AppImage](https://github.com/binjospookie/--shots/releases/download/v1.0.2/shots-1.2.0-x86_64.AppImage)<br />
+* [shots-1.0.2.pacman](https://github.com/binjospookie/--shots/releases/download/v1.0.2/shots-1.0.2.pacman)<br />
+* [shots-1.0.20.dmg](https://github.com/binjospookie/--shots/releases/download/v1.0.2/shots-1.0.2.dmg)<br />
+* [shots.Setup.1.0.2.exe](https://github.com/binjospookie/--shots/releases/download/v1.0.2/shots.Setup.1.0.2.exe)<br />
+* [shots.portable.1.0.2.exe](https://github.com/binjospookie/--shots/releases/download/v1.0.2/shots.1.0.2.portable.exe)<br />
+* [Source code (zip)](https://github.com/binjospookie/--shots/archive/v1.0.2.zip)<br />
+* [Source code (tar.gz)](https://github.com/binjospookie/--shots/archive/v1.0.2.tar.gz)
+
 ## v1.0.1
 
 Short links were added. You don't need to download new version of app. It's works from v0.1.1.
