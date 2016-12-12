@@ -20,6 +20,7 @@
         "maintainer": "Victor Pasynok",
         "copyright": "Copyright © 2016 Victor Pasynok",
         "win": {
+          "target": "squirrel",
           "iconUrl": "https://github.com/binjospookie/--shots/blob/master/build/icon.ico?raw=true",
           "loadingGif": "build/install-spinner.gif",
           "msi": true
