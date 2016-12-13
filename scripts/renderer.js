@@ -183,7 +183,7 @@ function localstorageColorChangeHandler(value) {
  */
 textEventListeners(textareaContent, textateaFontSize, textateaFontColor, textareaValueChangeHadler,
   textareaFontSizeChangeHadler, textareaFontColorChangeHadler, deleteTextButton, deleteTextButtonClickHandler,
-  applyTextButton, applyTextButtonClickHandler, closeTextFormButton);
+  applyTextButton, applyTextButtonClickHandler, closeTextFormButton, textSidebar);
 
 /**
  * Обработчик закртыия формы с текстом
