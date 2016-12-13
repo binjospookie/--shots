@@ -44,6 +44,8 @@ const signInDialog = {
 let appFirstStart = true;
 
 const shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
+  // get params from console
+  console.log(commandLine);
   // Someone tried to run a second instance, we should focus our window
   if (appWindow) {
     if (appWindow.isMinimized()) appWindow.restore();
@@ -62,6 +64,8 @@ if (shouldQuit) {
  * И регистрируем необходимые клаиши для обработки истории
  */
 app.on('ready', () => {
+    // get start' params from console
+    console.log(process.arg);
     tray = new Tray(__dirname + '/icon.png');
     createWindow();
 
@@ -206,7 +210,7 @@ function createContextMenu(newShot, open, tray) {
               appFirstStart = false;
               return;
             }
-            
+
             dialog.showMessageBox(newShotDialog, function(index) {
                 // если пользователь подтвердил выбор — далем новый скриншот
                 if (index === 0) {
