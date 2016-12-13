@@ -1,5 +1,6 @@
 /* eslint-disable */
 
+const APP_VERSION = 'v1.0.3';
 const electron = require('electron');
 const app = electron.app;
 const globalShortcut = electron.globalShortcut;
@@ -266,12 +267,12 @@ Options:
         -s, --save       | save current screenshot
 
 Example:
-        shots -v  -->  shots v1.0.3
+        shots -v  -->  shots ${APP_VERSION}
 `);
       break;
     case '--version':
     case  '-v':
-      console.log('--shots v1.0.3');
+      console.log(`--shots ${APP_VERSION}`);
       break;
     case '--about':
     case  '-a':
