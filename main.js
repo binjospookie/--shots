@@ -44,8 +44,9 @@ const signInDialog = {
 let appFirstStart = true;
 
 const shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
-  // get params from console
-  console.log(commandLine);
+  // apply params from console
+  parseAndDo(commandLine[1]);
+
   // Someone tried to run a second instance, we should focus our window
   if (appWindow) {
     if (appWindow.isMinimized()) appWindow.restore();
@@ -246,6 +247,41 @@ function createContextMenu(newShot, open, tray) {
           }
       }])
     );
+}
+
+function parseAndDo(flagName) {
+  switch (flagName) {
+    case '--help':
+    case '-h':
+console.log(
+`Usage:
+        shots [option]
+
+Options:
+        -v, --version    | print --shots version
+        -h, --help       | show all commands
+        -a, --about      | about --shots
+        -c, --capture    | capture screenshot and call crop tool
+        -f, --fast       | capture screenshot and save
+        -s, --save       | save current screenshot
+
+Example:
+        shots -v  -->  shots v1.0.3
+`);
+      break;
+    case '--version':
+    case  '-v':
+      console.log('--shots v1.0.3');
+      break;
+    case '--about':
+    case  '-a':
+      console.log('--shots is an application for creating screenshots.\n' +
+        'It was created on web-technologies.\nhttps://github.com/binjospookie/--shots');
+      break;
+    default:
+      console.log('Unknown option. Try "shots --help"');
+      break;
+  }
 }
 
 function optimizeShots(data) {
