@@ -30,7 +30,7 @@ let appWindow;
 const newShotDialog = {
     type: 'info',
     title: 'Create new shot',
-    message: 'All your progress will be lost. Are you sure?',
+    message: 'Al3l your progress will be lost. Are you sure?',
     buttons: ['Yes', 'No']
 };
 
@@ -40,6 +40,8 @@ const signInDialog = {
     message: `You're authorized user. Would you want to sign out?`,
     buttons: ['Yes', 'No']
 };
+
+let appFirstStart = true;
 
 const shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
   // Someone tried to run a second instance, we should focus our window
@@ -196,6 +198,15 @@ function createContextMenu(newShot, open, tray) {
           label: 'New',
           enabled: newShot,
           click() {
+            if (appFirstStart) {
+              app.createShot = true;
+              appWindow.webContents.send('new');
+              appWindow.setPosition(0,0);
+              appWindow.show();
+              appFirstStart = false;
+              return;
+            }
+            
             dialog.showMessageBox(newShotDialog, function(index) {
                 // если пользователь подтвердил выбор — далем новый скриншот
                 if (index === 0) {
@@ -227,7 +238,7 @@ function createContextMenu(newShot, open, tray) {
           click() {
               globalShortcut.unregisterAll();
 
-                  app.quit()
+              app.quit()
           }
       }])
     );
