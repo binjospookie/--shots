@@ -1,6 +1,5 @@
 /* eslint-disable */
 
-const APP_VERSION = 'v1.0.3';
 const electron = require('electron');
 const app = electron.app;
 const globalShortcut = electron.globalShortcut;
@@ -23,6 +22,7 @@ let tray = null;
  * Окно приложения
  */
 let appWindow;
+const argv = require('minimist')(process.argv);
 
 /**
  * Опции диалога о новом скриншоте
@@ -45,6 +45,7 @@ const signInDialog = {
 let appFirstStart = true;
 
 const shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
+
   // apply params from console
   if (commandLine[1]) {
     parseAndDo(commandLine[1]);
@@ -69,8 +70,6 @@ if (shouldQuit) {
  * И регистрируем необходимые клаиши для обработки истории
  */
 app.on('ready', () => {
-    // get start' params from console
-    console.log(process.arg);
     tray = new Tray(__dirname + '/icon.png');
     createWindow();
 
@@ -96,7 +95,7 @@ app.on('will-quit', () => {
  * Уничтожаем процесс, когда все окна закрыты
  */
 app.on('window-all-closed', function() {
-    app.quit()
+    app.quit();
 });
 
 /**
@@ -162,7 +161,7 @@ function createWindow() {
     } else {
       appWindow.loadURL(`file://${__dirname}/index.html`);
     }
-    appWindow.webContents.openDevTools();
+  //  appWindow.webContents.openDevTools();
     appWindow.on('closed', function() {
         appWindow = null;
     });
@@ -199,6 +198,15 @@ function createWindow() {
     });
 
     appWindow.setAutoHideMenuBar(false);
+
+    let processStartFlags = Object.keys(argv)[1];
+
+    if(processStartFlags) {
+      parseAndDo(`-${processStartFlags}`);
+      if (['h','help','a','about','v','version'].indexOf(processStartFlags) !== -1) {
+        app.exit(0);
+      }
+    }
 }
 
 function createContextMenu(newShot, open, tray) {
@@ -256,6 +264,7 @@ function createContextMenu(newShot, open, tray) {
 function parseAndDo(flagName) {
   switch (flagName) {
     case '--help':
+    case '-help':
     case '-h':
 console.log(
 `Usage:
@@ -271,19 +280,22 @@ Options:
         -s, --save       | save current screenshot
 
 Example:
-        shots -v  -->  shots ${APP_VERSION}
+        shots -v  -->  shots ${app.getVersion()}
 `);
       break;
     case '--version':
+    case '-version':
     case  '-v':
-      console.log(`--shots ${APP_VERSION}`);
+      console.log(`--shots ${app.getVersion()}`);
       break;
     case '--about':
-    case  '-a':
+    case '-=-about':
+    case '-a':
       console.log('--shots is an application for creating screenshots.\n' +
         'It was created on web-technologies.\nhttps://github.com/binjospookie/--shots');
       break;
     case '--capture':
+    case '-capture':
     case  '-c':
       app.createShot = true;
       appWindow.webContents.send('new', 'capture');
@@ -292,15 +304,17 @@ Example:
       appFirstStart = false;
       break;
     case '--fast':
-    case  '-f':
+    case '-fast':
+    case '-f':
       app.createShot = true;
       appWindow.webContents.send('new', 'fast');
       appWindow.setPosition(0,0);
       appWindow.show();
       appFirstStart = false;
-      break;     
+      break;
     case '--new':
-    case  '-n':
+    case '-new':
+    case '-n':
       app.createShot = true;
       appWindow.webContents.send('new');
       appWindow.setPosition(0,0);
@@ -308,13 +322,15 @@ Example:
       appFirstStart = false;
       break;
     case '--save':
-    case  '-s':
+    case '-save':
+    case '-s':
       if (appFirstStart === true) {
         console.log(`Screenshot wasn't create. Try 'shots --new'`);
+        app.exit(0);
         break;
       }
       appWindow.webContents.send( 'save' );
-      break;  
+      break;
     default:
       console.log('Unknown option. Try "shots --help"');
       break;

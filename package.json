@@ -1,6 +1,6 @@
 {
   "name": "shots",
-  "version": "1.0.3-1",
+  "version": "1.0.3-rc14",
   "description": "An application for creating screenshots",
   "main": "main.js",
   "license": "NPOSL",
@@ -21,7 +21,6 @@
     "copyright": "Copyright © 2016 Victor Pasynok",
     "linux": {
       "target": [
-        "AppImage",
         "deb"
       ],
       "category": "Graphics",
@@ -49,6 +48,7 @@
   "dependencies": {
     "gulp": "^3.9.1",
     "is-online": "^5.1.2",
+    "minimist": "^1.2.0",
     "precss": "^1.4.0",
     "stylelint": "^7.5.0"
   }

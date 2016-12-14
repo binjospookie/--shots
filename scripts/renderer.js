@@ -503,11 +503,10 @@ function transformUpHandler() {
  * Метод создания скриншота
  */
 function createScreenshot(argument) {
-  console.log(arguments.callee.caller)
   if (IN_PROCESS === true) {
     return;
   }
-  
+
   IN_PROCESS = true;
   beforeNewScreenshot();
   thumbSize = determineScreenShotSize();
@@ -541,7 +540,7 @@ function createScreenshot(argument) {
       IN_PROCESS = false;
     }, DELAY_DURATION);
   }
-  
+
   if ((IMMEDIATELY_CROP || argument === 'capture') && argument !== 'fast') {
     callCrop();
   }
