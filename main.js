@@ -46,7 +46,10 @@ let appFirstStart = true;
 
 const shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
   // apply params from console
-  parseAndDo(commandLine[1]);
+  if (commandLine[1]) {
+    parseAndDo(commandLine[1]);
+    return true;
+  }
 
   // Someone tried to run a second instance, we should focus our window
   if (appWindow) {
@@ -262,6 +265,7 @@ Options:
         -v, --version    | print --shots version
         -h, --help       | show all commands
         -a, --about      | about --shots
+        -n, --new        | create screenshot
         -c, --capture    | capture screenshot and call crop tool
         -f, --fast       | capture screenshot and save
         -s, --save       | save current screenshot
@@ -279,6 +283,22 @@ Example:
       console.log('--shots is an application for creating screenshots.\n' +
         'It was created on web-technologies.\nhttps://github.com/binjospookie/--shots');
       break;
+    case '--new':
+    case  '-n':
+      app.createShot = true;
+      appWindow.webContents.send('new');
+      appWindow.setPosition(0,0);
+      appWindow.show();
+      appFirstStart = false;
+      break;
+    case '--save':
+    case  '-s':
+      if (appFirstStart === true) {
+        console.log(`Screenshot wasn't create. Try 'shots --new'`);
+        break;
+      }
+      appWindow.webContents.send( 'save' );
+      break;  
     default:
       console.log('Unknown option. Try "shots --help"');
       break;

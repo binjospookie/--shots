@@ -6,6 +6,7 @@ Options:
         -v, --version    | print --shots version
         -h, --help       | show all commands
         -a, --about      | about --shots
+        -n, --new        | create screenshot
         -c, --capture    | capture screenshot and call crop tool
         -f, --fast       | capture screenshot and save
         -s, --save       | save current screenshot
