@@ -145,7 +145,7 @@ let penOldY;
 let onCreate = false;
 let areaZoom = 1;
 let scale;
-preventDND(window)
+preventDND(window);
 // на случай говна
 isOnline((err, status) => {
   if (status === true) {
@@ -503,6 +503,7 @@ function transformUpHandler() {
  * Метод создания скриншота
  */
 function createScreenshot(argument) {
+  console.log(arguments.callee.caller)
   if (IN_PROCESS === true) {
     return;
   }
@@ -536,17 +537,12 @@ function createScreenshot(argument) {
 
   if (answer === 'ok') {
     setTimeout(() => {
-      addScreenshot(options, thumbSize, image, ctx, stage, bitmap);
+      addScreenshot(options, thumbSize, image, ctx, stage, bitmap, body, modalOnStart, modalWindow, argument, callSave);
       IN_PROCESS = false;
     }, DELAY_DURATION);
   }
-
-  image = new Image();
-  stage.update();
-  body.classList.remove('centered');
-  modalOnStart(body, modalWindow);
   
-  if (IMMEDIATELY_CROP || argument === 'capture') {
+  if ((IMMEDIATELY_CROP || argument === 'capture') && argument !== 'fast') {
     callCrop();
   }
 }

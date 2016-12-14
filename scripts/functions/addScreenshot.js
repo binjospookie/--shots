@@ -24,7 +24,7 @@ if (commonSettings !== null) {
  * @param stage
  * @param bitmap
  */
-module.exports = function addScreenshot(options, thumbSize, image, ctx, stage, bitmap) {
+module.exports = function addScreenshot(options, thumbSize, image, ctx, stage, bitmap, body, modalOnStart, modalWindow, argument, callSave) {
   const time = new Date().getTime() / 1000;
   const cursourPos = electron.screen.getCursorScreenPoint();
 
@@ -58,6 +58,13 @@ module.exports = function addScreenshot(options, thumbSize, image, ctx, stage, b
             fs.unlinkSync(screenshotPath);
             image = null;
             screenshotPath = '';
+            
+            stage.update();
+            body.classList.remove('centered');
+            modalOnStart(body, modalWindow);
+            if(argument === 'fast') {
+              callSave();
+            }
           };
         });
       }

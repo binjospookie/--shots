@@ -31,7 +31,7 @@ let appWindow;
 const newShotDialog = {
     type: 'info',
     title: 'Create new shot',
-    message: 'Al3l your progress will be lost. Are you sure?',
+    message: 'All your progress will be lost. Are you sure?',
     buttons: ['Yes', 'No']
 };
 
@@ -162,7 +162,7 @@ function createWindow() {
     } else {
       appWindow.loadURL(`file://${__dirname}/index.html`);
     }
-  //  appWindow.webContents.openDevTools();
+    appWindow.webContents.openDevTools();
     appWindow.on('closed', function() {
         appWindow = null;
     });
@@ -290,7 +290,15 @@ Example:
       appWindow.setPosition(0,0);
       appWindow.show();
       appFirstStart = false;
-      break;  
+      break;
+    case '--fast':
+    case  '-f':
+      app.createShot = true;
+      appWindow.webContents.send('new', 'fast');
+      appWindow.setPosition(0,0);
+      appWindow.show();
+      appFirstStart = false;
+      break;     
     case '--new':
     case  '-n':
       app.createShot = true;
