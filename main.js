@@ -283,6 +283,14 @@ Example:
       console.log('--shots is an application for creating screenshots.\n' +
         'It was created on web-technologies.\nhttps://github.com/binjospookie/--shots');
       break;
+    case '--capture':
+    case  '-c':
+      app.createShot = true;
+      appWindow.webContents.send('new', 'capture');
+      appWindow.setPosition(0,0);
+      appWindow.show();
+      appFirstStart = false;
+      break;  
     case '--new':
     case  '-n':
       app.createShot = true;

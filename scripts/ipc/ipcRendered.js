@@ -35,11 +35,11 @@ function stop(body, modalWindow, setDefaultSceneState, shortcutWindow,
   });
 }
 function newShot(createScreenshot, body) {
-  ipcRenderer.on('new', () => {
+  ipcRenderer.on('new', (event, flag) => {
     if (body.classList.contains('modal')) {
       return;
     }
-    createScreenshot();
+    createScreenshot(flag);
   });
 }
 function crop(callCrop, body, textSidebar) {

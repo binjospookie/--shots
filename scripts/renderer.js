@@ -109,6 +109,7 @@ const closeTextFormButton = document.getElementById('closeTextForm');
 let IMMEDIATELY_CROP = false;
 let DELAY_DURATION = 100;
 let SHIFT_PRESSED;
+let IN_PROCESS = false;
 
 window.addEventListener('keydown', event => {
   if (event.which === 16) {
@@ -501,7 +502,12 @@ function transformUpHandler() {
 /**
  * Метод создания скриншота
  */
-function createScreenshot() {
+function createScreenshot(argument) {
+  if (IN_PROCESS === true) {
+    return;
+  }
+  
+  IN_PROCESS = true;
   beforeNewScreenshot();
   thumbSize = determineScreenShotSize();
   const options = {
@@ -531,6 +537,7 @@ function createScreenshot() {
   if (answer === 'ok') {
     setTimeout(() => {
       addScreenshot(options, thumbSize, image, ctx, stage, bitmap);
+      IN_PROCESS = false;
     }, DELAY_DURATION);
   }
 
@@ -538,8 +545,8 @@ function createScreenshot() {
   stage.update();
   body.classList.remove('centered');
   modalOnStart(body, modalWindow);
-
-  if (IMMEDIATELY_CROP) {
+  
+  if (IMMEDIATELY_CROP || argument === 'capture') {
     callCrop();
   }
 }
