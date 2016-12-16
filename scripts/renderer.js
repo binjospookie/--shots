@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-const APP_VERSION = '1.0.2';
+const APP_VERSION = '1.0.3';
 const CLOSE = 'close';
 const MAX_ZOOM = 2;
 const MIN_ZOOM = 0.5;
@@ -805,11 +805,13 @@ function stageMouseMoveHandlerPen(event) {
   fillObj = activeShape.getChildAt(0).graphics.beginStroke(penColor).command;
   let newX = event.stageX - stage.x;
   let newY = event.stageY - stage.y;
+  let deltaX = Math.abs(penOldX - event.stageX - stage.x);
+  let deltaY = Math.abs(penOldY - event.stageY - stage.y);
+  newX = event.stageX - stage.x;
+  newY = event.stageY - stage.y;
+
   if (penOldX) {
     if (SHIFT_PRESSED) {
-      let deltaX = Math.abs(penOldX - event.stageX - stage.x);
-      let deltaY = Math.abs(penOldY - event.stageY - stage.y);
-
       if (deltaX < deltaY) {
         newX = penOldX;
         newY = event.stageY - stage.y;
@@ -827,6 +829,9 @@ function stageMouseMoveHandlerPen(event) {
       activeShape.getChildAt(0).graphics.setStrokeStyle(penSize / areaZoom, 'round')
           .moveTo(penOldX, penOldY)
           .lineTo(newX, newY);
+          
+      penOldX = newX;
+      penOldY = newY;
     }
 
     stage.update();
