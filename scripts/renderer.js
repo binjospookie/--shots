@@ -1,6 +1,4 @@
 /* eslint-disable */
-
-const APP_VERSION = '1.0.3';
 const CLOSE = 'close';
 const MAX_ZOOM = 2;
 const MIN_ZOOM = 0.5;
@@ -15,6 +13,7 @@ const isOnline = require('is-online');
 const {
     ipcRenderer
 } = require('electron');
+
 const ipc = require('electron').ipcRenderer;
 const ipcAdd = require('./ipc/ipcAdd');
 const determineScreenShotSize = require('./functions/determineScreenShotSize');
@@ -110,6 +109,7 @@ let IMMEDIATELY_CROP = false;
 let DELAY_DURATION = 100;
 let SHIFT_PRESSED;
 let IN_PROCESS = false;
+const APP_VERSION = ipcRenderer.sendSync('synchronous-message', 'version');
 
 window.addEventListener('keydown', event => {
   if (event.which === 16) {
@@ -829,7 +829,7 @@ function stageMouseMoveHandlerPen(event) {
       activeShape.getChildAt(0).graphics.setStrokeStyle(penSize / areaZoom, 'round')
           .moveTo(penOldX, penOldY)
           .lineTo(newX, newY);
-          
+
       penOldX = newX;
       penOldY = newY;
     }

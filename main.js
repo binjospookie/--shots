@@ -116,6 +116,8 @@ ipcMain.on('synchronous-message', (event, arg, data) => {
     } else if (arg === 'optimize') {
         let oImg = optimizeShots(data);
         event.returnValue = 'data';
+    } else if (arg === 'version') {
+        event.returnValue = app.getVersion();
     } else {
         appWindow.show();
         appWindow.setPosition(0,0);
@@ -161,7 +163,7 @@ function createWindow() {
     } else {
       appWindow.loadURL(`file://${__dirname}/index.html`);
     }
-  //  appWindow.webContents.openDevTools();
+    // appWindow.webContents.openDevTools();
     appWindow.on('closed', function() {
         appWindow = null;
     });
@@ -289,7 +291,7 @@ Example:
       console.log(`--shots ${app.getVersion()}`);
       break;
     case '--about':
-    case '-=-about':
+    case '-about':
     case '-a':
       console.log('--shots is an application for creating screenshots.\n' +
         'It was created on web-technologies.\nhttps://github.com/binjospookie/--shots');
@@ -297,29 +299,44 @@ Example:
     case '--capture':
     case '-capture':
     case  '-c':
-      app.createShot = true;
-      appWindow.webContents.send('new', 'capture');
-      appWindow.setPosition(0,0);
-      appWindow.show();
-      appFirstStart = false;
+    dialog.showMessageBox(newShotDialog, function(index) {
+        // если пользователь подтвердил выбор — далем новый скриншот
+        if (index === 0) {
+          app.createShot = true;
+          appWindow.webContents.send('new', 'capture');
+          appWindow.setPosition(0,0);
+          appWindow.show();
+          appFirstStart = false;
+        }
+    })
       break;
     case '--fast':
     case '-fast':
     case '-f':
-      app.createShot = true;
-      appWindow.webContents.send('new', 'fast');
-      appWindow.setPosition(0,0);
-      appWindow.show();
-      appFirstStart = false;
+    dialog.showMessageBox(newShotDialog, function(index) {
+        // если пользователь подтвердил выбор — далем новый скриншот
+        if (index === 0) {
+            app.createShot = true;
+            appWindow.webContents.send('new', 'fast');
+            appWindow.setPosition(0,0);
+            appWindow.show();
+            appFirstStart = false;
+        }
+    })
       break;
     case '--new':
     case '-new':
     case '-n':
-      app.createShot = true;
-      appWindow.webContents.send('new');
-      appWindow.setPosition(0,0);
-      appWindow.show();
-      appFirstStart = false;
+    dialog.showMessageBox(newShotDialog, function(index) {
+        // если пользователь подтвердил выбор — далем новый скриншот
+        if (index === 0) {
+          app.createShot = true;
+          appWindow.webContents.send('new');
+          appWindow.setPosition(0,0);
+          appWindow.show();
+          appFirstStart = false;
+        }
+      })
       break;
     case '--save':
     case '-save':

@@ -238,7 +238,7 @@ function text(body, textSidebar) {
     }
     body.classList.add('text');
   });
-}   
+}
 function emoji(createEmoji, textSidebar) {
   ipcRenderer.on('emoji', (event, type) => {
     if (textSidebar.classList.contains('show')) {
