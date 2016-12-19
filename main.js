@@ -138,6 +138,15 @@ ipc.on('open-information-dialog', function() {
 });
 
 /**
+ * Выводим диалог для выбора пути сохранения
+ */
+ipc.on('open-save-dialog', function() {
+    dialog.showOpenDialog({title: 'Choose directory for saving screenshots', properties: ['openDirectory']},function(path) {
+      appWindow.webContents.send( 'savePath', path);
+    })
+});
+
+/**
  * Выводим диалог перед деавторизацией
  */
 ipc.on('open-signin-dialog', function() {
@@ -163,7 +172,7 @@ function createWindow() {
     } else {
       appWindow.loadURL(`file://${__dirname}/index.html`);
     }
-    // appWindow.webContents.openDevTools();
+    appWindow.webContents.openDevTools();
     appWindow.on('closed', function() {
         appWindow = null;
     });
