@@ -1200,10 +1200,7 @@ function callSave() {
         if (answerOffline) {
           data = data.replace(/\s+/g, '');
           imageBuffer = decodeBase64Image(data);
-          fs.writeFile(screenshotPath, imageBuffer.data);
-
-          difference = Math.abs(new Date() - time);
-          hideLoader(difference, `Saved at "${homePath}/--shots"`, loaderText);
+          ipc.send('open-save-dialog', imageBuffer.data, localStorage.getItem('savePath'));
         } else {
           hideLoader(difference, 'Stopping', loaderText);
         }
@@ -1212,10 +1209,7 @@ function callSave() {
       case 'local':
         data = data.replace(/\s+/g, '');
         imageBuffer = decodeBase64Image(data);
-        fs.writeFile(screenshotPath, imageBuffer.data);
-
-        difference = Math.abs(new Date() - time);
-        hideLoader(difference, `Saved at "${homePath}/--shots"`, loaderText);
+        ipc.send('open-save-dialog', imageBuffer.data, localStorage.getItem('savePath'));
         break;
 
       case 'base64':
@@ -1234,16 +1228,13 @@ function callSave() {
         data = data.replace(/\s+/g, '');
         clipboard.writeText(data);
         imageBuffer = decodeBase64Image(data);
-        fs.writeFile(screenshotPath, imageBuffer.data);
-
-        difference = Math.abs(new Date() - time);
-        hideLoader(difference, `Saved at "${homePath}/--shots" an copied to buffer`, loaderText);
+        ipc.send('open-save-dialog', imageBuffer.data, localStorage.getItem('savePath'));
         break;
 
       case 'server local link':
         data = data.replace(/\s+/g, '');
         imageBuffer = decodeBase64Image(data);
-        fs.writeFile(screenshotPath, imageBuffer.data);
+        ipc.send('open-save-dialog', imageBuffer.data, localStorage.getItem('savePath'));
         sendToServer(data, time, loader, loaderText, `${homePath}/--shots`);
         break;
 
@@ -1253,6 +1244,15 @@ function callSave() {
     }
   });
 }
+
+ipc.on('successSave', (event, path)=>{
+  hideLoader(3000, `Saved at "${path}"`, loaderText);
+  localStorage.setItem('savePath', path.substr(0, path.lastIndexOf('/')));
+});
+
+ipc.on('canceledSave', (event)=>{
+  hideLoader(3000, 'Stopping', loaderText);
+});
 
 /**
  * Обработчик нажатия на чекбокс применения кастомных настроек.

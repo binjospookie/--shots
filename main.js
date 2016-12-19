@@ -1,5 +1,5 @@
 /* eslint-disable */
-
+const fs = require('fs');
 const electron = require('electron');
 const app = electron.app;
 const globalShortcut = electron.globalShortcut;
@@ -147,6 +147,25 @@ ipc.on('open-signin-dialog', function() {
           appWindow.webContents.send( 'signout' );
         }
     })
+});
+
+ipc.on('open-save-dialog',  function(event, data, path) {
+  let saveDialogOption = {
+    filters: [{name: 'Images', extensions: ['png']}]
+  }
+
+  if (path !== null) {
+    saveDialogOption.defaultPath = path;
+  }
+
+  dialog.showSaveDialog(saveDialogOption, function(path) {
+      if (path !== undefined) {
+        fs.writeFile(path, data);
+        appWindow.webContents.send( 'successSave', path );
+      } else {
+        appWindow.webContents.send( 'canceledSave');
+      }
+  });
 });
 
 /**
