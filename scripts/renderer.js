@@ -80,7 +80,6 @@ const serverButtonClickHandler = require('./functions/serverButtonClickHandler')
 const signinFormSubmitHandler = require('./functions/signinFormSubmitHandler');
 const calcAngle = require('./functions/calcAngle');
 const preventDND = require('./functions/preventDND');
-const pathSaveClickHandler = require('./functions/pathSaveClickHandler');
 // Массив объектов, содержащих данные о каждом кропе.
 let croppingHistory = [];
 // Индекс текущего кусочка истории в массива
@@ -1165,21 +1164,14 @@ function callSave() {
   let data;
   const time = new Date();
   let settings = getSettings();
-  let homePath = process.env.HOME || process.env.USERPROFILE;
-  let screenshotPath = path.join(`${homePath}/--shots`, `${Date.now()}.png`);
+  const homePath = process.env.HOME || process.env.USERPROFILE;
+  const screenshotPath = path.join(`${homePath}/--shots`, `${Date.now()}.png`);
   let imageBuffer;
   let difference;
   let answerOffline;
 
-  if (localStorage.getItem('savePath') !== null) {
-    homePath = localStorage.getItem('savePath');
-    screenshotPath = path.join(`${homePath}`, `${Date.now()}.png`);
-  } else {
-    homePath += '/--shots';
-
-    if (!fs.existsSync(homePath)) {
-      fs.mkdirSync(homePath);
-    }
+  if (!fs.existsSync(`${homePath}/--shots`)) {
+    fs.mkdirSync(`${homePath}/--shots`);
   }
 
   hideControls(activeShape, stage);
@@ -1211,7 +1203,7 @@ function callSave() {
           fs.writeFile(screenshotPath, imageBuffer.data);
 
           difference = Math.abs(new Date() - time);
-          hideLoader(difference, `Saved at "${homePath}"`, loaderText);
+          hideLoader(difference, `Saved at "${homePath}/--shots"`, loaderText);
         } else {
           hideLoader(difference, 'Stopping', loaderText);
         }
@@ -1223,7 +1215,7 @@ function callSave() {
         fs.writeFile(screenshotPath, imageBuffer.data);
 
         difference = Math.abs(new Date() - time);
-        hideLoader(difference, `Saved at "${homePath}"`, loaderText);
+        hideLoader(difference, `Saved at "${homePath}/--shots"`, loaderText);
         break;
 
       case 'base64':
@@ -1245,14 +1237,14 @@ function callSave() {
         fs.writeFile(screenshotPath, imageBuffer.data);
 
         difference = Math.abs(new Date() - time);
-        hideLoader(difference, `Saved at "${homePath}" an copied to buffer`, loaderText);
+        hideLoader(difference, `Saved at "${homePath}/--shots" an copied to buffer`, loaderText);
         break;
 
       case 'server local link':
         data = data.replace(/\s+/g, '');
         imageBuffer = decodeBase64Image(data);
         fs.writeFile(screenshotPath, imageBuffer.data);
-        sendToServer(data, time, loader, loaderText, `${homePath}`);
+        sendToServer(data, time, loader, loaderText, `${homePath}/--shots`);
         break;
 
       default:

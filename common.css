@@ -263,17 +263,19 @@ aside.hint.shortcut > ul > li > span{
 }
 aside.settings{
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     z-index: 1;
     display: none;
     width: 570px;
+    height: 280px;
     padding: 20px;
     margin: auto;
     font-family: "Roboto", sans-serif;
     background: #F4F3F2;
     box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .08), 0 3px 12px 0 rgba(0, 0, 0, .12);
-    transform: translate(-50%,-50%);
 }
 aside.settings > h2{
     padding: 0;

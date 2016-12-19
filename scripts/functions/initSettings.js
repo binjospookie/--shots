@@ -6,9 +6,6 @@ module.exports = function initSettings(settings) {
   const fieldsets = settings.querySelectorAll('fieldset');
   const inputs = settings.querySelectorAll('fieldset > ul > li > input');
   const storage = localStorage.getItem('settings');
-  const pathValue = localStorage.getItem('savePath');
-  const path = settings.querySelector('div.path');
-
   let settingsValue;
   let settingName = '';
 
@@ -27,6 +24,4 @@ module.exports = function initSettings(settings) {
       input.addEventListener('change', fieldsetsListener, false);
     }
   );
-
-  path.textContent = (pathValue === null) ? 'Selected: default' : `Selected ${pathValue}`;
 };
