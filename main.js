@@ -95,7 +95,9 @@ app.on('will-quit', () => {
  * Уничтожаем процесс, когда все окна закрыты
  */
 app.on('window-all-closed', function() {
+  if (process.platform !== 'darwin') {
     app.quit();
+  }
 });
 
 /**
@@ -182,7 +184,7 @@ function createWindow() {
     } else {
       appWindow.loadURL(`file://${__dirname}/index.html`);
     }
-    // appWindow.webContents.openDevTools();
+    appWindow.webContents.openDevTools();
     appWindow.on('closed', function() {
         appWindow = null;
     });
