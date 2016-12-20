@@ -60,6 +60,10 @@ But you can't use admin-page.
 
 <br />
 
+## Screenshot of --shots
+<img src="https://theshots.ru/saved/1943328504585907d9cf0606.81487303.png" alt="--shots in action" /> 
+<br />
+
 ***First commit was added 24 Sep 2016***
 
 If you want to thank me, just starring the project and tell your friends about --shots :tada:
