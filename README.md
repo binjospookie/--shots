@@ -60,7 +60,7 @@ But you can't use admin-page.
 
 <br />
 
-## Screenshot of --shots
+## --shots in action
 <img src="https://theshots.ru/saved/1943328504585907d9cf0606.81487303.png" alt="--shots in action" /> 
 <br />
 
