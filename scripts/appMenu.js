@@ -30,6 +30,11 @@ module.exports = function appMenu(app, appWindow) {
             click() { appWindow.webContents.send('save'); },
           },
           {
+            label: 'Local save',
+            accelerator: 'CmdOrCtrl+L',
+            click() { appWindow.webContents.send('save', 'local') },
+          },
+          {
             label: 'Minimize to tray',
             accelerator: 'CmdOrCtrl+M',
             click() { appWindow.hide(); },

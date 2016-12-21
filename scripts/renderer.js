@@ -1156,7 +1156,7 @@ function createEmoji(type) {
 /**
  * Обработчик сохранения результата
  */
-function callSave() {
+function callSave(flag) {
   if (loader.classList.contains('show')) {
     return;
   }
@@ -1186,7 +1186,11 @@ function callSave() {
   ipcRenderer.sendSync('synchronous-message', 'optimize', data);
 
   setDefaultSceneState();
-
+  
+  if (flag !== undefined) {
+    settings = flag;
+  }
+  
   isOnline((err, status) => {
     if (status !== true) {
       if (['local base64', 'local', 'base64'].indexOf(settings) === -1) {

@@ -224,11 +224,11 @@ function callArrow(callArrow, body, textSidebar) {
   });
 }
 function callSave(callSave, body, textSidebar) {
-  ipcRenderer.on('save', () => {
+  ipcRenderer.on('save', (event, flag) => {
     if (body.classList.contains('modal') || textSidebar.classList.contains('show')) {
       return;
     }
-    callSave();
+    callSave(flag);
   });
 }
 function text(body, textSidebar) {
