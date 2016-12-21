@@ -184,7 +184,7 @@ function createWindow() {
     } else {
       appWindow.loadURL(`file://${__dirname}/index.html`);
     }
-    appWindow.webContents.openDevTools();
+    // appWindow.webContents.openDevTools();
     appWindow.on('closed', function() {
         appWindow = null;
     });

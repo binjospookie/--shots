@@ -32,13 +32,13 @@
   },
   "homepage": "http://shots.binjo.ru/",
   "devDependencies": {
-    "electron": "^1.4.11",
-    "electron-builder": "^8.6.0",
+    "electron": "^1.4.13",
+    "electron-builder": "^10.9.2",
     "eslint": "^3.10.2",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-loader": "^1.6.1",
     "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-jsx-a11y": "^3.0.2",
     "gulp-postcss": "^6.2.0",
     "is-online": "^5.1.2",
     "postcss": "^5.2.5",
@@ -47,7 +47,7 @@
   },
   "dependencies": {
     "gulp": "^3.9.1",
-    "is-online": "^5.1.2",
+    "is-online": "^6.0.1",
     "minimist": "^1.2.0",
     "precss": "^1.4.0",
     "stylelint": "^7.5.0"
