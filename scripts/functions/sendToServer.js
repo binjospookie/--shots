@@ -3,9 +3,10 @@ const popUp = require('./popUp');
 const popupWindow = document.querySelector('aside#messageToUser');
 const popupText = popupWindow.querySelector('p');
 
+const xhr = new XMLHttpRequest();
+
 module.exports = function sendToServer(code, old, loader, loaderText, path) {
   const data = new FormData();
-  const xhr = new XMLHttpRequest()
   let now;
   let difference;
   let callAfter;
@@ -69,4 +70,13 @@ module.exports = function sendToServer(code, old, loader, loaderText, path) {
         break;
     }
   };
+  
+  window.addEventListener('keydown', event => {
+    if (event.which === 27) {
+      if (loader.classList.contains('show')) {
+        xhr.abort();
+        hideLoader(3000, 'Abort', loaderText);
+      }
+    }
+  });
 };

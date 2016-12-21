@@ -188,7 +188,7 @@ textEventListeners(textareaContent, textateaFontSize, textateaFontColor, textare
 
 /**
  * Обработчик закртыия формы с текстом
- * @return {[type]} [description]
+ * @return {[type]} 
  */
 function applyTextButtonClickHandler() {
   hideControls(activeShape, stage);
@@ -199,7 +199,7 @@ function applyTextButtonClickHandler() {
 
 /**
  * Обработчик удаления текста из формы
- * @return {[type]} [description]
+ * @return {[type]} 
  */
 function deleteTextButtonClickHandler() {
   stage.removeChild(activeShape);
@@ -209,8 +209,8 @@ function deleteTextButtonClickHandler() {
 }
 /**
  * Обработчик изменения контента текста
- * @param  {[type]} event [description]
- * @return {[type]}       [description]
+ * @param  {[type]} event 
+ * @return {[type]}       
  */
 function textareaValueChangeHadler(event) {
   let textareaValue = event.target.value;
@@ -221,8 +221,8 @@ function textareaValueChangeHadler(event) {
 
 /**
  * Обработчик изменения кегля
- * @param  {[type]} event [description]
- * @return {[type]}       [description]
+ * @param  {[type]} event 
+ * @return {[type]}       
  */
 function textareaFontSizeChangeHadler(event) {
   let textareaFontSize = event.target.value;
@@ -235,8 +235,8 @@ function textareaFontSizeChangeHadler(event) {
 
 /**
  * Обработчик изменения текста
- * @param  {[type]} event [description]
- * @return {[type]}       [description]
+ * @param  {[type]} event 
+ * @return {[type]}       
  */
 function textareaFontColorChangeHadler(event) {
   let textareaColor = event.target.value;
@@ -701,7 +701,6 @@ function setDefaultSceneState() {
   setDefaultFrame(frame);
 
   // если жмём esc во время работы с фигурой
-  // добавить условие про crop
   if (onCreate === true) {
     mouseDownX = 0;
     mouseDownY = 0;
@@ -1001,7 +1000,7 @@ function createText(oldEvent) {
 
 /**
  * Инициализация модалки при открытии
- * @return {[type]} [description]
+ * @return {[type]} 
  */
 function openTextSidebar() {
   const paragraph = activeShape.children[0];
