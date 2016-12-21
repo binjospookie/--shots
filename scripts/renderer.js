@@ -1192,7 +1192,7 @@ function callSave() {
       if (['local base64', 'local', 'base64'].indexOf(settings) === -1) {
         settings = 'offline';
       }
-    }
+    } });
 
     switch (settings) {
       case 'offline':
@@ -1242,7 +1242,6 @@ function callSave() {
         sendToServer(data, time, loader, loaderText);
         break;
     }
-  });
 }
 
 ipc.on('successSave', (event, path)=>{
