@@ -8,7 +8,7 @@ Available for Linux,Windows, MacOS (exclude v0.1.3)
 * [shots.Setup.1.0.3.exe](https://github.com/binjospookie/--shots/releases/download/v1.0.3/shots.Setup.1.0.3.exe)<br />
 * [shots.portable.1.0.3.exe](https://github.com/binjospookie/--shots/releases/download/v1.0.3/shots.1.0.3.portable.exe)<br />
 * [Source code (zip)](https://github.com/binjospookie/--shots/archive/v1.0.3.zip)<br />
-* [Source code (tar.gz)](https://github.com/binjospookie/--shots/archive/v1.0.3.tar.gz
+* [Source code (tar.gz)](https://github.com/binjospookie/--shots/archive/v1.0.3.tar.gz)
 
 ## v1.0.2
 * [shots-1.0.2-amd64.deb](https://github.com/binjospookie/--shots/releases/download/v1.0.2/shots_1.0.2_amd64.deb)<br />
