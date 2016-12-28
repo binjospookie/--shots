@@ -123,7 +123,8 @@ ipcMain.on('synchronous-message', (event, arg, data) => {
     } else {
         appWindow.show();
         appWindow.setPosition(0,0);
-        appWindow.setSize(arg.width, arg.height);
+        const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
+        appWindow.setSize(width, height);
     }
 });
 
@@ -184,7 +185,9 @@ function createWindow() {
     } else {
       appWindow.loadURL(`file://${__dirname}/index.html`);
     }
-    // appWindow.webContents.openDevTools();
+    if (argv.debug) {
+        appWindow.webContents.openDevTools();
+    }
     appWindow.on('closed', function() {
         appWindow = null;
     });
@@ -223,8 +226,7 @@ function createWindow() {
     appWindow.setAutoHideMenuBar(false);
 
     let processStartFlags = Object.keys(argv)[1];
-
-    if(processStartFlags) {
+    if ((processStartFlags) && (processStartFlags !== 'debug')) {
       parseAndDo(`-${processStartFlags}`);
       if (['h','help','a','about','v','version'].indexOf(processStartFlags) !== -1) {
         app.exit(0);

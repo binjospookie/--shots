@@ -188,7 +188,7 @@ textEventListeners(textareaContent, textateaFontSize, textateaFontColor, textare
 
 /**
  * Обработчик закртыия формы с текстом
- * @return {[type]} 
+ * @return {[type]}
  */
 function applyTextButtonClickHandler() {
   hideControls(activeShape, stage);
@@ -199,7 +199,7 @@ function applyTextButtonClickHandler() {
 
 /**
  * Обработчик удаления текста из формы
- * @return {[type]} 
+ * @return {[type]}
  */
 function deleteTextButtonClickHandler() {
   stage.removeChild(activeShape);
@@ -209,8 +209,8 @@ function deleteTextButtonClickHandler() {
 }
 /**
  * Обработчик изменения контента текста
- * @param  {[type]} event 
- * @return {[type]}       
+ * @param  {[type]} event
+ * @return {[type]}
  */
 function textareaValueChangeHadler(event) {
   let textareaValue = event.target.value;
@@ -221,8 +221,8 @@ function textareaValueChangeHadler(event) {
 
 /**
  * Обработчик изменения кегля
- * @param  {[type]} event 
- * @return {[type]}       
+ * @param  {[type]} event
+ * @return {[type]}
  */
 function textareaFontSizeChangeHadler(event) {
   let textareaFontSize = event.target.value;
@@ -235,8 +235,8 @@ function textareaFontSizeChangeHadler(event) {
 
 /**
  * Обработчик изменения текста
- * @param  {[type]} event 
- * @return {[type]}       
+ * @param  {[type]} event
+ * @return {[type]}
  */
 function textareaFontColorChangeHadler(event) {
   let textareaColor = event.target.value;
@@ -1000,7 +1000,7 @@ function createText(oldEvent) {
 
 /**
  * Инициализация модалки при открытии
- * @return {[type]} 
+ * @return {[type]}
  */
 function openTextSidebar() {
   const paragraph = activeShape.children[0];
@@ -1185,11 +1185,11 @@ function callSave(flag) {
   ipcRenderer.sendSync('synchronous-message', 'optimize', data);
 
   setDefaultSceneState();
-  
+
   if (flag !== undefined) {
     settings = flag;
   }
-  
+
   isOnline((err, status) => {
     if (status !== true) {
       if (['local base64', 'local', 'base64'].indexOf(settings) === -1) {
