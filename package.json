@@ -1,6 +1,6 @@
 {
   "name": "shots",
-  "version": "1.0.3-rc23",
+  "version": "1.0.4",
   "description": "An application for creating screenshots",
   "main": "main.js",
   "license": "NPOSL",
@@ -19,10 +19,10 @@
     "category": "graphics",
     "build.mac.category": "shots.graphics",
     "maintainer": "Victor Pasynok",
-    "copyright": "Copyright © 2016 Victor Pasynok",
+    "copyright": "Copyright © 2017 Viktor Pasynok",
     "linux": {
       "target": [
-        "deb"
+        "AppImage", "deb"
       ],
       "category": "Graphics",
       "packageCategory": "graphics"
@@ -33,15 +33,10 @@
   },
   "homepage": "http://shots.binjo.ru/",
   "devDependencies": {
-    "electron": "^1.4.13",
-    "electron-builder": "^10.9.2",
-    "eslint": "^3.10.2",
-    "eslint-config-airbnb": "^13.0.0",
-    "eslint-loader": "^1.6.1",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^3.0.2",
-    "gulp-postcss": "^6.2.0",
-    "is-online": "^5.1.2",
+    "electron": "^1.5.0",
+    "electron-builder": "^10.17.3",
+    "gulp-postcss": "^6.3.0",
+    "is-online": "^6.0.1",
     "postcss": "^5.2.5",
     "postcss-scss": "^0.4.0",
     "rimraf": "^2.5.4"
