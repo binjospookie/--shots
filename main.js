@@ -72,7 +72,30 @@ if (shouldQuit) {
 app.on('ready', () => {
     tray = new Tray(__dirname + '/icon.png');
     createWindow();
+    
+    const globalShot = globalShortcut.register('CommandOrControl+Alt+M', () => {
+      if (appFirstStart) {
+        app.createShot = true;
+        appWindow.webContents.send('new');
+        appWindow.setPosition(0,0);
+        appWindow.show();
+        appWindow.focus();
+        appFirstStart = false;
+        return;
+      }
 
+      dialog.showMessageBox(newShotDialog, function(index) {
+          // если пользователь подтвердил выбор — далем новый скриншот
+          if (index === 0) {
+              app.createShot = true;
+              appWindow.webContents.send('new');
+              appWindow.setPosition(0,0);
+              appWindow.show();
+              appWindow.focus();
+          }
+      })
+    })
+    
     const template = appMenu(app, appWindow);
     const menu = Menu.buildFromTemplate(template);
 
