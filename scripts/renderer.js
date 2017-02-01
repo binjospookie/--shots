@@ -110,8 +110,7 @@ let DELAY_DURATION = 100;
 let SHIFT_PRESSED;
 let IN_PROCESS = false;
 const APP_VERSION = ipcRenderer.sendSync('synchronous-message', 'version');
-createjs.Ticker.addEventListener('tick', stage);
-createjs.Ticker.setFPS(40);
+
 window.addEventListener('keydown', event => {
   if (event.which === 16) {
     SHIFT_PRESSED = true;
@@ -194,7 +193,7 @@ textEventListeners(textareaContent, textateaFontSize, textateaFontColor, textare
 function applyTextButtonClickHandler() {
   hideControls(activeShape, stage);
   activeShape = undefined;
-  
+  stage.update();
   textSidebar.classList.remove('show');
 }
 
@@ -205,7 +204,7 @@ function applyTextButtonClickHandler() {
 function deleteTextButtonClickHandler() {
   stage.removeChild(activeShape);
   activeShape = undefined;
-  
+  stage.update();
   textSidebar.classList.remove('show');
 }
 /**
@@ -217,7 +216,7 @@ function textareaValueChangeHadler(event) {
   let textareaValue = event.target.value;
 
   activeShape.children[0].text = textareaValue;
-  
+  stage.update();
 }
 
 /**
@@ -230,6 +229,8 @@ function textareaFontSizeChangeHadler(event) {
 
   activeShape.children[0].font = `${textareaFontSize}px Roboto`;
   activeShape.children[1].y = activeShape.getBounds().y - 5;
+
+  stage.update();
 }
 
 /**
@@ -241,7 +242,7 @@ function textareaFontColorChangeHadler(event) {
   let textareaColor = event.target.value;
 
   activeShape.children[0].color = textareaColor;
-  
+  stage.update();
 }
 
 // Метод вызова диалога о создании нового скриншота
@@ -269,7 +270,7 @@ function stageMouseDownHandler(event) {
     hideControls(activeShape, stage);
     stage.removeChild(activeShape);
     activeShape = undefined;
-    
+    stage.update();
     textSidebar.classList.remove('show');
     return;
   }
@@ -304,7 +305,7 @@ function stageMouseDownHandler(event) {
 
               activeShape.x = event.stageX + demensionX;
               activeShape.y = event.stageY + demensionY;
-              
+              stage.update();
             });
 
             activeShape.on('pressup', (event) => {
@@ -320,7 +321,8 @@ function stageMouseDownHandler(event) {
       return;
     }
   }
-  
+
+  stage.update();
 }
 
 /**
@@ -340,19 +342,18 @@ function deleteShape(event) {
   hideControls(activeShape, stage);
   stage.removeChild(activeShape);
   activeShape = undefined;
+  stage.update();
 }
 
 /**
  * Обработчик отпускания клавиши мыши при работе с фигурами
  */
 function stageMouseUpShapes() {
+  const deleteButton = createDeleteButton();
+  const transformButton = createTransformButton();
   if (activeShape.children.length === 0) {
     return;
   }
-  
-  const deleteButton = createDeleteButton();
-  const transformButton = createTransformButton();
-
   deleteButton.addEventListener('click', deleteShape);
 
   if (penOldX !== undefined && penOldY !== undefined) {
@@ -361,11 +362,7 @@ function stageMouseUpShapes() {
   } else {
     let shape = activeShape.getChildByName('rect');
     let shapeBounds;
-    
-    if ((activeShape.getChildByName('arrow') === null) || (activeShape.getChildByName('rect') === null)) {
-      return;
-    }
-    
+
     if (shape === null) {
       shape = activeShape.getChildByName('arrow');
       shapeBounds = activeShape.getChildByName('arrow').getBounds();
@@ -402,8 +399,7 @@ function stageMouseUpShapes() {
 
   activeShape.addChild(deleteButton);
   hideControls(activeShape, stage);
-  
-  
+
   penOldX = undefined;
   penOldY = undefined;
   activeShape = undefined;
@@ -491,6 +487,8 @@ function transformMoveHandler(event) {
   } else if(shapeName !== 'rect') {
     activeShape.rotation = -(45 - degree);
   }
+
+  stage.update();
 }
 
 /**
@@ -591,6 +589,8 @@ function stageMouseDownHandlerDefault(filled, event) {
     stage.addChild(container);
   }
 
+  stage.update();
+
   activeShape = container;
 }
 
@@ -629,6 +629,8 @@ function stageMouseMoveHandlerArrow(event) {
 
   activeShape.addChild(arrow);
   activeShape.rotation = (Math.atan2(shapeY, shapeX) * 180) / Math.PI;
+
+  stage.update();
 }
 
 /**
@@ -687,6 +689,8 @@ function stageMouseMoveHandlerRect(filled, event) {
   if (borderShape) {
     activeShape.addChild(borderShape);
   }
+
+  stage.update();
 }
 
 /**
@@ -703,13 +707,13 @@ function setDefaultSceneState() {
     penOldX = undefined;
     penOldY = undefined;
     stage.removeChild(activeShape);
-    
+    stage.update();
     activeShape = undefined;
     body.classList.remove('draw');
   }
 
   onCreate = false;
-  
+  stage.update();
 }
 
 /**
@@ -828,6 +832,8 @@ function stageMouseMoveHandlerPen(event) {
       penOldX = newX;
       penOldY = newY;
     }
+
+    stage.update();
   }
 
   if (!penOldX || SHIFT_PRESSED === false) {
@@ -942,6 +948,8 @@ function stageMouseUpHandlerCrop(event) {
 
   historyIndex = croppingHistory.length - 1;
 
+  stage.update();
+
   onCreate = false;
   setDefaultSceneState();
   body.classList.add('centered');
@@ -984,7 +992,7 @@ function createText(oldEvent) {
 
     stage.addChild(container);
     activeShape = container;
-    
+    stage.update();
     body.classList.remove('text');
     openTextSidebar();
   }
@@ -1024,6 +1032,8 @@ function undoCrop() {
   workArea.width = undoObj.width;
   workArea.height = undoObj.height;
 
+  stage.update();
+
   historyIndex = index;
 
   if (historyIndex === 0) {
@@ -1054,6 +1064,8 @@ function redoCrop() {
 
   workArea.width = redoObj.width;
   workArea.height = redoObj.height;
+
+  stage.update();
 
   historyIndex = index;
 
@@ -1136,7 +1148,7 @@ function createEmoji(type) {
 
     stage.addChild(container);
     hideControls(container, stage);
-    
+    stage.update();
   };
 }
 
