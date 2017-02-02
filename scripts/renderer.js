@@ -100,7 +100,6 @@ const signinButtons = signinWindow.querySelectorAll('button[type="button"]');
 const signinForm = signinWindow.querySelector('form');
 const closeSettingsButtons = settings.querySelectorAll('button.close');
 const serverButton = settings.querySelector('button#serverPath');
-const commonSettings = JSON.parse(localStorage.getItem('commonSettings'));
 const textSidebar = document.getElementById('textSidebar');
 const textareaContent = document.getElementById('textContent');
 const textateaFontSize = document.getElementById('fontSize');
@@ -108,6 +107,7 @@ const textateaFontColor = document.getElementById('fontColor');
 const deleteTextButton = document.getElementById('deleteText');
 const applyTextButton = document.getElementById('applyText');
 const closeTextFormButton = document.getElementById('closeTextForm');
+let commonSettings = JSON.parse(localStorage.getItem('commonSettings'));
 let DELAY_DURATION = 100;
 let SHIFT_PRESSED;
 let IN_PROCESS = false;
@@ -508,8 +508,11 @@ function createScreenshot(argument) {
     thumbnailSize: thumbSize,
   };
 
+  commonSettings = JSON.parse(localStorage.getItem('commonSettings'));
+
   if (commonSettings) {
     DELAY_DURATION = commonSettings.delayNumber?commonSettings.delayNumber:1;
+    console.log(commonSettings)
     if (DELAY_DURATION > 10) {
       DELAY_DURATION = 10;
     }
@@ -517,7 +520,7 @@ function createScreenshot(argument) {
       DELAY_DURATION = 1;
     }
 
-    DELAY_DURATION *= 100;
+    DELAY_DURATION *= 1000;
   }
 
   const answer = ipcRenderer.sendSync('synchronous-message', 'hide');
@@ -530,8 +533,10 @@ function createScreenshot(argument) {
   }
   initSettings(settings);
   initCommonSettings(settings);
-  if ((commonSettings.immediatelycrop || argument === 'capture') && argument !== 'fast') {
-    callCrop();
+  if (commonSettings) {
+    if ((commonSettings.immediatelycrop || argument === 'capture') && argument !== 'fast') {
+      callCrop();
+    }
   }
 }
 
