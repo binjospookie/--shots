@@ -58,6 +58,7 @@ But you can't use admin-page.
 * http://www.fousoft.com/shots.html
 * http://www.softpedia.com/get/Multimedia/Graphic/Graphic-Capture/--shots.shtml (duplicate of ^)
 * https://habrahabr.ru/post/316880/
+* http://www.omgubuntu.co.uk/2017/02/shots-annotate-screenshots-ubuntu-app
 
 <br />
 
