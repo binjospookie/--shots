@@ -7,12 +7,6 @@ const {
     ipcRenderer
 } = require('electron');
 let screenshotPath = '';
-const commonSettings = localStorage.getItem('commonSettings');
-let array = [];
-
-if (commonSettings !== null) {
-  array = JSON.parse(commonSettings);
-}
 
 /**
  * Создание скриншота, добавление на канвас и изменение размеров окна
@@ -25,6 +19,7 @@ if (commonSettings !== null) {
  * @param bitmap
  */
 module.exports = function addScreenshot(options, thumbSize, image, ctx, stage, bitmap, body, modalOnStart, modalWindow, argument, callSave) {
+  const commonSettings = JSON.parse(localStorage.getItem('commonSettings'));
   const time = new Date().getTime() / 1000;
   const cursourPos = electron.screen.getCursorScreenPoint();
 
@@ -42,8 +37,7 @@ module.exports = function addScreenshot(options, thumbSize, image, ctx, stage, b
             stage.update();
 
             bitmap = new createjs.Bitmap(image);
-
-            if (array.indexOf('capture') !== -1) {
+            if (commonSettings&&commonSettings.capture) {
               const cimage = new Image();
               cimage.src = './images/cursor.png'
               cimage.onload = () => {
@@ -58,7 +52,7 @@ module.exports = function addScreenshot(options, thumbSize, image, ctx, stage, b
             fs.unlinkSync(screenshotPath);
             image = null;
             screenshotPath = '';
-            
+
             stage.update();
             body.classList.remove('centered');
             modalOnStart(body, modalWindow);

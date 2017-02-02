@@ -1,39 +1,24 @@
 const commonSettingsInputChangeHandler = require('./commonSettingsInputChangeHandler');
 
-module.exports = function initCommonSettings(settings, localstorageColorChangeHandler) {
-  const commonSettings = localStorage.getItem('commonSettings');
-  const labels = settings.querySelectorAll('label[data-type="common"]');
-  let array;
-  let input;
+module.exports = function initCommonSettings(settings) {
+  const commonSettings = JSON.parse(localStorage.getItem('commonSettings'));
+  const inputs = settings.querySelectorAll('input[data-type="common"]');
 
-  if (commonSettings !== null) {
-    array = JSON.parse(commonSettings);
-    Array.prototype.forEach.call(
-      labels,
-      (label) => {
-        input = label.querySelector('input');
-        if (array.indexOf(input.value) !== -1) {
-          input.checked = true;
-        } else if (input.type === 'color') {
-            array.forEach((settingValue)=>{
-            if (settingValue.charAt(0) === '#') {
-              input.value = settingValue;
-            }
-          });
-        } else if (input.type === 'number') {
-          array.forEach((settingValue)=>{
-          if (settingValue.charAt(0) === '$') {
-            input.value = settingValue.split('$')[1];
-          }
-        });
+  Array.prototype.forEach.call(
+    inputs,
+    (input) => {
+      if (commonSettings) {
+        if (input.type === 'checkbox') {
+          input.checked = commonSettings[input.name]?commonSettings[input.name]:input.checked;
+        }
+        else {
+          input.value = commonSettings[input.name]?commonSettings[input.name]:input.value;
         }
       }
-    );
-  }
-  Array.prototype.forEach.call(
-    labels,
-    (label) => {
-      label.addEventListener('change', commonSettingsInputChangeHandler.bind(null, localstorageColorChangeHandler));
+      input.addEventListener('change', commonSettingsInputChangeHandler);
     }
   );
+  if (!commonSettings) {
+    localStorage.setItem('commonSettings', '{}');
+  }
 };

@@ -8,6 +8,9 @@ const {
     ipcMain
 } = require('electron');
 const ipc = require('electron').ipcMain;
+ipc.on('errorInWindow', function(event, error, url, line){
+    console.log(url, line, error);
+});
 const dialog = require('electron').dialog;
 const {
     Menu
@@ -72,7 +75,7 @@ if (shouldQuit) {
 app.on('ready', () => {
     tray = new Tray(__dirname + '/icon.png');
     createWindow();
-    
+
     const globalShot = globalShortcut.register('CommandOrControl+Alt+M', () => {
       if (appFirstStart) {
         app.createShot = true;
@@ -95,7 +98,7 @@ app.on('ready', () => {
           }
       })
     })
-    
+
     const template = appMenu(app, appWindow);
     const menu = Menu.buildFromTemplate(template);
 
