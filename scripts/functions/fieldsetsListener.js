@@ -12,6 +12,6 @@ module.exports = function fieldsetsListener(event) {
   if (existSettings.length === 0) {
     localStorage.removeItem('settings');
   } else {
-      localStorage.setItem('settings', JSON.stringify(existSettings));
+    localStorage.setItem('settings', JSON.stringify(existSettings));
   }
 };

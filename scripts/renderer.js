@@ -15,6 +15,9 @@ const {
 } = require('electron');
 
 const ipc = require('electron').ipcRenderer;
+window.onerror = function(error, url, line) {
+    ipc.send('errorInWindow', error);
+};
 const ipcAdd = require('./ipc/ipcAdd');
 const determineScreenShotSize = require('./functions/determineScreenShotSize');
 const {
@@ -97,7 +100,6 @@ const signinButtons = signinWindow.querySelectorAll('button[type="button"]');
 const signinForm = signinWindow.querySelector('form');
 const closeSettingsButtons = settings.querySelectorAll('button.close');
 const serverButton = settings.querySelector('button#serverPath');
-const commonSettings = localStorage.getItem('commonSettings');
 const textSidebar = document.getElementById('textSidebar');
 const textareaContent = document.getElementById('textContent');
 const textateaFontSize = document.getElementById('fontSize');
@@ -105,7 +107,7 @@ const textateaFontColor = document.getElementById('fontColor');
 const deleteTextButton = document.getElementById('deleteText');
 const applyTextButton = document.getElementById('applyText');
 const closeTextFormButton = document.getElementById('closeTextForm');
-let IMMEDIATELY_CROP = false;
+let commonSettings = JSON.parse(localStorage.getItem('commonSettings'));
 let DELAY_DURATION = 100;
 let SHIFT_PRESSED;
 let IN_PROCESS = false;
@@ -131,11 +133,6 @@ window.addEventListener('keyup', event => {
     SHIFT_PRESSED = false;
   }
 });
-
-if (commonSettings !== null && commonSettings !== undefined) {
-  const commonSettingsArray = JSON.parse(commonSettings);
-  IMMEDIATELY_CROP = (commonSettingsArray.indexOf('immediatelycrop') !== -1);
-}
 
 // старое значение по X при работе с карандашом
 let penOldX;
@@ -176,9 +173,6 @@ ipcAdd(undoCrop, redoCrop, setDefaultSceneState, createScreenshot, callCrop,
     setDefaultZoom, callArrow, callSave, shortcutWindow, settings, signinWindow,
     createEmoji, APP_VERSION, textSidebar);
 
-function localstorageColorChangeHandler(value) {
-  penColor = value;
-}
 /**
  * Вешаем обработчики в форме изменения текста
  */
@@ -250,9 +244,7 @@ function openNewScreenshotDialog() {
   ipc.send('open-information-dialog');
 }
 initSettings(settings);
-initCommonSettings(settings, localstorageColorChangeHandler);
-// цвет карандаша
-let penColor = shapeColorPicker.value;
+initCommonSettings(settings);
 /**
  * Обработчик нажатия на сцене для выбора элементов
  */
@@ -467,6 +459,7 @@ function transformMoveHandler(event) {
       const filled = child[i].filled;
 
       if (name === 'rect') {
+        let penColor = shapeColorPicker.value;
         child[i].graphics.clear().setStrokeStyle(4 / activeShape.scaleX).beginStroke(penColor).drawRoundRect(left, top, width, height, 2 / activeShape.scaleX);
         shapeName = 'rect';
       } else {
@@ -515,21 +508,19 @@ function createScreenshot(argument) {
     thumbnailSize: thumbSize,
   };
 
-  if (commonSettings !== null && commonSettings !== undefined) {
-    const commonSettingsArray = JSON.parse(commonSettings);
-    for (let i in commonSettingsArray) {
-      if (commonSettingsArray[i].charAt(0) === '$') {
-        DELAY_DURATION = commonSettingsArray[i].split('$')[1];
-        if (DELAY_DURATION > 10) {
-          DELAY_DURATION = 10;
-        }
-        if (DELAY_DURATION < 1) {
-          DELAY_DURATION = 1;
-        }
+  commonSettings = JSON.parse(localStorage.getItem('commonSettings'));
 
-        DELAY_DURATION *= 1000;
-      }
+  if (commonSettings) {
+    DELAY_DURATION = commonSettings.delayNumber?commonSettings.delayNumber:1;
+    console.log(commonSettings)
+    if (DELAY_DURATION > 10) {
+      DELAY_DURATION = 10;
     }
+    if (DELAY_DURATION < 1) {
+      DELAY_DURATION = 1;
+    }
+
+    DELAY_DURATION *= 1000;
   }
 
   const answer = ipcRenderer.sendSync('synchronous-message', 'hide');
@@ -540,9 +531,12 @@ function createScreenshot(argument) {
       IN_PROCESS = false;
     }, DELAY_DURATION);
   }
-
-  if ((IMMEDIATELY_CROP || argument === 'capture') && argument !== 'fast') {
-    callCrop();
+  initSettings(settings);
+  initCommonSettings(settings);
+  if (commonSettings) {
+    if ((commonSettings.immediatelycrop || argument === 'capture') && argument !== 'fast') {
+      callCrop();
+    }
   }
 }
 
@@ -598,6 +592,7 @@ function stageMouseDownHandlerDefault(filled, event) {
  * Метод создания стрелки
  */
 function drawArrow(arrow, length) {
+  let penColor = shapeColorPicker.value;
   const arrowSize = Math.sqrt(length) / 1.5;
   arrow.graphics.clear().ss(4 / activeShape.scaleX).s(penColor).mt(0, 0)
     .lineTo(length, 0)
@@ -679,6 +674,7 @@ function stageMouseMoveHandlerRect(filled, event) {
     shape.cache(shapeX, shapeY, width, height)
     shape.filled = true;
   } else {
+    let penColor = shapeColorPicker.value;
     shape.graphics.setStrokeStyle(4 / areaZoom).beginStroke(penColor)
       .drawRoundRect(shapeX, shapeY, width, height, 2 / areaZoom);
   }
@@ -801,6 +797,7 @@ function stageMouseMoveHandlerPen(event) {
   if(activeShape === undefined) {
     return;
   }
+  let penColor = shapeColorPicker.value;
   fillObj = activeShape.getChildAt(0).graphics.beginStroke(penColor).command;
   let newX = event.stageX - stage.x;
   let newY = event.stageY - stage.y;
