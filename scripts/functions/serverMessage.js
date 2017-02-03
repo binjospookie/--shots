@@ -24,7 +24,7 @@ module.exports = function serverMessage(version) {
       case 200:
         if (xhr) {
             if (xhr.responseText !== '' &&
-            xhr.responseText !== 'This is deprecated version. Please update the app to version 0.1.1.') {
+            xhr.responseText !== 'This is deprecated version. Please update the app to version 1.0.4.') {
               popUp(popupWindow, popupText, xhr.responseText, true);
             }
         }
