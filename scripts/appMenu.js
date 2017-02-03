@@ -16,6 +16,7 @@ module.exports = function appMenu(app, appWindow) {
             label: 'New shot',
             accelerator: 'CmdOrCtrl+N',
             click() {
+              // old not old
               dialog.showMessageBox(newShotDialog, function(index) {
                   // если пользователь подтвердил выбор — далем новый скриншот
                   if (index === 0) {

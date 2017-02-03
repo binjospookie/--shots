@@ -112,6 +112,7 @@ let DELAY_DURATION = 100;
 let SHIFT_PRESSED;
 let IN_PROCESS = false;
 const APP_VERSION = ipcRenderer.sendSync('synchronous-message', 'version');
+let oldBase;
 
 window.addEventListener('keydown', event => {
   if (event.which === 16) {
@@ -158,6 +159,7 @@ applyCustomSettingsButton.addEventListener('change', applyCustomSettingsButtonCh
 serverButton.addEventListener('click', serverButtonClickHandler, false);
 // обработчик клика по сцене
 stage.addEventListener('mousedown', stageMouseDownHandler, false);
+
     // Создаём меню приложения
 Menu(
     stage, stageMouseDownHandlerCrop, stageMouseUpHandlerCrop,
@@ -233,6 +235,7 @@ function textareaFontColorChangeHadler(event) {
 
   activeShape.children[0].color = textareaColor;
   stage.update();
+  
 }
 
 // Метод вызова диалога о создании нового скриншота
@@ -401,6 +404,7 @@ function transformPressHandler(event) {
   mouseDownY = event.stageY;
   scale = activeShape.scaleX;
   activeShape.removeAllEventListeners();
+  
 }
 /**
  * Обработчик перемещения при использовании трансформации
@@ -478,6 +482,7 @@ function transformMoveHandler(event) {
   }
 
   stage.update();
+  
 }
 
 /**
@@ -518,7 +523,7 @@ function createScreenshot(argument) {
 
     DELAY_DURATION *= 1000;
   }
-
+  
   const answer = ipcRenderer.sendSync('synchronous-message', 'hide');
 
   if (answer === 'ok') {
@@ -622,6 +627,7 @@ function stageMouseMoveHandlerArrow(event) {
   activeShape.rotation = (Math.atan2(shapeY, shapeX) * 180) / Math.PI;
 
   stage.update();
+  
 }
 
 /**
@@ -683,6 +689,7 @@ function stageMouseMoveHandlerRect(filled, event) {
   }
 
   stage.update();
+  
 }
 
 /**
@@ -827,6 +834,7 @@ function stageMouseMoveHandlerPen(event) {
     }
 
     stage.update();
+    
   }
 
   if (!penOldX || SHIFT_PRESSED === false) {
@@ -946,6 +954,7 @@ function stageMouseUpHandlerCrop(event) {
   onCreate = false;
   setDefaultSceneState();
   body.classList.add('centered');
+  
 }
 
 /**
@@ -988,6 +997,7 @@ function createText(oldEvent) {
     stage.update();
     body.classList.remove('text');
     openTextSidebar();
+    
   }
 }
 
@@ -1032,6 +1042,7 @@ function undoCrop() {
   if (historyIndex === 0) {
     body.classList.remove('centered');
   }
+  
 }
 
 function beforeNewScreenshot() {
@@ -1059,7 +1070,8 @@ function redoCrop() {
   workArea.height = redoObj.height;
 
   stage.update();
-
+  
+  
   historyIndex = index;
 
   body.classList.add('centered');
@@ -1161,7 +1173,7 @@ function callSave(flag) {
   let imageBuffer;
   let difference;
   let answerOffline;
-
+  
   if (!fs.existsSync(`${homePath}/--shots`)) {
     fs.mkdirSync(`${homePath}/--shots`);
   }
@@ -1176,7 +1188,11 @@ function callSave(flag) {
   data = workArea.toDataURL('', 'image/jpeg');
   workArea.style.transform = '';
   ipcRenderer.sendSync('synchronous-message', 'optimize', data);
-
+  
+  if (oldBase !== data) {
+    oldBase = data;
+  }
+  
   setDefaultSceneState();
 
   if (flag !== undefined) {
