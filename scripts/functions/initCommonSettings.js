@@ -1,9 +1,15 @@
 const commonSettingsInputChangeHandler = require('./commonSettingsInputChangeHandler');
 
 module.exports = function initCommonSettings(settings) {
-  const commonSettings = JSON.parse(localStorage.getItem('commonSettings'));
+  let commonSettings = JSON.parse(localStorage.getItem('commonSettings'));
   const inputs = settings.querySelectorAll('input[data-type="common"]');
-
+  
+  // migrate to 1.1.0
+  if (Array.isArray(commonSettings)) {
+    commonSettings = {};
+    localStorage.setItem('commonSettings', JSON.stringify({}));
+  }
+  
   Array.prototype.forEach.call(
     inputs,
     (input) => {
