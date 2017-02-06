@@ -21,6 +21,7 @@ const {
     Tray
 } = require('electron');
 let tray = null;
+let globalShot;
 /**
  * Окно приложения
  */
@@ -76,28 +77,7 @@ app.on('ready', () => {
     tray = new Tray(__dirname + '/icon.png');
     createWindow();
 
-    const globalShot = globalShortcut.register('CommandOrControl+Alt+M', () => {
-      if (appFirstStart) {
-        app.createShot = true;
-        appWindow.webContents.send('new');
-        appWindow.setPosition(0,0);
-        appWindow.show();
-        appWindow.focus();
-        appFirstStart = false;
-        return;
-      }
-
-      dialog.showMessageBox(newShotDialog, function(index) {
-          // если пользователь подтвердил выбор — далем новый скриншот
-          if (index === 0) {
-              app.createShot = true;
-              appWindow.webContents.send('new');
-              appWindow.setPosition(0,0);
-              appWindow.show();
-              appWindow.focus();
-          }
-      })
-    })
+    rigesterGlobalHotkey();
 
     const template = appMenu(app, appWindow);
     const menu = Menu.buildFromTemplate(template);
@@ -302,6 +282,17 @@ function createContextMenu(newShot, open, tray) {
         }
       },
       {
+        label: 'Disable shortcuts',
+        type: 'checkbox',
+        click(element) {
+          if (element.checked === true) {
+            globalShortcut.unregisterAll();
+          } else {
+            rigesterGlobalHotkey();
+          }
+        }
+      },
+      {
           label: 'Quit',
           click() {
               globalShortcut.unregisterAll();
@@ -405,4 +396,29 @@ Example:
 
 function optimizeShots(data) {
     //	console.log('ready')
+}
+
+function rigesterGlobalHotkey() {
+  globalShot = globalShortcut.register('CommandOrControl+Alt+M', () => {
+    if (appFirstStart) {
+      app.createShot = true;
+      appWindow.webContents.send('new');
+      appWindow.setPosition(0,0);
+      appWindow.show();
+      appWindow.focus();
+      appFirstStart = false;
+      return;
+    }
+
+    dialog.showMessageBox(newShotDialog, function(index) {
+        // если пользователь подтвердил выбор — далем новый скриншот
+        if (index === 0) {
+            app.createShot = true;
+            appWindow.webContents.send('new');
+            appWindow.setPosition(0,0);
+            appWindow.show();
+            appWindow.focus();
+        }
+    })
+  })
 }
