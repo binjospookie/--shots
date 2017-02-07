@@ -25,7 +25,8 @@
         "AppImage", "deb"
       ],
       "category": "Graphics",
-      "packageCategory": "graphics"
+      "packageCategory": "graphics",
+      "synopsis": "Simple, minimal, and task-focused application for creating screenshots."
     }
   },
   "bugs": {
