@@ -4,5 +4,5 @@
 
 ## Actual behavior
 
-* Operating system;
-* --shots version;
+* Operating system:
+* --shots version:
