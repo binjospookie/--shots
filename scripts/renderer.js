@@ -13,7 +13,7 @@ const isOnline = require('is-online');
 const {
     ipcRenderer
 } = require('electron');
-
+const nativeImage = electron.nativeImage;
 const ipc = require('electron').ipcRenderer;
 window.onerror = function(error, url, line) {
     ipc.send('errorInWindow', error);
@@ -1170,6 +1170,7 @@ function callSave(flag) {
   let settings = getSettings();
   const homePath = process.env.HOME || process.env.USERPROFILE;
   const screenshotPath = path.join(`${homePath}/--shots`, `${Date.now()}.png`);
+  let screenshotPathTemp = path.join(`${homePath}/--shots`, `clip.board.png`);
   let imageBuffer;
   let difference;
   let answerOffline;
@@ -1226,7 +1227,14 @@ function callSave(flag) {
 
       case 'base64':
         data = data.replace(/\s+/g, '');
-        clipboard.writeText(data);
+        imageBuffer = decodeBase64Image(data);
+        fs.writeFile(screenshotPathTemp, imageBuffer.data, function(){
+          let imagePath = path.join(`${homePath}`, '/--shots/clip.board.png');
+          let image = nativeImage.createFromPath(imagePath);
+          clipboard.writeImage(imagePath);
+          fs.unlinkSync(imagePath);
+        });
+        
 
         difference = Math.abs(new Date() - time);
         hideLoader(difference, 'Copied to buffer', loaderText);
@@ -1238,16 +1246,14 @@ function callSave(flag) {
 
       case 'local base64':
         data = data.replace(/\s+/g, '');
-        clipboard.writeText(data);
         imageBuffer = decodeBase64Image(data);
-        ipc.send('open-save-dialog', imageBuffer.data, localStorage.getItem('savePath'));
-        break;
-
-      case 'server local link':
-        data = data.replace(/\s+/g, '');
-        imageBuffer = decodeBase64Image(data);
-        ipc.send('open-save-dialog', imageBuffer.data, localStorage.getItem('savePath'));
-        sendToServer(data, time, loader, loaderText, `${homePath}/--shots`);
+        fs.writeFile(screenshotPathTemp, imageBuffer.data, function(){
+          let imagePath = path.join(`${homePath}`, '/--shots/clip.board.png');
+          let image = nativeImage.createFromPath(imagePath);
+          clipboard.writeImage(imagePath);
+          fs.unlinkSync(imagePath);
+          ipc.send('open-save-dialog', imageBuffer.data, localStorage.getItem('savePath'));
+        });
         break;
 
       default:
