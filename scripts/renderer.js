@@ -240,7 +240,11 @@ function textareaFontColorChangeHadler(event) {
 
 // Метод вызова диалога о создании нового скриншота
 function openNewScreenshotDialog() {
-  ipc.send('open-information-dialog');
+  if (workArea.toDataURL('', 'image/png') === oldBase) {
+    ipcRenderer.sendSync('synchronous-message', 'createNew', 'dontask');
+  } else {
+    ipcRenderer.sendSync('synchronous-message', 'createNew', 'ask');
+  }
 }
 initSettings(settings);
 initCommonSettings(settings);
@@ -513,7 +517,7 @@ function createScreenshot(argument) {
 
   if (commonSettings) {
     DELAY_DURATION = commonSettings.delayNumber?commonSettings.delayNumber:1;
-    console.log(commonSettings)
+
     if (DELAY_DURATION > 10) {
       DELAY_DURATION = 10;
     }
@@ -1186,7 +1190,7 @@ function callSave(flag) {
   loader.classList.add('show');
   loaderText.textContent = 'Saving';
   workArea.style.transform = `scale(${1 / areaZoom})`;
-  data = workArea.toDataURL('', 'image/jpeg');
+  data = workArea.toDataURL('', 'image/png');
   workArea.style.transform = '';
   ipcRenderer.sendSync('synchronous-message', 'optimize', data);
   
@@ -1269,6 +1273,14 @@ ipc.on('successSave', (event, path)=>{
 
 ipc.on('canceledSave', (event)=>{
   hideLoader(3000, 'Stopping', loaderText);
+});
+
+ipc.on('saveState', (event)=>{
+  if (workArea.toDataURL('', 'image/png') === oldBase) {
+    ipcRenderer.sendSync('synchronous-message', 'createNew', 'dontask');
+  } else {
+    ipcRenderer.sendSync('synchronous-message', 'createNew', 'ask');
+  }
 });
 
 /**
