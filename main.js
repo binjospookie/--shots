@@ -126,7 +126,21 @@ ipcMain.on('synchronous-message', (event, arg, data) => {
         event.returnValue = 'data';
     } else if (arg === 'version') {
         event.returnValue = app.getVersion();
-    } else {
+    } else if (arg === 'createNew') {
+        if (data === 'ask') {
+          dialog.showMessageBox(newShotDialog, function(index) {
+              // если пользователь подтвердил выбор — далем новый скриншот
+              if (index === 0) {
+                appWindow.webContents.send('new');
+              }
+              event.returnValue = 'not-ok';
+          })
+        } else {
+          appWindow.webContents.send('new');
+          event.returnValue = 'ok';
+        }
+    //    event.returnValue = app.getVersion();
+    } else{
         appWindow.show();
         appWindow.setPosition(0,0);
         const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
@@ -191,9 +205,11 @@ function createWindow() {
     } else {
       appWindow.loadURL(`file://${__dirname}/index.html`);
     }
+    
     if (argv.debug) {
         appWindow.webContents.openDevTools();
     }
+    
     appWindow.on('closed', function() {
         appWindow = null;
     });
@@ -254,16 +270,8 @@ function createContextMenu(newShot, open, tray) {
               appFirstStart = false;
               return;
             }
-
-            dialog.showMessageBox(newShotDialog, function(index) {
-                // если пользователь подтвердил выбор — далем новый скриншот
-                if (index === 0) {
-                    app.createShot = true;
-                    appWindow.webContents.send('new');
-                    appWindow.setPosition(0,0);
-                    appWindow.show();
-                }
-            })
+            app.createShot = true;
+            appWindow.webContents.send('saveState');
           }
       },
       {
@@ -367,16 +375,8 @@ Example:
     case '--new':
     case '-new':
     case '-n':
-    dialog.showMessageBox(newShotDialog, function(index) {
-        // если пользователь подтвердил выбор — далем новый скриншот
-        if (index === 0) {
-          app.createShot = true;
-          appWindow.webContents.send('new');
-          appWindow.setPosition(0,0);
-          appWindow.show();
-          appFirstStart = false;
-        }
-      })
+    app.createShot = true;
+    appWindow.webContents.send('saveState');
       break;
     case '--save':
     case '-save':
@@ -409,16 +409,8 @@ function rigesterGlobalHotkey() {
       appFirstStart = false;
       return;
     }
-
-    dialog.showMessageBox(newShotDialog, function(index) {
-        // если пользователь подтвердил выбор — далем новый скриншот
-        if (index === 0) {
-            app.createShot = true;
-            appWindow.webContents.send('new');
-            appWindow.setPosition(0,0);
-            appWindow.show();
-            appWindow.focus();
-        }
-    })
+    
+    app.createShot = true;
+    appWindow.webContents.send('saveState');
   })
 }
