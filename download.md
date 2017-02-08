@@ -1,6 +1,15 @@
 # Download
 Available for Linux,Windows, MacOS (exclude v0.1.3)
 
+## v1.1.0
+* [shots-1.1.0-x86_64.AppImage](https://github.com/binjospookie/--shots/releases/download/v1.1.0/shots-1.1.0-x86_64.AppImage)
+* [shots-1.1.0.pacman](https://github.com/binjospookie/--shots/releases/download/v1.1.0/shots-1.1.0.pacman)
+* [shots.portable.1.1.0.exe](https://github.com/binjospookie/--shots/releases/download/v1.1.0/shots.portable.1.1.0.exe)
+* [shots.Setup.1.1.0.exe](https://github.com/binjospookie/--shots/releases/download/v1.1.0/shots.Setup.1.1.0.exe)
+* [shots_1.1.0_amd64.deb](https://github.com/binjospookie/--shots/releases/download/v1.1.0/shots_1.1.0_amd64.deb)
+* [Source code (zip)](https://github.com/binjospookie/--shots/archive/v1.1.0.zip)
+* [Source code (tar.gz)](https://github.com/binjospookie/--shots/archive/v1.1.0.tar.gz)
+
 ## v1.0.4
 * [shots-1.0.4-x86_64.AppImage](https://github.com/binjospookie/--shots/releases/download/v1.0.4/shots-1.0.4-x86_64.AppImage)
 * [shots.portable.1.0.4.exe](https://github.com/binjospookie/--shots/releases/download/v1.0.4/shots.portable.1.0.4.exe)
