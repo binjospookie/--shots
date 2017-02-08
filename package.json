@@ -3,7 +3,7 @@
   "version": "1.1.0",
   "description": "An application for creating screenshots",
   "main": "main.js",
-  "license": "NPOSL",
+  "license": "NPOSL-3.0",
   "author": "Victor Pasynok <binjospookie@gmail.com>",
   "email": "binjospookie@gmail.com",
   "scripts": {
