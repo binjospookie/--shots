@@ -1169,14 +1169,14 @@ function callSave(flag) {
   const time = new Date();
   let settings = getSettings();
   const homePath = process.env.HOME || process.env.USERPROFILE;
-  const screenshotPath = path.join(`${homePath}/--shots`, `${Date.now()}.png`);
-  let screenshotPathTemp = path.join(`${homePath}/--shots`, `clip.board.png`);
+  const screenshotPath = path.join(`${homePath}/.--shots`, `${Date.now()}.png`);
+  let screenshotPathTemp = path.join(`${homePath}/.--shots`, `clip.board.png`);
   let imageBuffer;
   let difference;
   let answerOffline;
-  
-  if (!fs.existsSync(`${homePath}/--shots`)) {
-    fs.mkdirSync(`${homePath}/--shots`);
+
+  if (!fs.existsSync(`${homePath}/.--shots`)) {
+    fs.mkdirSync(`${homePath}/.--shots`);
   }
 
   hideControls(activeShape, stage);
@@ -1229,7 +1229,7 @@ function callSave(flag) {
         data = data.replace(/\s+/g, '');
         imageBuffer = decodeBase64Image(data);
         fs.writeFile(screenshotPathTemp, imageBuffer.data, function(){
-          let imagePath = path.join(`${homePath}`, '/--shots/clip.board.png');
+          let imagePath = path.join(`${homePath}`, '/.--shots/clip.board.png');
           let image = nativeImage.createFromPath(imagePath);
           clipboard.writeImage(imagePath);
           fs.unlinkSync(imagePath);
@@ -1248,7 +1248,7 @@ function callSave(flag) {
         data = data.replace(/\s+/g, '');
         imageBuffer = decodeBase64Image(data);
         fs.writeFile(screenshotPathTemp, imageBuffer.data, function(){
-          let imagePath = path.join(`${homePath}`, '/--shots/clip.board.png');
+          let imagePath = path.join(`${homePath}`, '/.--shots/clip.board.png');
           let image = nativeImage.createFromPath(imagePath);
           clipboard.writeImage(imagePath);
           fs.unlinkSync(imagePath);
