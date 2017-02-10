@@ -6,6 +6,11 @@ const popupText = popupWindow.querySelector('p');
 const xhr = new XMLHttpRequest();
 
 module.exports = function sendToServer(code, old, loader, loaderText, path) {
+
+  let arg = false;
+  if (typeof arguments[4] == 'function')
+    arg = arguments[4]
+
   const data = new FormData();
   let now;
   let difference;
@@ -61,6 +66,8 @@ module.exports = function sendToServer(code, old, loader, loaderText, path) {
         if (xhr) {
           data = JSON.parse(xhr.responseText);
           clipboard.writeText(data);
+          if(arg)
+            arg()
         }
 
         break;
@@ -70,7 +77,7 @@ module.exports = function sendToServer(code, old, loader, loaderText, path) {
         break;
     }
   };
-  
+
   window.addEventListener('keydown', event => {
     if (event.which === 27) {
       if (loader.classList.contains('show')) {
@@ -79,4 +86,5 @@ module.exports = function sendToServer(code, old, loader, loaderText, path) {
       }
     }
   });
+
 };

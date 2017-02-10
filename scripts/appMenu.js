@@ -1,4 +1,4 @@
-const { shell } = require('electron');
+const { shell, clipboard } = require('electron');
 const dialog = require('electron').dialog;
 const newShotDialog = {
     type: 'info',
@@ -126,6 +126,33 @@ module.exports = function appMenu(app, appWindow) {
             label: 'Text',
             accelerator: 'T',
             click() { appWindow.webContents.send('text'); },
+          },
+          {
+            label: 'SocialNetwork',
+            accelerator: 'S',
+            submenu: [
+              {
+                label: 'Facebook',
+                accelerator: '',
+                click() {
+                  appWindow.webContents.send('facebook')
+                }
+              },
+              {
+                label: 'Twitter',
+                accelerator: '',
+                click() {
+                  appWindow.webContents.send('twitter');
+                }
+              },
+              {
+                label: 'Vkontakte',
+                accelerator: '',
+                click() {
+                  appWindow.webContents.send('vkontakte');
+                }
+              }
+            ]
           },
           {
             label: 'Stickers',

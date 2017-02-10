@@ -11,7 +11,7 @@ const menu = new Menu();
 
 module.exports = function Menu(stage, stageMouseDownHandler, stageMouseUpHandler,
   stageMouseMoveHandler, openNewScreenshotDialog, callCrop, callRect, callPen,
-  callArrow, callSave,setDefaultSceneState, body) {
+  callArrow, callSave, sendToSocialNetwork, setDefaultSceneState, body) {
   menu.append(new MenuItem({
     label: 'New shot',
     click() {

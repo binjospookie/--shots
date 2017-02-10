@@ -83,6 +83,7 @@ const serverButtonClickHandler = require('./functions/serverButtonClickHandler')
 const signinFormSubmitHandler = require('./functions/signinFormSubmitHandler');
 const calcAngle = require('./functions/calcAngle');
 const preventDND = require('./functions/preventDND');
+const sendToSocialNetwork = require('./functions/sendToSocialNetwork');
 // Массив объектов, содержащих данные о каждом кропе.
 let croppingHistory = [];
 // Индекс текущего кусочка истории в массива
@@ -235,7 +236,7 @@ function textareaFontColorChangeHadler(event) {
 
   activeShape.children[0].color = textareaColor;
   stage.update();
-  
+
 }
 
 // Метод вызова диалога о создании нового скриншота
@@ -408,7 +409,7 @@ function transformPressHandler(event) {
   mouseDownY = event.stageY;
   scale = activeShape.scaleX;
   activeShape.removeAllEventListeners();
-  
+
 }
 /**
  * Обработчик перемещения при использовании трансформации
@@ -486,7 +487,7 @@ function transformMoveHandler(event) {
   }
 
   stage.update();
-  
+
 }
 
 /**
@@ -527,7 +528,7 @@ function createScreenshot(argument) {
 
     DELAY_DURATION *= 1000;
   }
-  
+
   const answer = ipcRenderer.sendSync('synchronous-message', 'hide');
 
   if (answer === 'ok') {
@@ -631,7 +632,7 @@ function stageMouseMoveHandlerArrow(event) {
   activeShape.rotation = (Math.atan2(shapeY, shapeX) * 180) / Math.PI;
 
   stage.update();
-  
+
 }
 
 /**
@@ -693,7 +694,7 @@ function stageMouseMoveHandlerRect(filled, event) {
   }
 
   stage.update();
-  
+
 }
 
 /**
@@ -838,7 +839,7 @@ function stageMouseMoveHandlerPen(event) {
     }
 
     stage.update();
-    
+
   }
 
   if (!penOldX || SHIFT_PRESSED === false) {
@@ -958,7 +959,7 @@ function stageMouseUpHandlerCrop(event) {
   onCreate = false;
   setDefaultSceneState();
   body.classList.add('centered');
-  
+
 }
 
 /**
@@ -1001,7 +1002,7 @@ function createText(oldEvent) {
     stage.update();
     body.classList.remove('text');
     openTextSidebar();
-    
+
   }
 }
 
@@ -1046,7 +1047,7 @@ function undoCrop() {
   if (historyIndex === 0) {
     body.classList.remove('centered');
   }
-  
+
 }
 
 function beforeNewScreenshot() {
@@ -1074,8 +1075,8 @@ function redoCrop() {
   workArea.height = redoObj.height;
 
   stage.update();
-  
-  
+
+
   historyIndex = index;
 
   body.classList.add('centered');
@@ -1193,11 +1194,11 @@ function callSave(flag) {
   data = workArea.toDataURL('', 'image/png');
   workArea.style.transform = '';
   ipcRenderer.sendSync('synchronous-message', 'optimize', data);
-  
+
   if (oldBase !== data) {
     oldBase = data;
   }
-  
+
   setDefaultSceneState();
 
   if (flag !== undefined) {
@@ -1238,7 +1239,7 @@ function callSave(flag) {
           clipboard.writeImage(imagePath);
           fs.unlinkSync(imagePath);
         });
-        
+
 
         difference = Math.abs(new Date() - time);
         hideLoader(difference, 'Copied to buffer', loaderText);
@@ -1246,6 +1247,24 @@ function callSave(flag) {
 
       case 'server link':
         sendToServer(data, time, loader, loaderText);
+        break;
+
+      case 'facebook':
+        sendToServer(data, time, loader, loaderText, function() {
+          sendToSocialNetwork('facebook')
+        });
+        break;
+
+      case 'twitter':
+        sendToServer(data, time, loader, loaderText, function() {
+            sendToSocialNetwork('twitter')
+        });
+        break;
+
+      case 'vkontakte':
+        sendToServer(data, time, loader, loaderText, function() {
+          sendToSocialNetwork('vkontakte')
+        });
         break;
 
       case 'local base64':
@@ -1266,6 +1285,13 @@ function callSave(flag) {
     }
 }
 
+/**
+ * Вызываем метод сохранения и формируем ссылку для нужной соц сети
+ */
+function callSendToSocialNetwork(type) {
+  callSave(type)
+}
+
 ipc.on('successSave', (event, path)=>{
   hideLoader(3000, `Saved at "${path}"`, loaderText);
   localStorage.setItem('savePath', path.substr(0, path.lastIndexOf('/')));
@@ -1282,6 +1308,16 @@ ipc.on('saveState', (event)=>{
     ipcRenderer.sendSync('synchronous-message', 'createNew', 'ask');
   }
 });
+
+ipc.on('facebook', (event) => {
+  callSendToSocialNetwork('facebook')
+})
+ipc.on('twitter', (event) => {
+  callSendToSocialNetwork('twitter')
+})
+ipc.on('vkontakte', (event) => {
+  callSendToSocialNetwork('vkontakte')
+})
 
 /**
  * Обработчик нажатия на чекбокс применения кастомных настроек.
