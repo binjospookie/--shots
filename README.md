@@ -63,6 +63,9 @@ But you can't use admin-page.
 * http://www.lffl.org/2017/02/shots-prendere-annotare-screenshot.html
 * http://alternativeto.net/software/shots/
 
+## Podcasts about --shots
+* https://soundcloud.com/humane-technology/shots-screenshot-annotation
+
 <br />
 
 ## --shots in action
