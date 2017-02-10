@@ -22,9 +22,12 @@ module.exports = function sendToServer(code, old, loader, loaderText, path) {
   const pathToServer = (storage === null || storage === '') ?
     'https://theshots.ru/savephoto.php' : JSON.parse(storage);
 
-  const newText = (path === undefined) ? 'Send and copied to buffer' :
+  let newText = (path === undefined) ? 'Send and copied to buffer' :
   `Send, saved at '${path}'  and copied to buffer`;
-
+    
+  if (typeof path == 'function') {
+    newText = `Posted on ${arguments[5]}`;
+  }  
 
   data.append('shot', code);
   data.append('token', token);
@@ -66,8 +69,11 @@ module.exports = function sendToServer(code, old, loader, loaderText, path) {
         if (xhr) {
           data = JSON.parse(xhr.responseText);
           clipboard.writeText(data);
-          if(arg)
-            arg()
+          
+          //sharing
+          if(arg) {
+            arg();
+          }
         }
 
         break;
