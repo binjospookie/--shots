@@ -128,32 +128,6 @@ module.exports = function appMenu(app, appWindow) {
             click() { appWindow.webContents.send('text'); },
           },
           {
-            label: 'SocialNetwork',
-            submenu: [
-              {
-                label: 'Facebook',
-                accelerator: 'Shift+F',
-                click() {
-                  appWindow.webContents.send('facebook');
-                }
-              },
-              {
-                label: 'Twitter',
-                accelerator: 'Shift+T',
-                click() {
-                  appWindow.webContents.send('twitter');
-                }
-              },
-              {
-                label: 'Vkontakte',
-                accelerator: 'Shift+V',
-                click() {
-                  appWindow.webContents.send('vkontakte');
-                }
-              }
-            ]
-          },
-          {
             label: 'Stickers',
             submenu: [
               {
@@ -249,6 +223,32 @@ module.exports = function appMenu(app, appWindow) {
             ],
           },
         ],
+      },
+      {
+        label: 'Socials',
+        submenu: [
+          {
+            label: 'Post on Facebook',
+            accelerator: 'Shift+F',
+            click() {
+              appWindow.webContents.send('facebook');
+            }
+          },
+          {
+            label: 'Post on Twitter',
+            accelerator: 'Shift+T',
+            click() {
+              appWindow.webContents.send('twitter');
+            }
+          },
+          {
+            label: 'Post on Vkontakte',
+            accelerator: 'Shift+V',
+            click() {
+              appWindow.webContents.send('vkontakte');
+            }
+          }
+        ]
       },
       {
         label: 'More',
