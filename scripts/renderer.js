@@ -1250,21 +1250,21 @@ function callSave(flag) {
         break;
 
       case 'facebook':
-        sendToServer(data, time, loader, loaderText, function() {
-          sendToSocialNetwork('facebook')
-        });
+        sendToServer(data, time, loader, loaderText, ()=> {
+          sendToSocialNetwork('facebook');
+        }, 'Facebook');
         break;
 
       case 'twitter':
-        sendToServer(data, time, loader, loaderText, function() {
-            sendToSocialNetwork('twitter')
-        });
+        sendToServer(data, time, loader, loaderText, ()=> {
+            sendToSocialNetwork('twitter');
+        }, 'Twitter');
         break;
 
       case 'vkontakte':
-        sendToServer(data, time, loader, loaderText, function() {
-          sendToSocialNetwork('vkontakte')
-        });
+        sendToServer(data, time, loader, loaderText, ()=> {
+          sendToSocialNetwork('vkontakte');
+        }, 'VKontakte');
         break;
 
       case 'local base64':

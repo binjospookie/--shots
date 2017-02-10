@@ -129,25 +129,24 @@ module.exports = function appMenu(app, appWindow) {
           },
           {
             label: 'SocialNetwork',
-            accelerator: 'S',
             submenu: [
               {
                 label: 'Facebook',
-                accelerator: '',
+                accelerator: 'Shift+F',
                 click() {
-                  appWindow.webContents.send('facebook')
+                  appWindow.webContents.send('facebook');
                 }
               },
               {
                 label: 'Twitter',
-                accelerator: '',
+                accelerator: 'Shift+T',
                 click() {
                   appWindow.webContents.send('twitter');
                 }
               },
               {
                 label: 'Vkontakte',
-                accelerator: '',
+                accelerator: 'Shift+V',
                 click() {
                   appWindow.webContents.send('vkontakte');
                 }
