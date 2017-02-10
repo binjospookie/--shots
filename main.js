@@ -27,7 +27,7 @@ let globalShot;
  */
 let appWindow;
 const argv = require('minimist')(process.argv);
-
+let gettedDbToken;
 /**
  * Опции диалога о новом скриншоте
  * @type {{type: string, title: string, message: string, buttons: string[]}}
@@ -79,7 +79,7 @@ app.on('ready', () => {
 
     rigesterGlobalHotkey();
 
-    const template = appMenu(app, appWindow);
+    const template = appMenu(app, appWindow, getDropboxToken);
     const menu = Menu.buildFromTemplate(template);
 
     /**
@@ -126,7 +126,10 @@ ipcMain.on('synchronous-message', (event, arg, data) => {
         event.returnValue = 'data';
     } else if (arg === 'version') {
         event.returnValue = app.getVersion();
-    } else if (arg === 'createNew') {
+    } else if (arg === 'dropbox-token') {
+      validateDropboxToken(data);
+      event.returnValue = 'ty';
+    }  else if (arg === 'createNew') {
         if (data === 'ask') {
           dialog.showMessageBox(newShotDialog, function(index) {
               // если пользователь подтвердил выбор — далем новый скриншот
@@ -413,4 +416,38 @@ function rigesterGlobalHotkey() {
     app.createShot = true;
     appWindow.webContents.send('saveState');
   })
+}
+
+// dropbox get token
+function getDropboxToken() {
+  appWindow.webContents.send('isDropbox');
+}
+
+function validateDropboxToken(data) {
+    // need auth
+      let dbWindow = new BrowserWindow({
+          width: 500,
+          height: 500,
+          icon: __dirname + '/icon.png'
+      });
+      
+      dbWindow.loadURL('https://www.dropbox.com/oauth2/authorize?response_type=token&client_id=<--shots-token>&redirect_uri=https://theshots.ru')
+      
+      dbWindow.on('focus', function(){
+        Menu.setApplicationMenu(null);
+      })
+      
+      dbWindow.on('blur', function(){
+        Menu.setApplicationMenu(Menu.buildFromTemplate(appMenu(app, appWindow, getDropboxToken)));
+      })
+      
+      dbWindow.on('close', function(event) {
+        dbHistory = dbWindow.webContents.history;
+        gettedDbToken = dbHistory[dbHistory.length - 1];
+        appWindow.webContents.send('freshDropboxToken', gettedDbToken);
+      });
+      dbWindow.on('closed', ()=>{
+        Menu.setApplicationMenu(Menu.buildFromTemplate(appMenu(app, appWindow, getDropboxToken)));
+        dbWindow = null;
+      });
 }
