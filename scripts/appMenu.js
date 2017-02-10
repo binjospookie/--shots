@@ -6,7 +6,7 @@ const newShotDialog = {
     message: 'All your progress will be lost. Are you sure?',
     buttons: ['Yes', 'No']
 };
-module.exports = function appMenu(app, appWindow) {
+module.exports = function appMenu(app, appWindow, getDropboxToken) {
   return (
     [
       {
@@ -28,6 +28,10 @@ module.exports = function appMenu(app, appWindow) {
             label: 'Local save',
             accelerator: 'CmdOrCtrl+L',
             click() { appWindow.webContents.send('save', 'local') },
+          },
+          {
+            label: 'Save to Dropbox',
+            click() { appWindow.webContents.send('saveDropbox') },
           },
           {
             label: 'Minimize to tray',
@@ -262,6 +266,10 @@ module.exports = function appMenu(app, appWindow) {
             label: 'Shortcuts',
             accelerator: 'F2',
             click() { appWindow.webContents.send('shortcut'); },
+          },
+          {
+            label: 'Authorize to Dropbox',
+            click() { getDropboxToken() },
           },
           {
             label: 'Sign In',

@@ -1319,6 +1319,52 @@ ipc.on('vkontakte', (event) => {
   callSendToSocialNetwork('vkontakte')
 })
 
+ipc.on('isDropbox', (event) => {
+  let dbToken = localStorage.getItem('dropboxToken');
+  ipcRenderer.sendSync('synchronous-message', 'dropbox-token', dbToken);
+});
+
+ipc.on('freshDropboxToken', (event, data) => {
+  let token = data.split('access_token=')[1];
+  token = token.split('&token_type=')[0];
+  localStorage.setItem('dropboxToken', token);
+});
+
+ipc.on('saveDropbox', (event) => {
+  let dbToken = localStorage.getItem('dropboxToken');
+  if (dbToken === null && dbToken === undefined) {
+    alert('Please auth to Dropbox');
+    return;
+  }
+  
+  let dbx = new Dropbox({ accessToken: dbToken });
+  let imageSringData = workArea.toDataURL('', 'image/png');
+  //Convert it to an arraybuffer
+  let imageData = _base64ToArrayBuffer(imageSringData);
+  let timestamp = new Date().getTime();
+  
+  dbx.filesUpload({path: '/' + `${timestamp}.png`, contents: imageData})
+     .then(function(response) {
+       alert('savedToDropbox');
+     })
+     .catch(function(error) {
+       alert('Something wrong. If you previously unlink app, please auth again.');
+     });
+});
+
+function _base64ToArrayBuffer(base64) {
+    base64 = base64.split('data:image/png;base64,').join('');
+    var binary_string =  window.atob(base64),
+        len = binary_string.length,
+        bytes = new Uint8Array( len ),
+        i;
+
+    for (i = 0; i < len; i++)        {
+        bytes[i] = binary_string.charCodeAt(i);
+    }
+    return bytes.buffer;
+}
+
 /**
  * Обработчик нажатия на чекбокс применения кастомных настроек.
  */
