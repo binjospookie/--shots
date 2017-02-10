@@ -205,11 +205,11 @@ function createWindow() {
     } else {
       appWindow.loadURL(`file://${__dirname}/index.html`);
     }
-    
+
     if (argv.debug) {
         appWindow.webContents.openDevTools();
     }
-    
+
     appWindow.on('closed', function() {
         appWindow = null;
     });
@@ -409,7 +409,7 @@ function rigesterGlobalHotkey() {
       appFirstStart = false;
       return;
     }
-    
+
     app.createShot = true;
     appWindow.webContents.send('saveState');
   })
