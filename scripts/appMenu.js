@@ -31,6 +31,7 @@ module.exports = function appMenu(app, appWindow, getDropboxToken) {
           },
           {
             label: 'Save to Dropbox',
+            accelerator: 'Shift + D',
             click() { appWindow.webContents.send('saveDropbox') },
           },
           {
