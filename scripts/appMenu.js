@@ -268,7 +268,7 @@ module.exports = function appMenu(app, appWindow, getDropboxToken) {
             click() { appWindow.webContents.send('shortcut'); },
           },
           {
-            label: 'Authorize to Dropbox',
+            label: 'Sign in to Dropbox',
             click() { getDropboxToken() },
           },
           {

@@ -57,6 +57,9 @@ const closeModalButtonClickHandler = require('./functions/closeModal');
 const shapeColorPicker = document.querySelector('input[name="shapecolor"]');
 // толщина карандаша
 const penSize = 4;
+const popupWindow = document.querySelector('aside#messageToUser');
+const popupText = popupWindow.querySelector('p');
+const popUp = require('./functions/popUp');
 const addModalButtonListeners = require('./functions/addModalButtonListeners');
 const createDeleteButton = require('./functions/createDeleteButton');
 const createTransformButton = require('./functions/createTransformButton');
@@ -1331,24 +1334,43 @@ ipc.on('freshDropboxToken', (event, data) => {
 });
 
 ipc.on('saveDropbox', (event) => {
+  isOnline((err, status) => {
+    if (status !== true) {
+      popUp(popupWindow, popupText, `You're offline now. Try again later.`);
+    } });
+
+  const time = new Date();
+
   let dbToken = localStorage.getItem('dropboxToken');
-  if (dbToken === null && dbToken === undefined) {
-    alert('Please auth to Dropbox');
+  hideControls(activeShape, stage);
+  activeShape = undefined;
+  setDefaultSceneState();
+
+  if (dbToken === null || dbToken === undefined) {
+    popUp(popupWindow, popupText, 'Sign in to Dropbox (More > Sign in to Dropbox)');
     return;
   }
-  
+
+  loader.style.transform = `scale(${1 / areaZoom})`;
+  loader.classList.add('show');
+  loaderText.textContent = 'In process';
+
   let dbx = new Dropbox({ accessToken: dbToken });
   let imageSringData = workArea.toDataURL('', 'image/png');
   //Convert it to an arraybuffer
   let imageData = _base64ToArrayBuffer(imageSringData);
   let timestamp = new Date().getTime();
-  
+  let difference;
+
   dbx.filesUpload({path: '/' + `${timestamp}.png`, contents: imageData})
      .then(function(response) {
-       alert('savedToDropbox');
+       difference = Math.abs(new Date() - time);
+       hideLoader(difference, 'Saved to Dropbox', loaderText);
+       //popUp(popupWindow, popupText, 'Saved to Dropbox');
      })
      .catch(function(error) {
-       alert('Something wrong. If you previously unlink app, please auth again.');
+       difference = Math.abs(new Date() - time);
+       hideLoader(difference, 'Something wrong. If you previously unlink app, please auth again.', loaderText);
      });
 });
 

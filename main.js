@@ -444,6 +444,9 @@ function validateDropboxToken(data) {
       dbWindow.on('close', function(event) {
         dbHistory = dbWindow.webContents.history;
         gettedDbToken = dbHistory[dbHistory.length - 1];
+        if (!gettedDbToken.includes('access_token=')) {
+          return;
+        }
         appWindow.webContents.send('freshDropboxToken', gettedDbToken);
       });
       dbWindow.on('closed', ()=>{
