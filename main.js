@@ -426,21 +426,21 @@ function getDropboxToken() {
 function validateDropboxToken(data) {
     // need auth
       let dbWindow = new BrowserWindow({
-          width: 500,
-          height: 500,
+          width: 680,
+          height: 680,
           icon: __dirname + '/icon.png'
       });
-      
-      dbWindow.loadURL('https://www.dropbox.com/oauth2/authorize?response_type=token&client_id=<--shots-token>&redirect_uri=https://theshots.ru')
-      
+
+      dbWindow.loadURL('https://www.dropbox.com/oauth2/authorize?response_type=token&client_id=TOKEN&redirect_uri=https://theshots.ru/dropbox.html')
+
       dbWindow.on('focus', function(){
         Menu.setApplicationMenu(null);
       })
-      
+
       dbWindow.on('blur', function(){
         Menu.setApplicationMenu(Menu.buildFromTemplate(appMenu(app, appWindow, getDropboxToken)));
       })
-      
+
       dbWindow.on('close', function(event) {
         dbHistory = dbWindow.webContents.history;
         gettedDbToken = dbHistory[dbHistory.length - 1];
