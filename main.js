@@ -28,6 +28,7 @@ let globalShot;
 let appWindow;
 const argv = require('minimist')(process.argv);
 let gettedDbToken;
+let gettedIMToken;
 /**
  * Опции диалога о новом скриншоте
  * @type {{type: string, title: string, message: string, buttons: string[]}}
@@ -79,7 +80,7 @@ app.on('ready', () => {
 
     rigesterGlobalHotkey();
 
-    const template = appMenu(app, appWindow, getDropboxToken);
+    const template = appMenu(app, appWindow, getDropboxToken, getImgurToken);
     const menu = Menu.buildFromTemplate(template);
 
     /**
@@ -129,7 +130,10 @@ ipcMain.on('synchronous-message', (event, arg, data) => {
     } else if (arg === 'dropbox-token') {
       validateDropboxToken(data);
       event.returnValue = 'ty';
-    }  else if (arg === 'createNew') {
+    } else if (arg === 'imgur-token') {
+      validateImgurToken(data);
+      event.returnValue = 'ty';
+    }   else if (arg === 'createNew') {
         if (data === 'ask') {
           dialog.showMessageBox(newShotDialog, function(index) {
               // если пользователь подтвердил выбор — далем новый скриншот
@@ -423,6 +427,43 @@ function getDropboxToken() {
   appWindow.webContents.send('isDropbox');
 }
 
+function getImgurToken() {
+  appWindow.webContents.send('isImgur');
+}
+
+function validateImgurToken(data) {
+  let imWindow = new BrowserWindow({
+      width: 680,
+      height: 680,
+      icon: __dirname + '/icon.png'
+  });
+
+  imWindow.loadURL('https://api.imgur.com/oauth2/authorize?client_id=<imgur token>&response_type=token');
+
+  imWindow.on('focus', function(){
+    Menu.setApplicationMenu(null);
+  })
+
+  imWindow.on('blur', function(){
+    Menu.setApplicationMenu(Menu.buildFromTemplate(appMenu(app, appWindow, getDropboxToken, getImgurToken)));
+  })
+
+  imWindow.on('close', function(event) {
+    imHistory = imWindow.webContents.history;
+    console.log(imHistory)
+    gettedIMToken = imHistory[imHistory.length - 1];
+    if (!gettedIMToken.includes('access_token=')) {
+      return;
+    }
+    appWindow.webContents.send('freshImgurToken', gettedIMToken);
+  });
+  imWindow.on('closed', ()=>{
+    Menu.setApplicationMenu(Menu.buildFromTemplate(appMenu(app, appWindow, getDropboxToken, getImgurToken)));
+    dbWindow = null;
+  });
+
+}
+
 function validateDropboxToken(data) {
     // need auth
       let dbWindow = new BrowserWindow({
@@ -438,7 +479,7 @@ function validateDropboxToken(data) {
       })
 
       dbWindow.on('blur', function(){
-        Menu.setApplicationMenu(Menu.buildFromTemplate(appMenu(app, appWindow, getDropboxToken)));
+        Menu.setApplicationMenu(Menu.buildFromTemplate(appMenu(app, appWindow, getDropboxToken, getImgurToken)));
       })
 
       dbWindow.on('close', function(event) {
@@ -450,7 +491,7 @@ function validateDropboxToken(data) {
         appWindow.webContents.send('freshDropboxToken', gettedDbToken);
       });
       dbWindow.on('closed', ()=>{
-        Menu.setApplicationMenu(Menu.buildFromTemplate(appMenu(app, appWindow, getDropboxToken)));
+        Menu.setApplicationMenu(Menu.buildFromTemplate(appMenu(app, appWindow, getDropboxToken, getImgurToken)));
         dbWindow = null;
       });
 }

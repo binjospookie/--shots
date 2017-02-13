@@ -6,7 +6,7 @@ const newShotDialog = {
     message: 'All your progress will be lost. Are you sure?',
     buttons: ['Yes', 'No']
 };
-module.exports = function appMenu(app, appWindow, getDropboxToken) {
+module.exports = function appMenu(app, appWindow, getDropboxToken, getImgurToken) {
   return (
     [
       {
@@ -33,6 +33,11 @@ module.exports = function appMenu(app, appWindow, getDropboxToken) {
             label: 'Save to Dropbox',
             accelerator: 'Shift + D',
             click() { appWindow.webContents.send('saveDropbox') },
+          },
+          {
+            label: 'Save to Imgur',
+            accelerator: 'Shift + I',
+            click() { appWindow.webContents.send('saveImgur') },
           },
           {
             label: 'Minimize to tray',
@@ -264,7 +269,7 @@ module.exports = function appMenu(app, appWindow, getDropboxToken) {
           },
           {
             label: 'Imgur',
-            click() {  },
+            click() { getImgurToken() },
           },
           {
             label: '--shots',

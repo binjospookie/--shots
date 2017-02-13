@@ -1327,10 +1327,21 @@ ipc.on('isDropbox', (event) => {
   ipcRenderer.sendSync('synchronous-message', 'dropbox-token', dbToken);
 });
 
+ipc.on('isImgur', (event) => {
+  let dbToken = localStorage.getItem('imgurToken');
+  ipcRenderer.sendSync('synchronous-message', 'imgur-token', dbToken);
+});
+
 ipc.on('freshDropboxToken', (event, data) => {
   let token = data.split('access_token=')[1];
   token = token.split('&token_type=')[0];
   localStorage.setItem('dropboxToken', token);
+});
+
+ipc.on('freshImgurToken', (event, data) => {
+  let token = data.split('access_token=')[1];
+  token = token.split('&expires_in')[0];
+  localStorage.setItem('imgurToken', token);
 });
 
 ipc.on('saveDropbox', (event) => {
