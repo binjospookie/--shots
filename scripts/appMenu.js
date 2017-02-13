@@ -256,6 +256,24 @@ module.exports = function appMenu(app, appWindow, getDropboxToken) {
         ]
       },
       {
+        label: 'Sign in to',
+        submenu: [
+          {
+            label: 'Dropbox',
+            click() { getDropboxToken() },
+          },
+          {
+            label: 'Imgur',
+            click() {  },
+          },
+          {
+            label: '--shots',
+            accelerator: 'I',
+            click() { appWindow.webContents.send('signin'); },
+          }
+        ]
+      },
+      {
         label: 'More',
         submenu: [
           {
@@ -267,15 +285,6 @@ module.exports = function appMenu(app, appWindow, getDropboxToken) {
             label: 'Shortcuts',
             accelerator: 'F2',
             click() { appWindow.webContents.send('shortcut'); },
-          },
-          {
-            label: 'Sign in to Dropbox',
-            click() { getDropboxToken() },
-          },
-          {
-            label: 'Sign In',
-            accelerator: 'I',
-            click() { appWindow.webContents.send('signin'); },
           },
           {
             label: 'Admin panel',
