@@ -1344,6 +1344,82 @@ ipc.on('freshImgurToken', (event, data) => {
   localStorage.setItem('imgurToken', token);
 });
 
+ipc.on('saveImgur', (event) => {
+  isOnline((err, status) => {
+    if (status !== true) {
+      popUp(popupWindow, popupText, `You're offline now. Try again later.`);
+    } });
+
+    const time = new Date();
+
+    let imToken = localStorage.getItem('imgurToken');
+    hideControls(activeShape, stage);
+    activeShape = undefined;
+    setDefaultSceneState();
+
+    if (imToken === null || imToken === undefined) {
+      popUp(popupWindow, popupText, 'Sign in to Imgur (Sign in to > Imgur)');
+      return;
+    }
+
+    loader.style.transform = `scale(${1 / areaZoom})`;
+    loader.classList.add('show');
+    loaderText.textContent = 'In process';
+
+    let imageSringData = workArea.toDataURL('', 'image/png');
+    //Convert it to an arraybuffer
+    let timestamp = new Date().getTime();
+    let difference;
+    const imgUrl = "http://i.imgur.com/l5OqYoZ.jpg";
+    let xhr = new XMLHttpRequest();
+    let pathToServer = 'https://api.imgur.com/3/upload';
+
+    let imageData = imageSringData.replace('data:image/png;base64,', '');
+
+    xhr.open('POST', pathToServer, true);
+    xhr.setRequestHeader("Authorization", "Bearer " + imToken);
+    xhr.setRequestHeader('Content-Type', 'json');
+    let sendingData = {
+      image: imageData,
+      type: 'base64'
+    };
+    xhr.send(JSON.stringify(sendingData));
+    xhr.onload = () => {
+    	let resp = JSON.parse(xhr.responseText);
+      switch (resp.status) {
+        case 500:
+          difference = Math.abs(new Date() - time);
+          hideLoader(difference, 'Server error😱', loaderText);
+          break;
+
+        case 400:
+          difference = Math.abs(new Date() - time);
+          hideLoader(difference, 'An impossible request 😱', loaderText);
+          break;
+
+        case 401:
+          difference = Math.abs(new Date() - time);
+          hideLoader(difference, 'Auth error 😱', loaderText);
+          break;
+
+        case 200:
+          if (xhr) {
+            let link = resp.data.link;
+            clipboard.writeText(link);
+            difference = Math.abs(new Date() - time);
+            hideLoader(difference, 'Saved to Imgur and copied to clipboard', loaderText);
+          }
+
+          break;
+
+        default:
+          difference = Math.abs(new Date() - time);
+          hideLoader(difference, 'Unknown error 😱', loaderText);
+          break;
+      }
+    }
+});
+
 ipc.on('saveDropbox', (event) => {
   isOnline((err, status) => {
     if (status !== true) {
@@ -1358,7 +1434,7 @@ ipc.on('saveDropbox', (event) => {
   setDefaultSceneState();
 
   if (dbToken === null || dbToken === undefined) {
-    popUp(popupWindow, popupText, 'Sign in to Dropbox (More > Sign in to Dropbox)');
+    popUp(popupWindow, popupText, 'Sign in to Dropbox (Sign in to > Dropbox)');
     return;
   }
 
