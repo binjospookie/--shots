@@ -14,6 +14,8 @@ const {
     ipcRenderer
 } = require('electron');
 
+const nativeImage = require('electron').nativeImage;
+
 const ipc = require('electron').ipcRenderer;
 window.onerror = function(error, url, line) {
     ipc.send('errorInWindow', error);
@@ -1210,6 +1212,15 @@ function callSave(flag) {
         data = data.replace(/\s+/g, '');
         imageBuffer = decodeBase64Image(data);
         ipc.send('open-save-dialog', imageBuffer.data, localStorage.getItem('savePath'));
+        break;
+
+      case 'imageClp':
+        data = data.replace(/\s+/g, '');
+        img = nativeImage.createFromDataURL(data);
+        clipboard.writeImage(img);
+
+        difference = Math.abs(new Date() - time);
+        hideLoader(difference, 'Image copied to buffer', loaderText);
         break;
 
       case 'base64':

@@ -28,6 +28,12 @@ module.exports = function Menu(stage, stageMouseDownHandler, stageMouseUpHandler
     },
   }));
   menu.append(new MenuItem({
+    label: 'Copy',
+    click() {
+      callSave('imageClp');
+    },
+  }));
+  menu.append(new MenuItem({
     type: 'separator',
   }));
   menu.append(new MenuItem({
