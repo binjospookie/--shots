@@ -6,6 +6,7 @@
 [![Build Status](https://travis-ci.org/binjospookie/--shots.svg?branch=master)](https://travis-ci.org/binjospookie/--shots)
 [![Github All Releases](https://img.shields.io/github/downloads/binjospookie/--shots/total.svg)](https://github.com/binjospookie/--shots)
 [![GitHub release](https://img.shields.io/github/release/binjospookie/--shots.svg)](https://github.com/binjospookie/--shots/)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/theshots/5usd)
 
 An application for creating screenshots. It's simple and free!<br />
 Just download the package for your OS and start working!<br />
