@@ -18,6 +18,8 @@ To access the tools use the global menu, context menu(click on the right mouse b
 __--shots__ provides all the tools you may need to work with screenshots.<br />
 It's forever free application without annoying ads and etc.
 
+Learn about all the opportunities available [here](https://github.com/binjospookie/--shots/wiki) 
+
 ## Ways to save your screenshot
 * locally
 * to clipboard
@@ -37,7 +39,6 @@ Also you could post your screenshots from --shots to Facebook, Twitter, VKontakt
 * Text<br />
 
 > Press `F2` to see all shortcuts.<br />
-Learn about all the opportunities available [here](https://github.com/binjospookie/--shots/releases) 
 
 ## How can I save screenshots on my own server?
 * Put `functions.php` and `savePhoto.php` on your server
