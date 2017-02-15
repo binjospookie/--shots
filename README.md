@@ -38,7 +38,7 @@ Also you could post your screenshots from --shots to Facebook, Twitter, VKontakt
 * Blur
 * Text<br />
 
-> Press `F2` to see all shortcuts.<br />
+> All shortcuts [here](https://github.com/binjospookie/--shots/wiki/Shortcuts)<br />
 
 ## How can I save screenshots on my own server?
 * Put `functions.php` and `savePhoto.php` on your server
