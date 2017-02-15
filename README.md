@@ -18,19 +18,21 @@ To access the tools use the global menu, context menu(click on the right mouse b
 __--shots__ provides all the tools you may need to work with screenshots.<br />
 It's forever free application without annoying ads and etc.
 
-## Ways to save
+## Ways to save you screenshot
 * locally
 * to clipboard
 * to our servers. On success we put link to screenshot to clipboard
 * to Dropbox
 * to IMgur. On success we put link to screenshot to clipboard
 
+Also you could post your screenshots from --shots to Facebook, Twitter, VKontakte.
+
 ## Available tools
 * Arrow
 * Crop
 * Pen
 * Rect
-* Emoji
+* Sticker
 * Blur
 * Text<br />
 
