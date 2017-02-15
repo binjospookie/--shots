@@ -25,7 +25,7 @@ Learn about all the opportunities available [here](https://github.com/binjospook
 * to clipboard
 * to our servers. On success we put link to screenshot to clipboard
 * to Dropbox
-* to IMgur. On success we put link to screenshot to clipboard
+* to Imgur. On success we put link to screenshot to clipboard
 
 Also you could post your screenshots from --shots to Facebook, Twitter, VKontakte.
 
