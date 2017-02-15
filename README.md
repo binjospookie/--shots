@@ -8,9 +8,8 @@
 [![GitHub release](https://img.shields.io/github/release/binjospookie/--shots.svg)](https://github.com/binjospookie/--shots/)
 
 
-An application for creating screenshots. It's simple and free!<br />
+Task-focused application for creating screenshots. It's simple and free!<br />
 Just download the package for your OS and start working!<br />
-You can save the screenshot locally, copy the code or send it to the server and get a link.<br />
 To access the tools use the global menu, context menu(click on the right mouse button) or shortcuts.<br />
 [Project's site with video](https://theshots.ru) <br />
 [Download links](https://github.com/binjospookie/--shots/blob/master/download.md)
@@ -18,6 +17,13 @@ To access the tools use the global menu, context menu(click on the right mouse b
 ## Why --shots
 __--shots__ provides all the tools you may need to work with screenshots.<br />
 It's forever free application without annoying ads and etc.
+
+## Ways to save
+* locally
+* to clipboard
+* to our servers. On success we put link to screenshot to clipboard
+* to Dropbox
+* to IMgur. On success we put link to screenshot to clipboard
 
 ## Available tools
 * Arrow
@@ -31,15 +37,6 @@ It's forever free application without annoying ads and etc.
 > Press `F2` to see all shortcuts.<br />
 Learn about all the opportunities available [here](https://github.com/binjospookie/--shots/releases) 
 
-## Used technologies
-* Electron
-* HTML
-* CSS
-* PostCSS
-* JavaScript
-* NodeJs
-* PHP
-
 ## How can I save screenshots on my own server?
 * Put `functions.php` and `savePhoto.php` on your server
 * Launch app
@@ -52,6 +49,8 @@ But you can't use admin-page.
 ## How run --shots from console?
 * `npm install`
 * `npm run && npm start`
+
+> You cannot save screenshots to Dropbox or imgur, because we do not provide the keys of our application in the source code.
 
 <br />
 
@@ -77,4 +76,4 @@ But you can't use admin-page.
 
 ***First commit was added 24 Sep 2016***
 
-If you want to thank me, just starring the project and tell your friends about --shots :tada:
+If you want to thank us, just starring the project and tell your friends about --shots :tada:
