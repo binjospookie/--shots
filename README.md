@@ -18,7 +18,7 @@ To access the tools use the global menu, context menu(click on the right mouse b
 __--shots__ provides all the tools you may need to work with screenshots.<br />
 It's forever free application without annoying ads and etc.
 
-## Ways to save you screenshot
+## Ways to save your screenshot
 * locally
 * to clipboard
 * to our servers. On success we put link to screenshot to clipboard
