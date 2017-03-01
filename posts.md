@@ -8,3 +8,4 @@
 * http://126kr.com/article/3y9sb54m6p1 (duplicate of ^)
 * http://www.lffl.org/2017/02/shots-prendere-annotare-screenshot.html
 * http://alternativeto.net/software/shots/
+* http://www.stahuj.centrum.cz/grafika_a_design/zachycovani_obrazovky/-shots/?&g%5Boz%5D=0.1.1
