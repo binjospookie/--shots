@@ -9,3 +9,5 @@
 * http://www.lffl.org/2017/02/shots-prendere-annotare-screenshot.html
 * http://alternativeto.net/software/shots/
 * http://www.stahuj.centrum.cz/grafika_a_design/zachycovani_obrazovky/-shots/?&g%5Boz%5D=0.1.1
+* http://linux-actif.fr/shots
+* http://andro-buntu.blogspot.ru/2017/02/shots-aplikasi-screenshot-berbasis.html
