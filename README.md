@@ -71,6 +71,7 @@ But you can't use admin-page.
 * http://www.stahuj.centrum.cz/grafika_a_design/zachycovani_obrazovky/-shots/?&g%5Boz%5D=0.1.1
 * http://linux-actif.fr/shots
 * http://andro-buntu.blogspot.ru/2017/02/shots-aplikasi-screenshot-berbasis.html
+* http://linoxide.com/linux-how-to/screenshots-elementary-loki-ubuntu/
 
 ## Podcasts about --shots
 * https://soundcloud.com/humane-technology/shots-screenshot-annotation
