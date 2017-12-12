@@ -12,6 +12,13 @@ To access the tools use the global menu, context menu(click on the right mouse b
 [Project's site with video](https://theshots.ru) <br />
 [Download links](https://github.com/binjospookie/--shots/blob/master/download.md)
 
+<br />
+
+## --shots in action
+<img src="https://theshots.ru/saved/1943328504585907d9cf0606.81487303.png" alt="--shots in action" /> 
+
+<br />
+
 ## Why --shots
 __--shots__ provides all the tools you may need to work with screenshots.<br />
 It's forever free application without annoying ads and etc.
@@ -75,10 +82,6 @@ But you can't use admin-page.
 ## Podcasts about --shots
 * https://soundcloud.com/humane-technology/shots-screenshot-annotation
 
-<br />
-
-## --shots in action
-<img src="https://theshots.ru/saved/1943328504585907d9cf0606.81487303.png" alt="--shots in action" /> 
 <br />
 
 ***First commit was added 24 Sep 2016***
