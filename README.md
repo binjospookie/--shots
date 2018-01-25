@@ -78,6 +78,7 @@ But you can't use admin-page.
 * http://andro-buntu.blogspot.ru/2017/02/shots-aplikasi-screenshot-berbasis.html
 * http://linoxide.com/linux-how-to/screenshots-elementary-loki-ubuntu/
 * "Planete LINUX" #96
+* https://fredfire1.wordpress.com/2016/03/31/install-gyazo-debian-64bit/
 
 ## Podcasts about --shots
 * https://soundcloud.com/humane-technology/shots-screenshot-annotation
