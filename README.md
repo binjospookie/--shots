@@ -1,5 +1,7 @@
 # --shots
 
+***Project is not maintainable. If you want to use it you must to see > How can I save screenshots on my own server?***
+
 [![http://electron.atom.io](https://cdn.rawgit.com/amitmerchant1990/electron-markdownify/d0059441c4440c89f9d098b367fd5d987ac044f2/img/electron-badge.svg)](http://electron.atom.io)
 [![Build Status](https://travis-ci.org/binjospookie/--shots.svg?branch=master)](https://travis-ci.org/binjospookie/--shots)
 [![Github All Releases](https://img.shields.io/github/downloads/binjospookie/--shots/total.svg)](https://github.com/binjospookie/--shots)
